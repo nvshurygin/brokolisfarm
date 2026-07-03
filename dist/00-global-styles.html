@@ -17,6 +17,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 126px;
 }
 
 body {
@@ -41,6 +42,10 @@ body {
 .bf-page img {
   display: block;
   max-width: 100%;
+}
+
+.bf-page [id] {
+  scroll-margin-top: 126px;
 }
 
 .bf-loader-screen {
@@ -136,6 +141,19 @@ body {
   margin: 0 auto;
   max-width: var(--bf-shell);
   width: calc(100% - 40px);
+}
+
+.bf-header {
+  background: #ffffff;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  transition: box-shadow 0.22s ease;
+  z-index: 99990;
+}
+
+.bf-header.is-scrolled {
+  box-shadow: 0 12px 30px rgba(46, 46, 57, 0.1);
 }
 
 .bf-topbar {
@@ -1306,6 +1324,14 @@ body.bf-mobile-menu-open {
 }
 
 @media (max-width: 960px) {
+  html {
+    scroll-padding-top: 108px;
+  }
+
+  .bf-page [id] {
+    scroll-margin-top: 108px;
+  }
+
   .bf-shell {
     width: calc(100% - 32px);
   }
@@ -1490,6 +1516,14 @@ body.bf-mobile-menu-open {
 }
 
 @media (max-width: 640px) {
+  html {
+    scroll-padding-top: 104px;
+  }
+
+  .bf-page [id] {
+    scroll-margin-top: 104px;
+  }
+
   .bf-shell {
     width: calc(100% - 24px);
   }

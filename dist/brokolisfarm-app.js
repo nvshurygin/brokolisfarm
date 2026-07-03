@@ -174,6 +174,22 @@
     });
   }
 
+  function updateStickyHeaderState() {
+    var isScrolled = (window.pageYOffset || document.documentElement.scrollTop || 0) > 6;
+    toArray(document.querySelectorAll(".bf-header")).forEach(function (header) {
+      header.classList.toggle("is-scrolled", isScrolled);
+    });
+  }
+
+  function bindStickyHeader() {
+    if (document.documentElement.getAttribute("data-bf-sticky-header-bound") !== "true") {
+      document.documentElement.setAttribute("data-bf-sticky-header-bound", "true");
+      window.addEventListener("scroll", updateStickyHeaderState, { passive: true });
+      window.addEventListener("resize", updateStickyHeaderState);
+    }
+    updateStickyHeaderState();
+  }
+
   function getStoredCartTotal() {
     if (window.tcart && typeof window.tcart.total !== "undefined") {
       return Number(window.tcart.total) || 0;
@@ -809,6 +825,7 @@
 
   function boot() {
     renderCommonChrome();
+    bindStickyHeader();
     bindMobileMenu();
     bindCartBridge();
     initAll();
