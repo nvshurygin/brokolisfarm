@@ -1,0 +1,47 @@
+<div
+  class="bf-page bf-page_catalog"
+  data-bf-app
+  data-storepartuid="420955341102"
+  data-recid="2176935951"
+  data-products-size="36"
+>
+  <div data-bf-header></div>
+
+  <section class="bf-page-hero">
+    <div class="bf-shell bf-page-hero__inner">
+      <div>
+        <span class="bf-kicker">Каталог</span>
+        <h1>Фермерские продукты BrokolisFarm</h1>
+        <p>Свежие продукты из каталога Tilda. Карточки можно добавлять в стандартную корзину Tilda через нативный checkout.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bf-section bf-catalog-page" id="catalog">
+    <div class="bf-shell">
+      <div class="bf-catalog-toolbar" id="search">
+        <label class="bf-field">
+          <span>Поиск</span>
+          <input type="search" placeholder="Название, SKU или описание" data-bf-search />
+        </label>
+        <label class="bf-field">
+          <span>Сортировка</span>
+          <select data-bf-sort>
+            <option value="">По умолчанию</option>
+            <option value="price:asc">Сначала дешевле</option>
+            <option value="price:desc">Сначала дороже</option>
+            <option value="title:asc">Название А-Я</option>
+            <option value="title:desc">Название Я-А</option>
+          </select>
+        </label>
+      </div>
+      <div class="bf-store-parts bf-store-parts_left" data-bf-parts hidden></div>
+      <div class="bf-products bf-products_catalog" data-bf-products aria-live="polite">
+        <div class="bf-products__status">Загружаем товары...</div>
+      </div>
+      <button class="bf-load-more" type="button" data-bf-load-more hidden>Показать еще</button>
+    </div>
+  </section>
+
+  <div data-bf-footer></div>
+</div>

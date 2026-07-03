@@ -1,0 +1,2411 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BrokolisFarm Tilda Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600&family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <style id="brokolisfarm-global-styles">
+:root {
+  --bf-green: #6dac4a;
+  --bf-text: #2e2e39;
+  --bf-muted: #f9f8fc;
+  --bf-soft: #ececec;
+  --bf-border: #d9d9d9;
+  --bf-shell: 1160px;
+  --bf-radius: 10px;
+  --bf-font: "Ubuntu", Arial, sans-serif;
+  --bf-accent-font: "Comfortaa", "Ubuntu", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+  color: var(--bf-text);
+  font-family: var(--bf-font);
+}
+
+.bf-page {
+  background: #ffffff;
+  color: var(--bf-text);
+  font-family: var(--bf-font);
+  min-width: 320px;
+}
+
+.bf-page a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.bf-page img {
+  display: block;
+  max-width: 100%;
+}
+
+.bf-loader-status {
+  background: var(--bf-muted);
+  border-radius: var(--bf-radius);
+  margin: 48px 0;
+  padding: 28px;
+}
+
+.bf-loader-status_error {
+  color: #9f2727;
+}
+
+.bf-shell {
+  margin: 0 auto;
+  max-width: var(--bf-shell);
+  width: calc(100% - 40px);
+}
+
+.bf-topbar {
+  background: var(--bf-muted);
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.bf-topbar__inner {
+  align-items: center;
+  display: flex;
+  gap: 28px;
+  height: 30px;
+}
+
+.bf-phone {
+  margin-left: auto;
+}
+
+.bf-flag {
+  background: linear-gradient(to bottom, #fff 0 33%, #0c47b7 33% 66%, #e53b35 66% 100%);
+  display: inline-block;
+  height: 14px;
+  margin-left: 8px;
+  vertical-align: -2px;
+  width: 22px;
+}
+
+.bf-nav {
+  align-items: center;
+  border-bottom: 1px solid var(--bf-border);
+  display: grid;
+  gap: 20px;
+  grid-template-columns: auto auto 1fr auto auto;
+  height: 80px;
+}
+
+.bf-logo {
+  align-items: center;
+  display: inline-flex;
+  gap: 8px;
+  min-width: 160px;
+}
+
+.bf-logo__mark {
+  align-items: center;
+  background: var(--bf-green);
+  border-radius: 6px;
+  color: #fff;
+  display: inline-flex;
+  font-family: var(--bf-accent-font);
+  font-size: 18px;
+  font-weight: 600;
+  height: 30px;
+  justify-content: center;
+  width: 30px;
+}
+
+.bf-logo__text {
+  font-family: var(--bf-accent-font);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.bf-catalog-button,
+.bf-button,
+.bf-load-more,
+.bf-newsletter__form button {
+  align-items: center;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: var(--bf-accent-font);
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: center;
+  min-height: 40px;
+  padding: 10px 18px;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.bf-catalog-button,
+.bf-button,
+.bf-newsletter__form button {
+  background: var(--bf-green);
+  color: #ffffff;
+}
+
+.bf-button_light {
+  background: #ffffff;
+  color: var(--bf-green);
+}
+
+.bf-catalog-button:hover,
+.bf-button:hover,
+.bf-load-more:hover,
+.bf-newsletter__form button:hover,
+.bf-product__cart:hover,
+.bf-product__details:hover {
+  transform: translateY(-1px);
+}
+
+.bf-catalog-button__icon,
+.bf-icon-search,
+.bf-icon-cart {
+  display: inline-block;
+  position: relative;
+}
+
+.bf-catalog-button__icon {
+  border-bottom: 2px solid currentColor;
+  border-top: 2px solid currentColor;
+  height: 14px;
+  margin-right: 10px;
+  width: 16px;
+}
+
+.bf-catalog-button__icon::before {
+  background: currentColor;
+  content: "";
+  height: 2px;
+  left: 0;
+  position: absolute;
+  top: 4px;
+  width: 16px;
+}
+
+.bf-menu {
+  align-items: center;
+  display: flex;
+  font-size: 16px;
+  gap: 32px;
+  justify-content: center;
+}
+
+.bf-icon-link,
+.bf-cart-link {
+  align-items: center;
+  display: inline-flex;
+  height: 40px;
+  justify-content: center;
+  position: relative;
+  width: 40px;
+}
+
+.bf-icon-search {
+  border: 2px solid var(--bf-text);
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+}
+
+.bf-icon-search::after {
+  background: var(--bf-text);
+  content: "";
+  height: 2px;
+  position: absolute;
+  right: -6px;
+  top: 16px;
+  transform: rotate(45deg);
+  width: 9px;
+}
+
+.bf-icon-cart {
+  border: 2px solid var(--bf-green);
+  border-radius: 6px 6px 8px 8px;
+  height: 22px;
+  width: 24px;
+}
+
+.bf-icon-cart::before {
+  border: 2px solid var(--bf-green);
+  border-bottom: 0;
+  border-radius: 12px 12px 0 0;
+  content: "";
+  height: 8px;
+  left: 5px;
+  position: absolute;
+  top: -9px;
+  width: 10px;
+}
+
+.bf-cart-count {
+  align-items: center;
+  background: var(--bf-green);
+  border-radius: 50%;
+  color: #fff;
+  display: inline-flex;
+  font-size: 11px;
+  height: 18px;
+  justify-content: center;
+  min-width: 18px;
+  padding: 0 5px;
+  position: absolute;
+  right: -2px;
+  top: 0;
+}
+
+.bf-cart-count:empty {
+  display: none;
+}
+
+body.bf-mobile-menu-open {
+  overflow: hidden;
+}
+
+.bf-mobile-menu {
+  display: none;
+}
+
+.bf-hero {
+  padding-top: 23px;
+}
+
+.bf-hero__panel {
+  background: var(--bf-green);
+  border-radius: 20px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(420px, 54%);
+  min-height: 378px;
+  overflow: hidden;
+}
+
+.bf-hero__copy {
+  align-items: flex-start;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 34px 30px;
+}
+
+.bf-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px 10px;
+  margin-bottom: 50px;
+}
+
+.bf-tags span {
+  background: #ffffff;
+  border-radius: 5px;
+  color: var(--bf-green);
+  font-size: 16px;
+  line-height: 1;
+  padding: 5px 10px;
+}
+
+.bf-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 14px;
+  gap: 22px;
+  margin-bottom: 14px;
+}
+
+.bf-hero h1 {
+  font-size: 30px;
+  line-height: 1.13;
+  margin: 0 0 36px;
+  max-width: 380px;
+}
+
+.bf-hero .bf-button {
+  align-self: flex-start;
+}
+
+.bf-hero__media {
+  min-height: 378px;
+  overflow: hidden;
+}
+
+.bf-hero__media img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.bf-section {
+  padding: 60px 0 0;
+}
+
+.bf-section h2 {
+  font-size: 30px;
+  line-height: 1.13;
+  margin: 0 0 23px;
+}
+
+.bf-category-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.bf-category-card {
+  background: var(--bf-muted);
+  border-radius: var(--bf-radius);
+  display: grid;
+  grid-template-rows: 178px 72px;
+  min-height: 250px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bf-category-card:hover,
+.bf-product:hover,
+.bf-benefit:hover,
+.bf-editorial-card:hover {
+  box-shadow: 0 16px 36px rgba(46, 46, 57, 0.08);
+  transform: translateY(-2px);
+}
+
+.bf-category-card img {
+  height: 178px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.bf-category-card span {
+  align-items: center;
+  display: flex;
+  font-size: 18px;
+  font-weight: 500;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+.bf-category-card span::after {
+  color: var(--bf-green);
+  content: "+";
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.bf-section__head {
+  align-items: center;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  margin-bottom: 23px;
+}
+
+.bf-section__head h2 {
+  margin-bottom: 0;
+}
+
+.bf-store-parts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.bf-store-part {
+  background: var(--bf-muted);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--bf-text);
+  cursor: pointer;
+  font: inherit;
+  min-height: 32px;
+  padding: 6px 14px;
+}
+
+.bf-store-part.is-active {
+  background: var(--bf-green);
+  color: #ffffff;
+}
+
+.bf-products {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  min-height: 220px;
+}
+
+.bf-products__status,
+.bf-products__error {
+  background: var(--bf-muted);
+  border-radius: var(--bf-radius);
+  grid-column: 1 / -1;
+  padding: 28px;
+}
+
+.bf-products__error {
+  color: #9f2727;
+}
+
+.bf-product {
+  background: var(--bf-muted);
+  border-radius: var(--bf-radius);
+  display: flex;
+  flex-direction: column;
+  min-height: 410px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bf-product__image-link {
+  display: block;
+  height: 220px;
+}
+
+.bf-product__image {
+  height: 220px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.bf-product__badge {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 50%;
+  color: var(--bf-green);
+  display: inline-flex;
+  font-size: 18px;
+  font-weight: 700;
+  height: 32px;
+  justify-content: center;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 32px;
+}
+
+.bf-product__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 10px 10px;
+}
+
+.bf-product__title {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.18;
+  margin: 0;
+  min-height: 42px;
+}
+
+.bf-product__price-row {
+  align-items: baseline;
+  display: flex;
+  gap: 8px;
+  min-height: 22px;
+}
+
+.bf-product__price {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.bf-product__price-old {
+  color: #8c8c8c;
+  font-size: 14px;
+  text-decoration: line-through;
+}
+
+.bf-product__options {
+  min-height: 0;
+}
+
+.bf-product__select {
+  display: block;
+}
+
+.bf-product__select span {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.bf-product__select select {
+  background: #ffffff;
+  border: 1px solid var(--bf-border);
+  border-radius: 5px;
+  color: var(--bf-text);
+  font: inherit;
+  height: 34px;
+  padding: 0 8px;
+  width: 100%;
+}
+
+.bf-product__actions {
+  align-items: center;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr 32px;
+  margin-top: auto;
+}
+
+.bf-product__details {
+  align-items: center;
+  background: var(--bf-soft);
+  border-radius: 5px;
+  color: var(--bf-green);
+  display: inline-flex;
+  font-size: 16px;
+  font-weight: 700;
+  height: 40px;
+  justify-content: center;
+}
+
+.bf-product__cart {
+  align-items: center;
+  background: var(--bf-green);
+  border-radius: 50%;
+  color: #ffffff;
+  display: inline-flex;
+  font-size: 22px;
+  font-weight: 700;
+  height: 32px;
+  justify-content: center;
+  line-height: 1;
+  width: 32px;
+}
+
+.bf-product.is-soldout .bf-product__cart {
+  background: #b8b8b8;
+  pointer-events: none;
+}
+
+.bf-load-more {
+  background: var(--bf-muted);
+  color: var(--bf-green);
+  margin: 24px auto 0;
+}
+
+.bf-newsletter__intro {
+  align-items: flex-start;
+  display: grid;
+  gap: 70px;
+  grid-template-columns: minmax(320px, 443px) 1fr;
+}
+
+.bf-newsletter__intro p,
+.bf-about-text {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.45;
+  margin: 8px 0 0;
+}
+
+.bf-newsletter__panel {
+  align-items: center;
+  background: var(--bf-green);
+  border-radius: 10px;
+  color: #ffffff;
+  display: grid;
+  grid-template-columns: 300px 1fr 300px;
+  margin-top: 57px;
+  min-height: 395px;
+  overflow: hidden;
+}
+
+.bf-newsletter__image {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.bf-newsletter__form {
+  display: grid;
+  gap: 17px;
+  justify-items: center;
+  padding: 30px;
+  text-align: center;
+}
+
+.bf-newsletter__form h3 {
+  font-size: 30px;
+  line-height: 1.13;
+  margin: 0;
+  max-width: 440px;
+}
+
+.bf-newsletter__form input {
+  border: 0;
+  border-radius: 999px;
+  color: var(--bf-text);
+  font: inherit;
+  height: 50px;
+  max-width: 310px;
+  padding: 0 24px;
+  width: 100%;
+}
+
+.bf-newsletter__form button {
+  background: #ffffff;
+  border-radius: 999px;
+  color: var(--bf-green);
+  max-width: 310px;
+  width: 100%;
+}
+
+.bf-about-text {
+  margin: 0 auto 57px;
+  max-width: 664px;
+  text-align: left;
+}
+
+.bf-delivery__card {
+  border-radius: 20px;
+  min-height: 395px;
+  overflow: hidden;
+  position: relative;
+}
+
+.bf-delivery__card > img {
+  height: 395px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.bf-delivery__overlay {
+  align-items: end;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.14));
+  color: #ffffff;
+  display: grid;
+  gap: 40px;
+  grid-template-columns: minmax(260px, 450px) minmax(260px, 1fr);
+  inset: 0;
+  padding: 30px;
+  position: absolute;
+}
+
+.bf-delivery__overlay h2 {
+  margin: 0;
+}
+
+.bf-delivery__overlay ol {
+  counter-reset: item;
+  display: grid;
+  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0 0 10px;
+}
+
+.bf-delivery__overlay li {
+  font-size: 16px;
+}
+
+.bf-delivery__overlay li::before {
+  content: "0" counter(item);
+  counter-increment: item;
+  display: inline-block;
+  font-weight: 700;
+  margin-right: 12px;
+}
+
+.bf-benefit-grid {
+  display: grid;
+  gap: 40px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.bf-benefit {
+  background: var(--bf-muted);
+  border-radius: var(--bf-radius);
+  display: flex;
+  flex-direction: column;
+  gap: 92px;
+  min-height: 233px;
+  padding: 20px 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bf-benefit span {
+  align-self: flex-start;
+  background: var(--bf-green);
+  border-radius: 7px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 7px 18px;
+}
+
+.bf-benefit p {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 300px;
+}
+
+.bf-instagram__panel {
+  align-items: center;
+  background: var(--bf-muted);
+  border-radius: 20px;
+  display: grid;
+  grid-template-columns: minmax(300px, 443px) minmax(320px, 1fr);
+  min-height: 395px;
+  overflow: hidden;
+  padding: 42px 30px 0;
+}
+
+.bf-instagram h2 {
+  margin-bottom: 23px;
+}
+
+.bf-instagram p {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.25;
+  margin: 0 0 32px;
+  max-width: 320px;
+}
+
+.bf-phone-preview {
+  height: 352px;
+  justify-self: center;
+  position: relative;
+  width: 363px;
+}
+
+.bf-phone-preview__screen {
+  border-radius: 30px;
+  height: 310px;
+  left: 34px;
+  object-fit: cover;
+  position: absolute;
+  top: 24px;
+  width: 295px;
+}
+
+.bf-phone-preview__frame {
+  height: 100%;
+  inset: 0;
+  object-fit: contain;
+  position: absolute;
+  width: 100%;
+}
+
+.bf-editorial__grid {
+  display: grid;
+  gap: 40px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.bf-editorial-card {
+  align-items: center;
+  border-radius: 20px;
+  display: grid;
+  min-height: 395px;
+  overflow: hidden;
+  place-items: center;
+  position: relative;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bf-editorial-card img {
+  height: 100%;
+  inset: 0;
+  object-fit: cover;
+  position: absolute;
+  width: 100%;
+}
+
+.bf-editorial-card::after {
+  background: rgba(255, 255, 255, 0.78);
+  border-radius: 45% 55% 48% 52%;
+  content: "";
+  height: 220px;
+  position: absolute;
+  width: 330px;
+}
+
+.bf-editorial-card > div {
+  max-width: 300px;
+  position: relative;
+  z-index: 1;
+}
+
+.bf-editorial-card h2 {
+  margin-bottom: 14px;
+}
+
+.bf-editorial-card p {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.25;
+  margin: 0 0 20px;
+}
+
+.bf-page-hero {
+  background: linear-gradient(180deg, #ffffff 0%, var(--bf-muted) 100%);
+  padding: 58px 0 64px;
+}
+
+.bf-page-hero__inner {
+  align-items: center;
+  display: grid;
+  min-height: 240px;
+}
+
+.bf-page-hero h1 {
+  font-size: 42px;
+  line-height: 1.08;
+  margin: 10px 0 18px;
+  max-width: 680px;
+}
+
+.bf-page-hero p {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.45;
+  margin: 0;
+  max-width: 660px;
+}
+
+.bf-page-hero_center {
+  text-align: center;
+}
+
+.bf-page-hero_center .bf-page-hero__inner,
+.bf-page-hero_center h1,
+.bf-page-hero_center p {
+  justify-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.bf-kicker {
+  color: var(--bf-green);
+  display: inline-block;
+  font-family: var(--bf-accent-font);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.bf-catalog-toolbar {
+  align-items: end;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(260px, 1fr) minmax(220px, 280px);
+  margin-bottom: 18px;
+}
+
+.bf-field {
+  display: grid;
+  gap: 8px;
+}
+
+.bf-field span {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.bf-field input,
+.bf-field select,
+.bf-field textarea {
+  background: #ffffff;
+  border: 1px solid var(--bf-border);
+  border-radius: 7px;
+  color: var(--bf-text);
+  font: inherit;
+  min-height: 46px;
+  padding: 0 14px;
+  width: 100%;
+}
+
+.bf-field textarea {
+  min-height: 150px;
+  padding: 14px;
+  resize: vertical;
+}
+
+.bf-store-parts_left {
+  justify-content: flex-start;
+  margin-bottom: 18px;
+}
+
+.bf-products_catalog {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.bf-info-grid__inner,
+.bf-contact-page__grid {
+  display: grid;
+  gap: 40px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.bf-info-card,
+.bf-contact-list,
+.bf-contact-form,
+.bf-text-page__content {
+  background: var(--bf-muted);
+  border-radius: 10px;
+  padding: 28px;
+}
+
+.bf-info-card h2,
+.bf-text-page__content h2 {
+  font-size: 24px;
+  margin: 0 0 14px;
+}
+
+.bf-info-card p,
+.bf-contact-list p,
+.bf-text-page__content p {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.bf-contact-list {
+  align-content: start;
+  display: grid;
+  gap: 18px;
+}
+
+.bf-contact-list a {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.bf-contact-form {
+  display: grid;
+  gap: 16px;
+}
+
+.bf-text-page__content {
+  display: grid;
+  gap: 22px;
+  max-width: 860px;
+}
+
+.bf-footer {
+  background: #2e2e39;
+  color: #ffffff;
+  margin-top: 60px;
+  padding: 52px 0 24px;
+}
+
+.bf-footer__inner {
+  display: grid;
+  gap: 44px;
+  grid-template-columns: minmax(260px, 1.3fr) repeat(3, minmax(160px, 1fr));
+}
+
+.bf-footer__brand p,
+.bf-footer__contacts p {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.5;
+  margin: 18px 0;
+  max-width: 300px;
+}
+
+.bf-footer__logo {
+  color: #ffffff;
+}
+
+.bf-footer__socials,
+.bf-footer__nav,
+.bf-footer__contacts {
+  display: grid;
+  gap: 12px;
+}
+
+.bf-footer h3 {
+  color: #ffffff;
+  font-size: 16px;
+  margin: 0 0 6px;
+}
+
+.bf-footer a {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 14px;
+}
+
+.bf-footer a:hover {
+  color: #ffffff;
+}
+
+.bf-footer__contacts .bf-button {
+  color: #ffffff;
+  justify-self: start;
+  margin-top: 8px;
+}
+
+.bf-footer__bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.58);
+  display: flex;
+  font-size: 13px;
+  justify-content: space-between;
+  margin-top: 42px;
+  padding-top: 20px;
+}
+
+@media (max-width: 1180px) {
+  .bf-menu {
+    gap: 18px;
+  }
+
+  .bf-products,
+  .bf-category-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .bf-footer__inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 960px) {
+  .bf-shell {
+    width: calc(100% - 32px);
+  }
+
+  .bf-topbar__inner {
+    gap: 16px;
+  }
+
+  .bf-nav {
+    grid-template-columns: 1fr auto auto;
+    height: auto;
+    min-height: 78px;
+    padding: 14px 0;
+  }
+
+  .bf-catalog-button {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .bf-cart-link {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .bf-menu {
+    display: none;
+  }
+
+  .bf-icon-link {
+    display: none;
+  }
+
+  .bf-mobile-menu {
+    display: block;
+    inset: 0;
+    pointer-events: none;
+    position: fixed;
+    visibility: hidden;
+    z-index: 99999;
+  }
+
+  .bf-mobile-menu.is-open {
+    pointer-events: auto;
+    visibility: visible;
+  }
+
+  .bf-mobile-menu__backdrop {
+    background: rgba(46, 46, 57, 0.42);
+    border: 0;
+    cursor: pointer;
+    height: 100%;
+    inset: 0;
+    opacity: 0;
+    padding: 0;
+    position: absolute;
+    transition: opacity 0.22s ease;
+    width: 100%;
+  }
+
+  .bf-mobile-menu.is-open .bf-mobile-menu__backdrop {
+    opacity: 1;
+  }
+
+  .bf-mobile-menu__panel {
+    background: #ffffff;
+    box-shadow: -20px 0 44px rgba(46, 46, 57, 0.14);
+    color: var(--bf-text);
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    height: 100%;
+    max-width: 360px;
+    padding: 18px 18px 24px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translateX(100%);
+    transition: transform 0.24s ease;
+    width: min(360px, calc(100vw - 44px));
+  }
+
+  .bf-mobile-menu.is-open .bf-mobile-menu__panel {
+    transform: translateX(0);
+  }
+
+  .bf-mobile-menu__head {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .bf-mobile-menu__logo {
+    min-width: 0;
+  }
+
+  .bf-mobile-menu__close {
+    align-items: center;
+    background: var(--bf-muted);
+    border: 0;
+    border-radius: 7px;
+    color: var(--bf-text);
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 28px;
+    height: 40px;
+    justify-content: center;
+    line-height: 1;
+    padding: 0 0 3px;
+    width: 40px;
+  }
+
+  .bf-mobile-menu__nav {
+    border-top: 1px solid var(--bf-border);
+    display: grid;
+    gap: 2px;
+    padding-top: 12px;
+  }
+
+  .bf-mobile-menu__nav a {
+    border-radius: 7px;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 14px 10px;
+  }
+
+  .bf-mobile-menu__nav a:hover {
+    background: var(--bf-muted);
+  }
+
+  .bf-mobile-menu__button {
+    margin-top: auto;
+    width: 100%;
+  }
+
+  .bf-hero__panel,
+  .bf-newsletter__intro,
+  .bf-newsletter__panel,
+  .bf-delivery__overlay,
+  .bf-instagram__panel {
+    grid-template-columns: 1fr;
+  }
+
+  .bf-hero__media {
+    min-height: 260px;
+    order: -1;
+  }
+
+  .bf-tags {
+    margin-bottom: 34px;
+  }
+
+  .bf-category-grid,
+  .bf-products,
+  .bf-benefit-grid,
+  .bf-editorial__grid,
+  .bf-info-grid__inner,
+  .bf-contact-page__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bf-catalog-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .bf-newsletter__image_right {
+    display: none;
+  }
+
+  .bf-newsletter__panel {
+    grid-template-columns: minmax(180px, 260px) 1fr;
+  }
+
+  .bf-delivery__overlay {
+    align-items: end;
+  }
+
+  .bf-instagram__panel {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .bf-shell {
+    width: calc(100% - 24px);
+  }
+
+  .bf-topbar__inner {
+    font-size: 12px;
+  }
+
+  .bf-language {
+    display: none;
+  }
+
+  .bf-logo__text {
+    font-size: 16px;
+  }
+
+  .bf-catalog-button {
+    font-size: 0;
+    min-width: 40px;
+    padding: 10px 12px;
+  }
+
+  .bf-catalog-button__icon {
+    margin-right: 0;
+  }
+
+  .bf-hero h1,
+  .bf-section h2,
+  .bf-newsletter__form h3,
+  .bf-page-hero h1 {
+    font-size: 26px;
+  }
+
+  .bf-page-hero {
+    padding: 40px 0 46px;
+  }
+
+  .bf-page-hero p {
+    font-size: 16px;
+  }
+
+  .bf-hero__panel {
+    border-radius: 14px;
+  }
+
+  .bf-hero__copy {
+    padding: 24px 18px;
+  }
+
+  .bf-hero__meta {
+    gap: 10px;
+  }
+
+  .bf-category-grid,
+  .bf-products {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: visible;
+    padding-bottom: 0;
+  }
+
+  .bf-category-card {
+    grid-template-rows: clamp(112px, 35vw, 150px) minmax(58px, auto);
+    min-height: 0;
+  }
+
+  .bf-category-card img {
+    height: 100%;
+  }
+
+  .bf-category-card span {
+    font-size: 15px;
+    line-height: 1.2;
+    min-height: 58px;
+    padding: 8px 10px;
+  }
+
+  .bf-product {
+    min-height: 0;
+  }
+
+  .bf-product__image-link,
+  .bf-product__image {
+    height: clamp(132px, 42vw, 170px);
+  }
+
+  .bf-product__badge {
+    font-size: 16px;
+    height: 28px;
+    right: 8px;
+    top: 8px;
+    width: 28px;
+  }
+
+  .bf-product__body {
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .bf-product__title {
+    font-size: 15px;
+    line-height: 1.25;
+    min-height: 0;
+  }
+
+  .bf-product__price {
+    font-size: 17px;
+  }
+
+  .bf-product__select span {
+    font-size: 12px;
+  }
+
+  .bf-product__select select {
+    min-height: 34px;
+    padding: 0 8px;
+  }
+
+  .bf-product__actions {
+    grid-template-columns: minmax(0, 1fr) 34px;
+  }
+
+  .bf-product__details {
+    font-size: 13px;
+    min-width: 0;
+    padding: 8px 6px;
+  }
+
+  .bf-product__cart {
+    height: 34px;
+    width: 34px;
+  }
+
+  .bf-newsletter__panel {
+    grid-template-columns: 1fr;
+  }
+
+  .bf-newsletter__image_left {
+    height: 190px;
+  }
+
+  .bf-delivery__overlay {
+    padding: 20px;
+  }
+
+  .bf-delivery__overlay li {
+    font-size: 14px;
+  }
+
+  .bf-benefit-grid,
+  .bf-editorial__grid,
+  .bf-info-grid__inner,
+  .bf-contact-page__grid,
+  .bf-footer__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .bf-benefit {
+    gap: 52px;
+  }
+
+  .bf-phone-preview {
+    height: 300px;
+    width: min(320px, 100%);
+  }
+
+  .bf-footer__bottom {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+</style>
+
+<script id="brokolisfarm-global-templates">
+window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\">\n  <div class=\"bf-topbar\">\n    <div class=\"bf-shell bf-topbar__inner\">\n      <span>Латвия</span>\n      <span class=\"bf-language\">Выбор языка: <span class=\"bf-flag\" aria-hidden=\"true\"></span></span>\n      <a href=\"tel:+499939930033\" class=\"bf-phone\">+49 (993) 993-003-3</a>\n    </div>\n  </div>\n  <div class=\"bf-shell bf-nav\">\n    <a class=\"bf-logo\" href=\"/\" aria-label=\"BrokolisFarm\">\n      <span class=\"bf-logo__mark\">B</span>\n      <span class=\"bf-logo__text\">BrokolisFarm</span>\n    </a>\n    <a class=\"bf-catalog-button\" href=\"/catalog\" data-bf-menu-toggle aria-controls=\"bf-mobile-menu\" aria-expanded=\"false\">\n      <span class=\"bf-catalog-button__icon\" aria-hidden=\"true\"></span>\n      Каталог\n    </a>\n    <nav class=\"bf-menu\" aria-label=\"Навигация\">\n      <a href=\"/#offers\">% Акции</a>\n      <a href=\"/catalog\">Новинки</a>\n      <a href=\"/#about\">О нас</a>\n      <a href=\"/delivery\">Оплата и доставка</a>\n      <a href=\"/contacts\">Контакты</a>\n    </nav>\n    <a class=\"bf-icon-link\" href=\"/catalog#search\" aria-label=\"Поиск\">\n      <span class=\"bf-icon-search\" aria-hidden=\"true\"></span>\n    </a>\n    <a class=\"bf-cart-link\" href=\"#opencart\" aria-label=\"Корзина\" data-bf-cart-open data-menu-widgeticon-cart=\"yes\">\n      <span class=\"bf-icon-cart\" aria-hidden=\"true\"></span>\n      <span class=\"bf-cart-count js-carticon-counter\" data-bf-cart-count aria-live=\"polite\"></span>\n    </a>\n  </div>\n  <div class=\"bf-mobile-menu\" id=\"bf-mobile-menu\" data-bf-mobile-menu aria-hidden=\"true\">\n    <button class=\"bf-mobile-menu__backdrop\" type=\"button\" data-bf-menu-close aria-label=\"Закрыть меню\"></button>\n    <aside class=\"bf-mobile-menu__panel\" role=\"dialog\" aria-modal=\"true\" aria-label=\"Меню\">\n      <div class=\"bf-mobile-menu__head\">\n        <a class=\"bf-logo bf-mobile-menu__logo\" href=\"/\" aria-label=\"BrokolisFarm\">\n          <span class=\"bf-logo__mark\">B</span>\n          <span class=\"bf-logo__text\">BrokolisFarm</span>\n        </a>\n        <button class=\"bf-mobile-menu__close\" type=\"button\" data-bf-menu-close aria-label=\"Закрыть меню\">×</button>\n      </div>\n      <nav class=\"bf-mobile-menu__nav\" aria-label=\"Мобильная навигация\">\n        <a href=\"/catalog\">Каталог</a>\n        <a href=\"/#offers\">% Акции</a>\n        <a href=\"/catalog\">Новинки</a>\n        <a href=\"/#about\">О нас</a>\n        <a href=\"/delivery\">Оплата и доставка</a>\n        <a href=\"/contacts\">Контакты</a>\n      </nav>\n      <a class=\"bf-button bf-mobile-menu__button\" href=\"/catalog\">Перейти в каталог</a>\n    </aside>\n  </div>\n</header>\n","footer":"<footer class=\"bf-footer\" id=\"contacts\">\n  <div class=\"bf-shell bf-footer__inner\">\n    <div class=\"bf-footer__brand\">\n      <a class=\"bf-logo bf-footer__logo\" href=\"/\">\n        <span class=\"bf-logo__mark\">B</span>\n        <span class=\"bf-logo__text\">BrokolisFarm</span>\n      </a>\n      <p>Фермерские продукты, свежее мясо и деликатесы с доставкой по Латвии.</p>\n      <div class=\"bf-footer__socials\">\n        <a href=\"https://www.instagram.com/\" target=\"_blank\" rel=\"noopener\">Instagram</a>\n        <a href=\"https://www.facebook.com/\" target=\"_blank\" rel=\"noopener\">Facebook</a>\n      </div>\n    </div>\n\n    <nav class=\"bf-footer__nav\" aria-label=\"Каталог\">\n      <h3>Каталог</h3>\n      <a href=\"/catalog\">Мясо</a>\n      <a href=\"/catalog\">Птица и яйца</a>\n      <a href=\"/catalog\">Деликатесы</a>\n      <a href=\"/catalog\">Овощи и фрукты</a>\n    </nav>\n\n    <nav class=\"bf-footer__nav\" aria-label=\"Покупателям\">\n      <h3>Покупателям</h3>\n      <a href=\"/delivery\">Оплата и доставка</a>\n      <a href=\"/contacts\">Контакты</a>\n      <a href=\"/privacy\">Политика конфиденциальности</a>\n      <a href=\"/terms\">Публичная оферта</a>\n    </nav>\n\n    <div class=\"bf-footer__contacts\">\n      <h3>Контакты</h3>\n      <a href=\"tel:+499939930033\">+49 (993) 993-003-3</a>\n      <a href=\"mailto:hello@brokolisfarm.lv\">hello@brokolisfarm.lv</a>\n      <p>Латвия, доставка со среды по субботу, 16:00-23:00.</p>\n      <a class=\"bf-button\" href=\"/catalog\">В каталог</a>\n    </div>\n  </div>\n  <div class=\"bf-shell bf-footer__bottom\">\n    <span>© 2026 BrokolisFarm</span>\n    <span>Сделано для Tilda</span>\n  </div>\n</footer>\n"};
+</script>
+<script id="brokolisfarm-global-js">
+(function () {
+  "use strict";
+
+  var DEFAULT_API = "https://store.tildaapi.com/api/getproductslist/";
+  var DEFAULT_CURRENCY = "€";
+  var LOCAL_FALLBACK_DATA = {
+    partuid: 420955341102,
+    total: 3,
+    products: [
+      {
+        uid: 300418820943,
+        title: "Apples",
+        sku: "SKU0001",
+        price: null,
+        priceold: "",
+        descr: "This is a description of an item in a catalog",
+        gallery: '[{"img":"https://static.tildacdn.com/tild3966-6464-4236-b564-373933653536/apple.jpg"},{"img":"https://static.tildacdn.com/tild3832-3235-4438-b330-623262306239/apple-1834639_1280.jpg"}]',
+        json_options: '[{"title":"Color","values":["Green apples","Red apples"]}]',
+        url: "https://brokolisfarm.lv/tproduct/300418820943-apples",
+        pack_label: "lwh",
+        pack_x: 0,
+        pack_y: 0,
+        pack_z: 0,
+        pack_m: 0,
+        partuids: "[736744883663]",
+        editions: [
+          { uid: 145589740743, sku: "SKU0001-1", price: "10.00", priceold: "", quantity: "", img: "https://static.tildacdn.com/tild3966-6464-4236-b564-373933653536/apple.jpg", Color: "Green apples" },
+          { uid: 895892864073, sku: "SKU0001-2", price: "15.00", priceold: "", quantity: "", img: "https://static.tildacdn.com/tild3832-3235-4438-b330-623262306239/apple-1834639_1280.jpg", Color: "Red apples" }
+        ],
+        characteristics: []
+      },
+      {
+        uid: 154713232383,
+        title: "Pears",
+        sku: "SKU0002",
+        price: "20.0000",
+        priceold: "",
+        descr: "Catalog helps to manage your products in an easy way",
+        gallery: '[{"img":"https://static.tildacdn.com/tild3266-6231-4736-b234-393763356663/pear-1620467_64022.jpg"}]',
+        json_options: "",
+        url: "https://brokolisfarm.lv/tproduct/154713232383-pears",
+        pack_label: "lwh",
+        pack_x: 0,
+        pack_y: 0,
+        pack_z: 0,
+        pack_m: 0,
+        partuids: "[736744883663]",
+        editions: [
+          { uid: 154713232383, price: "20.0000", priceold: "", sku: "SKU0002", quantity: "", img: "https://static.tildacdn.com/tild3266-6231-4736-b234-393763356663/pear-1620467_64022.jpg" }
+        ],
+        characteristics: []
+      },
+      {
+        uid: 164450874793,
+        title: "Bananas",
+        sku: "SKU0003",
+        price: "30.0000",
+        priceold: "",
+        descr: "Add some products to launch your store",
+        gallery: '[{"img":"https://static.tildacdn.com/tild6561-3931-4238-a332-636431363338/banana.jpg"}]',
+        json_options: "",
+        url: "https://brokolisfarm.lv/tproduct/164450874793-bananas",
+        pack_label: "lwh",
+        pack_x: 0,
+        pack_y: 0,
+        pack_z: 0,
+        pack_m: 0,
+        partuids: "[736744883663]",
+        editions: [
+          { uid: 164450874793, price: "30.0000", priceold: "", sku: "SKU0003", quantity: "", img: "https://static.tildacdn.com/tild6561-3931-4238-a332-636431363338/banana.jpg" }
+        ],
+        characteristics: []
+      }
+    ],
+    parts: [
+      { uid: 420955341102, title: "", root: true, path: [""] },
+      { uid: 736744883663, title: "FRUITS", root: false, path: ["FRUITS"] }
+    ],
+    options: []
+  };
+
+  function ready(callback) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", callback);
+    } else {
+      callback();
+    }
+  }
+
+  function renderCommonChrome() {
+    var templates = window.BrokolisFarmTemplates || {};
+    if (templates.header) {
+      toArray(document.querySelectorAll("[data-bf-header]")).forEach(function (mount) {
+        if (!mount.getAttribute("data-bf-rendered")) {
+          mount.innerHTML = templates.header;
+          mount.setAttribute("data-bf-rendered", "true");
+        }
+      });
+    }
+    if (templates.footer) {
+      toArray(document.querySelectorAll("[data-bf-footer]")).forEach(function (mount) {
+        if (!mount.getAttribute("data-bf-rendered")) {
+          mount.innerHTML = templates.footer;
+          mount.setAttribute("data-bf-rendered", "true");
+        }
+      });
+    }
+  }
+
+  function isMobileMenuViewport() {
+    return !window.matchMedia || window.matchMedia("(max-width: 960px)").matches;
+  }
+
+  function openMobileMenu(menu, toggle) {
+    menu.classList.add("is-open");
+    menu.setAttribute("aria-hidden", "false");
+    document.body.classList.add("bf-mobile-menu-open");
+    if (toggle) toggle.setAttribute("aria-expanded", "true");
+  }
+
+  function closeMobileMenu(menu, toggle) {
+    menu.classList.remove("is-open");
+    menu.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("bf-mobile-menu-open");
+    if (toggle) toggle.setAttribute("aria-expanded", "false");
+  }
+
+  function bindMobileMenu() {
+    toArray(document.querySelectorAll("[data-bf-mobile-menu]")).forEach(function (menu) {
+      if (menu.getAttribute("data-bf-menu-bound") === "true") return;
+      var toggle = document.querySelector('[data-bf-menu-toggle][aria-controls="' + menu.id + '"]');
+      if (!toggle) return;
+      menu.setAttribute("data-bf-menu-bound", "true");
+
+      toggle.addEventListener("click", function (event) {
+        if (!isMobileMenuViewport()) return;
+        event.preventDefault();
+        if (menu.classList.contains("is-open")) {
+          closeMobileMenu(menu, toggle);
+        } else {
+          openMobileMenu(menu, toggle);
+        }
+      });
+
+      toArray(menu.querySelectorAll("[data-bf-menu-close]")).forEach(function (closeButton) {
+        closeButton.addEventListener("click", function () {
+          closeMobileMenu(menu, toggle);
+        });
+      });
+
+      toArray(menu.querySelectorAll("a")).forEach(function (link) {
+        link.addEventListener("click", function () {
+          closeMobileMenu(menu, toggle);
+        });
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && menu.classList.contains("is-open")) {
+          closeMobileMenu(menu, toggle);
+        }
+      });
+
+      if (window.matchMedia) {
+        var media = window.matchMedia("(max-width: 960px)");
+        var onChange = function (event) {
+          if (!event.matches) closeMobileMenu(menu, toggle);
+        };
+        if (media.addEventListener) {
+          media.addEventListener("change", onChange);
+        } else if (media.addListener) {
+          media.addListener(onChange);
+        }
+      }
+    });
+  }
+
+  function getStoredCartTotal() {
+    if (window.tcart && typeof window.tcart.total !== "undefined") {
+      return Number(window.tcart.total) || 0;
+    }
+    if (typeof localStorage === "undefined") return 0;
+    try {
+      var stored = JSON.parse(localStorage.getItem("tcart") || "{}");
+      if (typeof stored.total !== "undefined") return Number(stored.total) || 0;
+      if (!Array.isArray(stored.products)) return 0;
+      return stored.products.reduce(function (total, product) {
+        if (!product || product.deleted === "yes") return total;
+        if (product.single === "y") return total + 1;
+        return total + (Number(product.quantity) || 0);
+      }, 0);
+    } catch (error) {
+      return 0;
+    }
+  }
+
+  function syncCustomCartCounter() {
+    var total = getStoredCartTotal();
+    toArray(document.querySelectorAll("[data-bf-cart-count]")).forEach(function (counter) {
+      counter.textContent = total > 0 ? String(total) : "";
+    });
+  }
+
+  function patchTildaCartRedraw() {
+    if (typeof window.tcart__reDrawCartIcon !== "function" || window.tcart__reDrawCartIcon.bfWrapped) {
+      return;
+    }
+    var redraw = window.tcart__reDrawCartIcon;
+    window.tcart__reDrawCartIcon = function () {
+      var result = redraw.apply(this, arguments);
+      syncCustomCartCounter();
+      return result;
+    };
+    window.tcart__reDrawCartIcon.bfWrapped = true;
+  }
+
+  function bindCartBridge() {
+    if (document.documentElement.getAttribute("data-bf-cart-bridge-bound") !== "true") {
+      document.documentElement.setAttribute("data-bf-cart-bridge-bound", "true");
+      document.addEventListener("click", function (event) {
+        var opener = event.target.closest("[data-bf-cart-open]");
+        if (!opener || typeof window.tcart__openCart !== "function") return;
+        event.preventDefault();
+        event.stopPropagation();
+        window.tcart__openCart();
+        syncCustomCartCounter();
+      }, true);
+      document.addEventListener("click", function (event) {
+        if (typeof window.tcart__addProduct !== "function" || !event.target.closest('[href^="#order"], .t706__product-plus, .t706__product-minus, .t706__product-del')) return;
+        setTimeout(syncCustomCartCounter, 250);
+        setTimeout(syncCustomCartCounter, 900);
+      });
+      window.addEventListener("storage", function (event) {
+        if (!event || event.key === "tcart") syncCustomCartCounter();
+      });
+    }
+
+    patchTildaCartRedraw();
+    syncCustomCartCounter();
+    [100, 500, 1200, 2500].forEach(function (delay) {
+      setTimeout(function () {
+        patchTildaCartRedraw();
+        syncCustomCartCounter();
+      }, delay);
+    });
+  }
+
+  function toArray(value) {
+    return Array.prototype.slice.call(value || []);
+  }
+
+  function escapeHtml(value) {
+    return String(value == null ? "" : value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function parseJson(value, fallback) {
+    if (!value) return fallback;
+    if (typeof value !== "string") return value;
+    try {
+      return JSON.parse(value);
+    } catch (error) {
+      return fallback;
+    }
+  }
+
+  function normalizePrice(value) {
+    if (value == null || value === "") return "";
+    var number = Number(String(value).replace(",", "."));
+    if (!Number.isFinite(number)) return "";
+    return number.toFixed(number % 1 === 0 ? 0 : 2);
+  }
+
+  function money(value, currency) {
+    var price = normalizePrice(value);
+    return price ? currency + price : "";
+  }
+
+  function getGallery(product) {
+    var gallery = parseJson(product.gallery, []);
+    return Array.isArray(gallery) ? gallery : [];
+  }
+
+  function getProductImage(product, edition) {
+    if (edition && edition.img) return edition.img;
+    var gallery = getGallery(product);
+    return gallery[0] && gallery[0].img ? gallery[0].img : "";
+  }
+
+  function getPartUids(product) {
+    var value = parseJson(product.partuids, []);
+    return Array.isArray(value) ? value : [];
+  }
+
+  function isAvailable(edition) {
+    return !edition || edition.quantity === "" || edition.quantity == null || Number(edition.quantity) > 0;
+  }
+
+  function firstAvailableEdition(product) {
+    var editions = Array.isArray(product.editions) ? product.editions : [];
+    return editions.find(isAvailable) || editions[0] || {
+      uid: product.uid,
+      price: product.price,
+      priceold: product.priceold,
+      sku: product.sku,
+      quantity: product.quantity,
+      img: getProductImage(product)
+    };
+  }
+
+  function getEditionOptions(product) {
+    var options = parseJson(product.json_options, []);
+    if (!Array.isArray(options) || options.length === 0) {
+      var editions = Array.isArray(product.editions) ? product.editions : [];
+      var ignored = {
+        uid: true,
+        externalid: true,
+        sku: true,
+        price: true,
+        priceold: true,
+        quantity: true,
+        img: true
+      };
+      var names = [];
+      editions.forEach(function (edition) {
+        Object.keys(edition || {}).forEach(function (key) {
+          if (!ignored[key] && names.indexOf(key) === -1) names.push(key);
+        });
+      });
+      return names.map(function (name) {
+        return {
+          title: name,
+          values: editions.map(function (edition) {
+            return edition[name];
+          }).filter(Boolean)
+        };
+      });
+    }
+    return options.map(function (option) {
+      return {
+        title: option.title,
+        values: Array.isArray(option.values) ? option.values : []
+      };
+    });
+  }
+
+  function unique(values) {
+    return values.filter(function (value, index) {
+      return value && values.indexOf(value) === index;
+    });
+  }
+
+  function findEditionBySelections(product, selections) {
+    var editions = Array.isArray(product.editions) ? product.editions : [];
+    return editions.find(function (edition) {
+      return Object.keys(selections).every(function (name) {
+        return !selections[name] || edition[name] === selections[name];
+      });
+    }) || firstAvailableEdition(product);
+  }
+
+  function buildApiUrl(root, slice) {
+    var params = new URLSearchParams();
+    params.set("storepartuid", root.getAttribute("data-storepartuid") || "");
+    params.set("recid", root.getAttribute("data-recid") || "");
+    params.set("c", String(Date.now()));
+    params.set("getparts", "true");
+    params.set("getoptions", "true");
+    params.set("slice", String(slice || 1));
+    params.set("size", root.getAttribute("data-products-size") || "36");
+    params.set("flag_root", "withroot");
+    return (root.getAttribute("data-api") || DEFAULT_API) + "?" + params.toString();
+  }
+
+  function requestJson(url) {
+    return new Promise(function (resolve, reject) {
+      if (typeof XMLHttpRequest !== "undefined") {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        xhr.timeout = 20000;
+        xhr.onload = function () {
+          if (xhr.status < 200 || xhr.status >= 300) {
+            reject(new Error("Catalog request failed: " + xhr.status));
+            return;
+          }
+          try {
+            resolve(JSON.parse(xhr.responseText));
+          } catch (error) {
+            reject(error);
+          }
+        };
+        xhr.onerror = function () {
+          reject(new Error("Catalog request failed"));
+        };
+        xhr.ontimeout = function () {
+          reject(new Error("Catalog request timed out"));
+        };
+        xhr.send();
+        return;
+      }
+
+      if (typeof fetch === "function") {
+        fetch(url, {
+          method: "GET",
+          credentials: "omit"
+        })
+          .then(function (response) {
+            if (!response.ok) throw new Error("Catalog request failed: " + response.status);
+            return response.json();
+          })
+          .then(resolve)
+          .catch(reject);
+        return;
+      }
+
+      reject(new Error("No request API is available"));
+    });
+  }
+
+  function getLocalFallbackData() {
+    var host = window.location && window.location.hostname;
+    if (host === "127.0.0.1" || host === "localhost") {
+      return LOCAL_FALLBACK_DATA;
+    }
+    return null;
+  }
+
+  function renderParts(root, data, state) {
+    var mount = root.querySelector("[data-bf-parts]");
+    if (!mount) return;
+    var parts = Array.isArray(data.parts) ? data.parts.filter(function (part) {
+      return !part.root && !part.hideonpublic;
+    }) : [];
+    if (!parts.length) {
+      mount.hidden = true;
+      mount.innerHTML = "";
+      return;
+    }
+    var buttons = ['<button class="bf-store-part is-active" type="button" data-part="">Все</button>'];
+    parts.forEach(function (part) {
+      buttons.push(
+        '<button class="bf-store-part" type="button" data-part="' + escapeHtml(String(part.uid)) + '">' +
+          escapeHtml(part.title || part.path && part.path.join(" / ") || "Категория") +
+          "</button>"
+      );
+    });
+    mount.innerHTML = buttons.join("");
+    mount.hidden = false;
+    mount.onclick = function (event) {
+      var button = event.target.closest("[data-part]");
+      if (!button) return;
+      state.activePartUid = button.getAttribute("data-part");
+      toArray(mount.querySelectorAll(".bf-store-part")).forEach(function (item) {
+        item.classList.toggle("is-active", item === button);
+      });
+      renderProducts(root, state.products, state);
+    };
+  }
+
+  function productMatchesPart(product, partUid) {
+    if (!partUid) return true;
+    return getPartUids(product).map(String).indexOf(String(partUid)) !== -1;
+  }
+
+  function normalizeText(value) {
+    return String(value || "").toLowerCase().trim();
+  }
+
+  function productMatchesQuery(product, query) {
+    if (!query) return true;
+    var haystack = [
+      product.title,
+      product.descr,
+      product.text,
+      product.sku
+    ].map(normalizeText).join(" ");
+    return haystack.indexOf(query) !== -1;
+  }
+
+  function productPrice(product) {
+    var edition = firstAvailableEdition(product);
+    var price = edition.price != null && edition.price !== "" ? edition.price : product.price;
+    var number = Number(String(price || "0").replace(",", "."));
+    return Number.isFinite(number) ? number : 0;
+  }
+
+  function sortProducts(products, sort) {
+    var list = products.slice();
+    if (sort === "price:asc") {
+      list.sort(function (a, b) {
+        return productPrice(a) - productPrice(b);
+      });
+    } else if (sort === "price:desc") {
+      list.sort(function (a, b) {
+        return productPrice(b) - productPrice(a);
+      });
+    } else if (sort === "title:asc") {
+      list.sort(function (a, b) {
+        return String(a.title || "").localeCompare(String(b.title || ""));
+      });
+    } else if (sort === "title:desc") {
+      list.sort(function (a, b) {
+        return String(b.title || "").localeCompare(String(a.title || ""));
+      });
+    }
+    return list;
+  }
+
+  function renderProducts(root, products, state) {
+    var mount = root.querySelector("[data-bf-products]");
+    if (!mount) return;
+    var query = normalizeText(state.query);
+    var visible = sortProducts((products || []).filter(function (product) {
+      return productMatchesPart(product, state.activePartUid) && productMatchesQuery(product, query);
+    }), state.sort);
+    if (!visible.length) {
+      mount.innerHTML = '<div class="bf-products__status">Товары не найдены.</div>';
+      return;
+    }
+    mount.innerHTML = visible.map(function (product) {
+      return productCardHtml(product, state.currency);
+    }).join("");
+    bindEditionControls(mount, state.currency);
+  }
+
+  function productCardHtml(product, currency) {
+    var edition = firstAvailableEdition(product);
+    var options = getEditionOptions(product);
+    var image = getProductImage(product, edition);
+    var price = edition.price != null && edition.price !== "" ? edition.price : product.price;
+    var priceOld = edition.priceold || product.priceold || "";
+    var soldOut = !isAvailable(edition);
+    var partUids = getPartUids(product).join(",");
+    var url = product.url || "#";
+    var sku = edition.sku || product.sku || "";
+    var optionHtml = options.map(function (option) {
+      var selectedValue = edition[option.title] || option.values[0] || "";
+      var values = unique(option.values);
+      if (!values.length) return "";
+      return (
+        '<label class="bf-product__select js-product-edition-option" data-edition-option-id="' + escapeHtml(option.title) + '">' +
+          '<span class="js-product-edition-option-name">' + escapeHtml(option.title) + "</span>" +
+          '<select class="js-product-edition-option-variants">' +
+            values.map(function (value) {
+              var matched = findEditionBySelections(product, (function () {
+                var obj = {};
+                obj[option.title] = value;
+                return obj;
+              })());
+              var selected = value === selectedValue ? " selected" : "";
+              return '<option value="' + escapeHtml(value) + '" data-product-edition-variant-price="' + escapeHtml(normalizePrice(matched.price)) + '"' + selected + ">" + escapeHtml(value) + "</option>";
+            }).join("") +
+          "</select>" +
+        "</label>"
+      );
+    }).join("");
+
+    return (
+      '<article class="bf-product js-product t-item' + (soldOut ? " is-soldout" : "") + '"' +
+        ' data-product-lid="' + escapeHtml(edition.uid || product.uid) + '"' +
+        ' data-product-uid="' + escapeHtml(edition.uid || product.uid) + '"' +
+        ' data-product-gen-uid="' + escapeHtml(product.uid) + '"' +
+        ' data-product-url="' + escapeHtml(url) + '"' +
+        ' data-product-img="' + escapeHtml(image) + '"' +
+        ' data-product-inv="' + escapeHtml(edition.quantity || "") + '"' +
+        ' data-product-pack-label="' + escapeHtml(product.pack_label || "") + '"' +
+        ' data-product-pack-m="' + escapeHtml(product.pack_m || "") + '"' +
+        ' data-product-pack-x="' + escapeHtml(product.pack_x || "") + '"' +
+        ' data-product-pack-y="' + escapeHtml(product.pack_y || "") + '"' +
+        ' data-product-pack-z="' + escapeHtml(product.pack_z || "") + '"' +
+        ' data-product-part-uid="' + escapeHtml(partUids) + '"' +
+        ' data-bf-product="' + escapeHtml(JSON.stringify(product)) + '"' +
+      ">" +
+        '<a class="bf-product__image-link js-product-link" href="' + escapeHtml(url) + '">' +
+          '<img class="bf-product__image js-product-img" src="' + escapeHtml(image) + '" data-original="' + escapeHtml(image) + '" alt="' + escapeHtml(product.title) + '" />' +
+        "</a>" +
+        '<span class="bf-product__badge" aria-hidden="true">+</span>' +
+        '<div class="bf-product__body">' +
+          '<h3 class="bf-product__title js-product-name">' + escapeHtml(product.title) + "</h3>" +
+          '<div class="bf-product__price-row">' +
+            '<span class="bf-product__price js-product-price" data-product-price-def="' + escapeHtml(normalizePrice(price)) + '" data-product-price-def-str="' + escapeHtml(normalizePrice(price)) + '">' + escapeHtml(money(price, currency)) + "</span>" +
+            (priceOld ? '<span class="bf-product__price-old js-store-prod-price-old-val">' + escapeHtml(money(priceOld, currency)) + "</span>" : "") +
+          "</div>" +
+          (sku ? '<span class="bf-product__sku js-store-prod-sku" hidden>' + escapeHtml(sku) + "</span>" : "") +
+          '<div class="bf-product__options js-product-controls-wrapper">' + optionHtml + "</div>" +
+          '<div class="bf-product__actions">' +
+            '<a class="bf-product__details" href="' + escapeHtml(url) + '">Подробнее</a>' +
+            '<a class="bf-product__cart" href="#order" aria-label="Добавить в корзину">' + (soldOut ? "×" : "+") + "</a>" +
+          "</div>" +
+        "</div>" +
+      "</article>"
+    );
+  }
+
+  function bindEditionControls(mount, currency) {
+    toArray(mount.querySelectorAll(".bf-product")).forEach(function (card) {
+      var data = card.getAttribute("data-bf-product");
+      var product = parseJson(data, null);
+      if (!product) return;
+      toArray(card.querySelectorAll(".js-product-edition-option-variants")).forEach(function (select) {
+        select.addEventListener("change", function () {
+          var selections = {};
+          toArray(card.querySelectorAll(".js-product-edition-option")).forEach(function (optionEl) {
+            var name = optionEl.getAttribute("data-edition-option-id");
+            var value = optionEl.querySelector("select").value;
+            selections[name] = value;
+          });
+          updateCardEdition(card, product, findEditionBySelections(product, selections), currency);
+        });
+      });
+    });
+  }
+
+  function updateCardEdition(card, product, edition, currency) {
+    var image = getProductImage(product, edition);
+    var price = edition.price != null && edition.price !== "" ? edition.price : product.price;
+    var priceEl = card.querySelector(".js-product-price");
+    var imgEl = card.querySelector(".js-product-img");
+    var skuEl = card.querySelector(".js-store-prod-sku");
+    card.setAttribute("data-product-lid", edition.uid || product.uid);
+    card.setAttribute("data-product-uid", edition.uid || product.uid);
+    card.setAttribute("data-product-img", image);
+    card.setAttribute("data-product-inv", edition.quantity || "");
+    card.classList.toggle("is-soldout", !isAvailable(edition));
+    if (imgEl) {
+      imgEl.src = image;
+      imgEl.setAttribute("data-original", image);
+    }
+    if (priceEl) {
+      priceEl.textContent = money(price, currency);
+      priceEl.setAttribute("data-product-price-def", normalizePrice(price));
+      priceEl.setAttribute("data-product-price-def-str", normalizePrice(price));
+    }
+    if (skuEl) {
+      skuEl.textContent = edition.sku || product.sku || "";
+    }
+  }
+
+  function bindCategoryShortcuts(root, state) {
+    toArray(root.querySelectorAll("[data-bf-category]")).forEach(function (link) {
+      link.addEventListener("click", function () {
+        var name = link.getAttribute("data-bf-category").toLowerCase();
+        var part = state.parts.find(function (item) {
+          return String(item.title || "").toLowerCase() === name;
+        });
+        if (part) {
+          state.activePartUid = String(part.uid);
+          renderProducts(root, state.products, state);
+        }
+      });
+    });
+  }
+
+  function bindLocalDemoCart(root) {
+    root.addEventListener("click", function (event) {
+      var trigger = event.target.closest('.bf-product__cart[href="#order"]');
+      if (!trigger || typeof window.tcart__addProduct === "function") return;
+      event.preventDefault();
+      var count = root.querySelector("[data-bf-cart-count]");
+      var current = Number(count && count.textContent || 0) + 1;
+      if (count) {
+        count.textContent = String(current);
+      }
+    });
+  }
+
+  function bindCatalogControls(root, state) {
+    var search = root.querySelector("[data-bf-search]");
+    var sort = root.querySelector("[data-bf-sort]");
+    if (search) {
+      search.addEventListener("input", function () {
+        state.query = search.value;
+        renderProducts(root, state.products, state);
+      });
+    }
+    if (sort) {
+      sort.addEventListener("change", function () {
+        state.sort = sort.value;
+        renderProducts(root, state.products, state);
+      });
+    }
+  }
+
+  function applyCatalogData(root, state, data, append) {
+    var products = Array.isArray(data.products) ? data.products : [];
+    state.parts = Array.isArray(data.parts) ? data.parts : [];
+    state.products = append ? state.products.concat(products) : products;
+    state.nextSlice = data.nextslice || "";
+    renderParts(root, data, state);
+    bindCategoryShortcuts(root, state);
+    renderProducts(root, state.products, state);
+    var more = root.querySelector("[data-bf-load-more]");
+    if (more) more.hidden = !state.nextSlice;
+  }
+
+  function load(root, state, append) {
+    var mount = root.querySelector("[data-bf-products]");
+    if (!append && mount) {
+      mount.innerHTML = '<div class="bf-products__status">Загружаем товары...</div>';
+    }
+    requestJson(buildApiUrl(root, state.slice))
+      .then(function (data) {
+        applyCatalogData(root, state, data, append);
+      })
+      .catch(function (error) {
+        var fallback = getLocalFallbackData();
+        if (fallback) {
+          applyCatalogData(root, state, fallback, false);
+          return;
+        }
+        if (mount) {
+          mount.innerHTML = '<div class="bf-products__error">Не удалось загрузить товары. Проверьте API каталога Tilda.</div>';
+        }
+        console.error(error);
+      });
+  }
+
+  function init(root) {
+    if (root.getAttribute("data-bf-initialized") === "true") return;
+    root.setAttribute("data-bf-initialized", "true");
+    var state = {
+      activePartUid: "",
+      currency: root.getAttribute("data-currency") || DEFAULT_CURRENCY,
+      nextSlice: "",
+      parts: [],
+      products: [],
+      query: "",
+      sort: "",
+      slice: 1
+    };
+    var more = root.querySelector("[data-bf-load-more]");
+    if (more) {
+      more.addEventListener("click", function () {
+        if (!state.nextSlice) return;
+        state.slice = state.nextSlice;
+        load(root, state, true);
+      });
+    }
+    bindLocalDemoCart(root);
+    bindCatalogControls(root, state);
+    if (root.querySelector("[data-bf-products]")) {
+      load(root, state, false);
+    }
+  }
+
+  function initAll() {
+    toArray(document.querySelectorAll("[data-bf-app]")).forEach(init);
+  }
+
+  function boot() {
+    renderCommonChrome();
+    bindMobileMenu();
+    bindCartBridge();
+    initAll();
+  }
+
+  ready(boot);
+  window.addEventListener("brokolisfarm:block-ready", boot);
+  window.BrokolisFarmTilda = {
+    boot: boot,
+    initAll: initAll
+  };
+})();
+
+</script>
+
+  </head>
+  <body>
+    <div
+  class="bf-page"
+  data-bf-app
+  data-storepartuid="420955341102"
+  data-recid="2176935951"
+  data-products-size="36"
+>
+  <div data-bf-header></div>
+
+  <section class="bf-hero">
+    <div class="bf-shell bf-hero__panel">
+      <div class="bf-hero__copy">
+        <div class="bf-tags">
+          <span>Мясо</span>
+          <span>Птица</span>
+          <span>Деликатесы</span>
+          <span>+12</span>
+        </div>
+        <div class="bf-hero__meta">
+          <span>Доставляем со среды по субботу</span>
+          <span>С 16 до 23 часов</span>
+        </div>
+        <h1>Доставляем свежие продукты 4 раза в неделю</h1>
+        <a class="bf-button bf-button_light" href="#catalog">Смотреть каталог</a>
+      </div>
+      <div class="bf-hero__media">
+        <img src="https://www.figma.com/api/mcp/asset/bf0745aa-3613-4dc2-8137-acb3601e7799" alt="Свежие фермерские продукты" />
+      </div>
+    </div>
+  </section>
+
+  <section class="bf-section bf-categories" id="catalog">
+    <div class="bf-shell">
+      <h2>Фермерские продукты</h2>
+      <div class="bf-category-grid">
+        <a class="bf-category-card" href="#offers" data-bf-category="Мясо">
+          <img src="https://www.figma.com/api/mcp/asset/40a564aa-e2ca-4a9a-bfd0-ab316e51db8f" alt="Мясо" />
+          <span>Мясо</span>
+        </a>
+        <a class="bf-category-card" href="#offers" data-bf-category="Деликатесы">
+          <img src="https://www.figma.com/api/mcp/asset/2b2a70dc-8149-4315-b3bd-c6f413db68bd" alt="Деликатесы" />
+          <span>Деликатесы</span>
+        </a>
+        <a class="bf-category-card" href="#offers" data-bf-category="Птица и яйца">
+          <img src="https://www.figma.com/api/mcp/asset/3174f8a1-e533-4044-b9ce-fe3960568a6e" alt="Птица и яйца" />
+          <span>Птица и яйца</span>
+        </a>
+        <a class="bf-category-card" href="#offers" data-bf-category="Рыба и икра">
+          <img src="https://www.figma.com/api/mcp/asset/0e1fc4d4-8d5d-4391-91ed-7e201132ae66" alt="Рыба и икра" />
+          <span>Рыба и икра</span>
+        </a>
+        <a class="bf-category-card" href="#offers" data-bf-category="Заморозка">
+          <img src="https://www.figma.com/api/mcp/asset/268378f2-199c-4639-8d31-61ff787626ed" alt="Заморозка" />
+          <span>Заморозка</span>
+        </a>
+        <a class="bf-category-card" href="#offers" data-bf-category="Консервы">
+          <img src="https://www.figma.com/api/mcp/asset/d0b7d2f0-9de1-43c3-a90b-46b50d38b28b" alt="Консервы" />
+          <span>Консервы</span>
+        </a>
+        <a class="bf-category-card" href="#offers" data-bf-category="Молочное">
+          <img src="https://www.figma.com/api/mcp/asset/38e62ce1-de34-4e59-b9cc-00839674f620" alt="Молочное" />
+          <span>Молочное</span>
+        </a>
+        <a class="bf-category-card" href="#offers" data-bf-category="Ягоды и фрукты">
+          <img src="https://www.figma.com/api/mcp/asset/58f10033-3a49-4ef5-9c3c-2c58864c5bb7" alt="Ягоды и фрукты" />
+          <span>Ягоды и фрукты</span>
+        </a>
+        <a class="bf-category-card" href="#offers" data-bf-category="Овощи и грибы">
+          <img src="https://www.figma.com/api/mcp/asset/c4724c06-fdee-457e-9fcc-4a16ad969a55" alt="Овощи и грибы" />
+          <span>Овощи и грибы</span>
+        </a>
+        <a class="bf-category-card" href="#offers" data-bf-category="Напитки">
+          <img src="https://www.figma.com/api/mcp/asset/72015c3a-1522-4817-9fde-1521504d9715" alt="Напитки" />
+          <span>Напитки</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bf-section bf-offers" id="offers">
+    <div class="bf-shell">
+      <div class="bf-section__head">
+        <h2>Акции</h2>
+        <div class="bf-store-parts" data-bf-parts hidden></div>
+      </div>
+      <div class="bf-products" data-bf-products aria-live="polite">
+        <div class="bf-products__status">Загружаем товары...</div>
+      </div>
+      <button class="bf-load-more" type="button" data-bf-load-more hidden>Показать еще</button>
+    </div>
+  </section>
+
+  <section class="bf-section bf-newsletter" id="about">
+    <div class="bf-shell">
+      <div class="bf-newsletter__intro">
+        <h2>Натуральные фермерские продукты с доставкой</h2>
+        <p>
+          Магазин фермерских продуктов BrokolisFarm предлагает покупателю полезные натуральные продукты и свежее мясо напрямую с собственной фермы.
+        </p>
+      </div>
+      <div class="bf-newsletter__panel">
+        <img class="bf-newsletter__image bf-newsletter__image_left" src="https://www.figma.com/api/mcp/asset/ec070e4f-5f6c-42cd-8073-95ae8fbaa0cd" alt="Фермерские овощи" />
+        <form class="bf-newsletter__form">
+          <h3>Подписывайтесь на нашу рассылку и получайте скидки и промокоды</h3>
+          <input type="email" name="email" placeholder="Ваш email" aria-label="Ваш email" />
+          <button type="submit">Подписаться</button>
+        </form>
+        <img class="bf-newsletter__image bf-newsletter__image_right" src="https://www.figma.com/api/mcp/asset/ea727299-34a8-4b43-86a2-c5e93eef097f" alt="Свежие продукты" />
+      </div>
+    </div>
+  </section>
+
+  <section class="bf-section bf-delivery" id="delivery">
+    <div class="bf-shell">
+      <p class="bf-about-text">
+        Brokolisfarm - это не просто магазин натуральных продуктов, это целая ферма, где все выращивается и производится своими руками и с любовью. Мы гарантируем свежесть и высокое качество нашей продукции.
+      </p>
+      <div class="bf-delivery__card">
+        <img src="https://www.figma.com/api/mcp/asset/b2444767-2aff-4008-b69f-bb588251a62a" alt="Доставка свежих продуктов" />
+        <div class="bf-delivery__overlay">
+          <h2>Доставляем свежие продукты 4 раза в неделю</h2>
+          <ol>
+            <li>Доставляем со среды по субботу</li>
+            <li>С 16.00 до 23.00</li>
+            <li>Свяжемся за час до доставки</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bf-section bf-benefits">
+    <div class="bf-shell">
+      <h2>Brokolisfarm - это продукты высочайшего класса</h2>
+      <div class="bf-benefit-grid">
+        <article class="bf-benefit">
+          <span>Местное производство</span>
+          <p>Мы за то, чтобы в каждой семье было мясо, и всегда готовы предложить актуальные акции и бонусы.</p>
+        </article>
+        <article class="bf-benefit">
+          <span>Контроль качества</span>
+          <p>Все мясо проходит ветеринарную экспертизу и имеет необходимую сертификацию.</p>
+        </article>
+        <article class="bf-benefit">
+          <span>Забота о вашем времени</span>
+          <p>Доставляем фермерские продукты к вам домой по Латвии и +20 км от центра.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="bf-section bf-instagram">
+    <div class="bf-shell bf-instagram__panel">
+      <div>
+        <h2>Подписывайтесь на нашу страницу в Instagram</h2>
+        <p>Получайте секретные промокоды, новости и другие интересные бонусы</p>
+        <a class="bf-button" href="https://www.instagram.com/" target="_blank" rel="noopener">Подписаться</a>
+      </div>
+      <div class="bf-phone-preview">
+        <img class="bf-phone-preview__screen" src="https://www.figma.com/api/mcp/asset/763da3fa-d324-46a3-a61e-174cef4de827" alt="BrokolisFarm в Instagram" />
+        <img class="bf-phone-preview__frame" src="https://www.figma.com/api/mcp/asset/5a8e1a49-c812-4481-a4ca-ab5c01ccb115" alt="" />
+      </div>
+    </div>
+  </section>
+
+  <section class="bf-section bf-editorial">
+    <div class="bf-shell bf-editorial__grid">
+      <article class="bf-editorial-card">
+        <img src="https://www.figma.com/api/mcp/asset/5ce2edb3-3e46-4a03-8d3f-d0c3cbbb2b20" alt="Рецепты" />
+        <div>
+          <h2>Рецепты</h2>
+          <p>Подскажем и покажем, что приготовить из наших продуктов</p>
+          <a class="bf-button" href="#recipes">Подробнее</a>
+        </div>
+      </article>
+      <article class="bf-editorial-card">
+        <img src="https://www.figma.com/api/mcp/asset/566e8784-f06f-4b58-be57-1fd1dc5a092d" alt="Блог" />
+        <div>
+          <h2>Блог</h2>
+          <p>Рассказываем интересные факты, лайфхаки и советы</p>
+          <a class="bf-button" href="#blog">Подробнее</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <div data-bf-footer></div>
+</div>
+
+<script>window.BrokolisFarmTilda && window.BrokolisFarmTilda.boot && window.BrokolisFarmTilda.boot();</script>
+
+  </body>
+</html>

@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BrokolisFarm Loader Preview</title>
+    <script>
+      window.BrokolisFarmLoaderConfig = {
+        baseUrl: "/dist/",
+        page: new URLSearchParams(window.location.search).get("page") || "",
+        version: String(Date.now())
+      };
+    </script>
+    <script src="/dist/brokolisfarm-loader.js"></script>
+  </head>
+  <body>
+    <div data-bf-page=""></div>
+  </body>
+</html>
