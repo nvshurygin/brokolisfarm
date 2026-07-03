@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="ru">
+<html lang="lv">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>BrokolisFarm Tilda Preview</title>
+    <title>BrokolisFarm</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600&family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet" />
@@ -182,13 +182,45 @@ body {
   margin-left: auto;
 }
 
-.bf-flag {
-  background: linear-gradient(to bottom, #fff 0 33%, #0c47b7 33% 66%, #e53b35 66% 100%);
-  display: inline-block;
-  height: 14px;
-  margin-left: 8px;
-  vertical-align: -2px;
-  width: 22px;
+.bf-language {
+  align-items: center;
+  display: inline-flex;
+  gap: 7px;
+}
+
+.bf-language__label {
+  color: rgba(46, 46, 57, 0.72);
+}
+
+.bf-language__button {
+  background: #ffffff;
+  border: 1px solid rgba(109, 172, 74, 0.28);
+  border-radius: 999px;
+  color: var(--bf-text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  height: 22px;
+  min-width: 34px;
+  padding: 0 8px;
+}
+
+.bf-language__button.is-active {
+  background: var(--bf-green);
+  border-color: var(--bf-green);
+  color: #ffffff;
+}
+
+.bf-translate-widget,
+.goog-te-banner-frame,
+.goog-te-balloon-frame,
+#goog-gt-tt {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
 }
 
 .bf-nav {
@@ -254,7 +286,7 @@ body {
 
 .bf-button_light {
   background: #ffffff;
-  color: var(--bf-green);
+  color: var(--bf-text);
 }
 
 .bf-catalog-button:hover,
@@ -429,6 +461,10 @@ body.bf-mobile-menu-open {
 
 .bf-hero .bf-button {
   align-self: flex-start;
+}
+
+.bf-hero .bf-button_light {
+  color: var(--bf-text);
 }
 
 .bf-hero__media {
@@ -1555,9 +1591,12 @@ body.bf-mobile-menu-open {
 
   .bf-topbar__inner {
     font-size: 12px;
+    gap: 10px;
+    justify-content: space-between;
   }
 
-  .bf-language {
+  .bf-language__label,
+  .bf-phone {
     display: none;
   }
 
@@ -1766,7 +1805,7 @@ body.bf-mobile-menu-open {
 </style>
 
 <script id="brokolisfarm-global-templates">
-window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\">\n  <div class=\"bf-topbar\">\n    <div class=\"bf-shell bf-topbar__inner\">\n      <span>Латвия</span>\n      <span class=\"bf-language\">Выбор языка: <span class=\"bf-flag\" aria-hidden=\"true\"></span></span>\n      <a href=\"tel:+499939930033\" class=\"bf-phone\">+49 (993) 993-003-3</a>\n    </div>\n  </div>\n  <div class=\"bf-shell bf-nav\">\n    <a class=\"bf-logo\" href=\"/\" aria-label=\"BrokolisFarm\">\n      <span class=\"bf-logo__mark\">B</span>\n      <span class=\"bf-logo__text\">BrokolisFarm</span>\n    </a>\n    <a class=\"bf-catalog-button\" href=\"/catalog\" data-bf-menu-toggle aria-controls=\"bf-mobile-menu\" aria-expanded=\"false\">\n      <span class=\"bf-catalog-button__icon\" aria-hidden=\"true\"></span>\n      Каталог\n    </a>\n    <nav class=\"bf-menu\" aria-label=\"Навигация\">\n      <a href=\"/offers\">% Акции</a>\n      <a href=\"/new\">Новинки</a>\n      <a href=\"/about\">О нас</a>\n      <a href=\"/delivery\">Оплата и доставка</a>\n      <a href=\"/contacts\">Контакты</a>\n    </nav>\n    <a class=\"bf-icon-link\" href=\"/catalog#search\" aria-label=\"Поиск\">\n      <span class=\"bf-icon-search\" aria-hidden=\"true\"></span>\n    </a>\n    <a class=\"bf-cart-link\" href=\"#opencart\" aria-label=\"Корзина\" data-bf-cart-open data-menu-widgeticon-cart=\"yes\">\n      <span class=\"bf-icon-cart\" aria-hidden=\"true\"></span>\n      <span class=\"bf-cart-count js-carticon-counter\" data-bf-cart-count aria-live=\"polite\"></span>\n    </a>\n  </div>\n  <div class=\"bf-mobile-menu\" id=\"bf-mobile-menu\" data-bf-mobile-menu aria-hidden=\"true\">\n    <button class=\"bf-mobile-menu__backdrop\" type=\"button\" data-bf-menu-close aria-label=\"Закрыть меню\"></button>\n    <aside class=\"bf-mobile-menu__panel\" role=\"dialog\" aria-modal=\"true\" aria-label=\"Меню\">\n      <div class=\"bf-mobile-menu__head\">\n        <a class=\"bf-logo bf-mobile-menu__logo\" href=\"/\" aria-label=\"BrokolisFarm\">\n          <span class=\"bf-logo__mark\">B</span>\n          <span class=\"bf-logo__text\">BrokolisFarm</span>\n        </a>\n        <button class=\"bf-mobile-menu__close\" type=\"button\" data-bf-menu-close aria-label=\"Закрыть меню\">×</button>\n      </div>\n      <nav class=\"bf-mobile-menu__nav\" aria-label=\"Мобильная навигация\">\n        <a href=\"/catalog\">Каталог</a>\n        <a href=\"/offers\">% Акции</a>\n        <a href=\"/new\">Новинки</a>\n        <a href=\"/about\">О нас</a>\n        <a href=\"/delivery\">Оплата и доставка</a>\n        <a href=\"/contacts\">Контакты</a>\n      </nav>\n      <a class=\"bf-button bf-mobile-menu__button\" href=\"/catalog\">Перейти в каталог</a>\n    </aside>\n  </div>\n</header>\n","footer":"<footer class=\"bf-footer\" id=\"contacts\">\n  <div class=\"bf-shell bf-footer__inner\">\n    <div class=\"bf-footer__brand\">\n      <a class=\"bf-logo bf-footer__logo\" href=\"/\">\n        <span class=\"bf-logo__mark\">B</span>\n        <span class=\"bf-logo__text\">BrokolisFarm</span>\n      </a>\n      <p>Фермерские продукты, свежее мясо и деликатесы с доставкой по Латвии.</p>\n      <div class=\"bf-footer__socials\">\n        <a href=\"https://www.instagram.com/\" target=\"_blank\" rel=\"noopener\">Instagram</a>\n        <a href=\"https://www.facebook.com/\" target=\"_blank\" rel=\"noopener\">Facebook</a>\n      </div>\n    </div>\n\n    <nav class=\"bf-footer__nav\" aria-label=\"Каталог\">\n      <h3>Каталог</h3>\n      <a href=\"/catalog\">Мясо</a>\n      <a href=\"/catalog\">Птица и яйца</a>\n      <a href=\"/catalog\">Деликатесы</a>\n      <a href=\"/catalog\">Овощи и фрукты</a>\n    </nav>\n\n    <nav class=\"bf-footer__nav\" aria-label=\"Покупателям\">\n      <h3>Покупателям</h3>\n      <a href=\"/offers\">Акции</a>\n      <a href=\"/new\">Новинки</a>\n      <a href=\"/about\">О нас</a>\n      <a href=\"/delivery\">Оплата и доставка</a>\n      <a href=\"/contacts\">Контакты</a>\n      <a href=\"/privacy\">Политика конфиденциальности</a>\n      <a href=\"/terms\">Публичная оферта</a>\n    </nav>\n\n    <div class=\"bf-footer__contacts\">\n      <h3>Контакты</h3>\n      <a href=\"tel:+499939930033\">+49 (993) 993-003-3</a>\n      <a href=\"mailto:hello@brokolisfarm.lv\">hello@brokolisfarm.lv</a>\n      <p>Латвия, доставка со среды по субботу, 16:00-23:00.</p>\n      <a class=\"bf-button\" href=\"/catalog\">В каталог</a>\n    </div>\n  </div>\n  <div class=\"bf-shell bf-footer__bottom\">\n    <span>© 2026 BrokolisFarm</span>\n    <span>Сделано для Tilda</span>\n  </div>\n</footer>\n"};
+window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\">\n  <div class=\"bf-topbar\">\n    <div class=\"bf-shell bf-topbar__inner\">\n      <span>Latvija</span>\n      <div class=\"bf-language\" data-bf-language-switcher aria-label=\"Valodas izvēle\">\n        <span class=\"bf-language__label\">Valoda</span>\n        <button class=\"bf-language__button is-active\" type=\"button\" data-bf-lang=\"lv\">LV</button>\n        <button class=\"bf-language__button\" type=\"button\" data-bf-lang=\"ru\">RU</button>\n        <button class=\"bf-language__button\" type=\"button\" data-bf-lang=\"en\">EN</button>\n      </div>\n      <a href=\"tel:+499939930033\" class=\"bf-phone\">+49 (993) 993-003-3</a>\n    </div>\n  </div>\n  <div class=\"bf-shell bf-nav\">\n    <a class=\"bf-logo notranslate\" href=\"/\" aria-label=\"BrokolisFarm\" translate=\"no\">\n      <span class=\"bf-logo__mark\">B</span>\n      <span class=\"bf-logo__text\">BrokolisFarm</span>\n    </a>\n    <a class=\"bf-catalog-button\" href=\"/catalog\" data-bf-menu-toggle aria-controls=\"bf-mobile-menu\" aria-expanded=\"false\">\n      <span class=\"bf-catalog-button__icon\" aria-hidden=\"true\"></span>\n      Katalogs\n    </a>\n    <nav class=\"bf-menu\" aria-label=\"Navigācija\">\n      <a href=\"/offers\">% Akcijas</a>\n      <a href=\"/new\">Jaunumi</a>\n      <a href=\"/about\">Par mums</a>\n      <a href=\"/delivery\">Apmaksa un piegāde</a>\n      <a href=\"/contacts\">Kontakti</a>\n    </nav>\n    <a class=\"bf-icon-link\" href=\"/catalog#search\" aria-label=\"Meklēt\">\n      <span class=\"bf-icon-search\" aria-hidden=\"true\"></span>\n    </a>\n    <a class=\"bf-cart-link\" href=\"#opencart\" aria-label=\"Grozs\" data-bf-cart-open data-menu-widgeticon-cart=\"yes\">\n      <span class=\"bf-icon-cart\" aria-hidden=\"true\"></span>\n      <span class=\"bf-cart-count js-carticon-counter\" data-bf-cart-count aria-live=\"polite\"></span>\n    </a>\n  </div>\n  <div class=\"bf-mobile-menu\" id=\"bf-mobile-menu\" data-bf-mobile-menu aria-hidden=\"true\">\n    <button class=\"bf-mobile-menu__backdrop\" type=\"button\" data-bf-menu-close aria-label=\"Aizvērt izvēlni\"></button>\n    <aside class=\"bf-mobile-menu__panel\" role=\"dialog\" aria-modal=\"true\" aria-label=\"Izvēlne\">\n      <div class=\"bf-mobile-menu__head\">\n        <a class=\"bf-logo bf-mobile-menu__logo notranslate\" href=\"/\" aria-label=\"BrokolisFarm\" translate=\"no\">\n          <span class=\"bf-logo__mark\">B</span>\n          <span class=\"bf-logo__text\">BrokolisFarm</span>\n        </a>\n        <button class=\"bf-mobile-menu__close\" type=\"button\" data-bf-menu-close aria-label=\"Aizvērt izvēlni\">×</button>\n      </div>\n      <nav class=\"bf-mobile-menu__nav\" aria-label=\"Mobilā navigācija\">\n        <a href=\"/catalog\">Katalogs</a>\n        <a href=\"/offers\">% Akcijas</a>\n        <a href=\"/new\">Jaunumi</a>\n        <a href=\"/about\">Par mums</a>\n        <a href=\"/delivery\">Apmaksa un piegāde</a>\n        <a href=\"/contacts\">Kontakti</a>\n      </nav>\n      <a class=\"bf-button bf-mobile-menu__button\" href=\"/catalog\">Atvērt katalogu</a>\n    </aside>\n  </div>\n  <div class=\"bf-translate-widget\" id=\"google_translate_element\" aria-hidden=\"true\"></div>\n</header>\n","footer":"<footer class=\"bf-footer\" id=\"contacts\">\n  <div class=\"bf-shell bf-footer__inner\">\n    <div class=\"bf-footer__brand\">\n      <a class=\"bf-logo bf-footer__logo notranslate\" href=\"/\" translate=\"no\">\n        <span class=\"bf-logo__mark\">B</span>\n        <span class=\"bf-logo__text\">BrokolisFarm</span>\n      </a>\n      <p>Svaigi produkti, gaļa, delikateses un sezonas izlases ar piegādi visā Rīgā un tuvākajā apkārtnē.</p>\n      <div class=\"bf-footer__socials\">\n        <a href=\"https://www.instagram.com/\" target=\"_blank\" rel=\"noopener\">Instagram</a>\n        <a href=\"https://www.facebook.com/\" target=\"_blank\" rel=\"noopener\">Facebook</a>\n      </div>\n    </div>\n\n    <nav class=\"bf-footer__nav\" aria-label=\"Katalogs\">\n      <h3>Katalogs</h3>\n      <a href=\"/catalog\">Svaiga gaļa</a>\n      <a href=\"/catalog\">Olas un piena produkti</a>\n      <a href=\"/catalog\">Delikateses</a>\n      <a href=\"/catalog\">Augļi un dārzeņi</a>\n    </nav>\n\n    <nav class=\"bf-footer__nav\" aria-label=\"Pircējiem\">\n      <h3>Pircējiem</h3>\n      <a href=\"/offers\">Akcijas</a>\n      <a href=\"/new\">Jaunumi</a>\n      <a href=\"/about\">Par mums</a>\n      <a href=\"/delivery\">Apmaksa un piegāde</a>\n      <a href=\"/contacts\">Kontakti</a>\n      <a href=\"/privacy\">Privātuma politika</a>\n      <a href=\"/terms\">Pirkuma noteikumi</a>\n    </nav>\n\n    <div class=\"bf-footer__contacts\">\n      <h3>Kontakti</h3>\n      <a href=\"tel:+499939930033\">+49 (993) 993-003-3</a>\n      <a href=\"mailto:hello@brokolisfarm.lv\">hello@brokolisfarm.lv</a>\n      <p>Piegāde no trešdienas līdz sestdienai, 16:00-23:00. Pirms piegādes sazināmies ar klientu.</p>\n      <a class=\"bf-button\" href=\"/catalog\">Atvērt katalogu</a>\n    </div>\n  </div>\n  <div class=\"bf-shell bf-footer__bottom\">\n    <span>© 2026 BrokolisFarm</span>\n    <span>Svaigi produkti ar rūpīgu piegādi</span>\n  </div>\n</footer>\n"};
 </script>
 <script id="brokolisfarm-global-js">
 (function () {
@@ -1775,6 +1814,8 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
   var DEFAULT_API = "https://store.tildaapi.com/api/getproductslist/";
   var DEFAULT_CURRENCY = "€";
   var DEFAULT_PARTS_LIMIT = 12;
+  var DEFAULT_LANGUAGE = "lv";
+  var TRANSLATION_LANGUAGES = ["lv", "ru", "en"];
   var LOCAL_FALLBACK_DATA = {
     partuid: 420955341102,
     total: 3,
@@ -2053,6 +2094,103 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     } catch (error) {
       return fallback;
     }
+  }
+
+  function getCookie(name) {
+    var match = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/[.$?*|{}()[\]\\/+^]/g, "\\$&") + "=([^;]*)"));
+    return match ? decodeURIComponent(match[1]) : "";
+  }
+
+  function setCookie(name, value, days, domain) {
+    var expires = "";
+    if (days) {
+      var date = new Date();
+      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+      expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + value + expires + "; path=/" + (domain ? "; domain=" + domain : "");
+  }
+
+  function clearCookie(name, domain) {
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/" + (domain ? "; domain=" + domain : "");
+  }
+
+  function cookieDomain() {
+    var host = window.location && window.location.hostname || "";
+    return host && host.indexOf(".") !== -1 && !/^\d+\.\d+\.\d+\.\d+$/.test(host) ? "." + host.replace(/^www\./, "") : "";
+  }
+
+  function currentLanguage() {
+    var stored = "";
+    try {
+      stored = localStorage.getItem("bfLanguage") || "";
+    } catch (error) {}
+    var cookie = getCookie("googtrans");
+    var translated = cookie.split("/").filter(Boolean).pop();
+    var lang = stored || translated || DEFAULT_LANGUAGE;
+    return TRANSLATION_LANGUAGES.indexOf(lang) === -1 ? DEFAULT_LANGUAGE : lang;
+  }
+
+  function setTranslationCookies(lang) {
+    var domain = cookieDomain();
+    if (lang === DEFAULT_LANGUAGE) {
+      clearCookie("googtrans");
+      if (domain) clearCookie("googtrans", domain);
+      return;
+    }
+    var value = "/" + DEFAULT_LANGUAGE + "/" + lang;
+    setCookie("googtrans", value, 365);
+    if (domain) setCookie("googtrans", value, 365, domain);
+  }
+
+  function updateLanguageButtons(lang) {
+    document.documentElement.lang = lang;
+    toArray(document.querySelectorAll("[data-bf-lang]")).forEach(function (button) {
+      var isActive = button.getAttribute("data-bf-lang") === lang;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
+  }
+
+  function loadGoogleTranslate() {
+    if (document.getElementById("bf-google-translate-script")) return;
+    window.bfGoogleTranslateInit = function () {
+      if (!window.google || !window.google.translate) return;
+      new window.google.translate.TranslateElement({
+        autoDisplay: false,
+        includedLanguages: TRANSLATION_LANGUAGES.join(","),
+        pageLanguage: DEFAULT_LANGUAGE
+      }, "google_translate_element");
+    };
+    var script = document.createElement("script");
+    script.id = "bf-google-translate-script";
+    script.src = "https://translate.google.com/translate_a/element.js?cb=bfGoogleTranslateInit";
+    script.async = true;
+    document.head.appendChild(script);
+  }
+
+  function bindLanguageSwitcher() {
+    var lang = currentLanguage();
+    updateLanguageButtons(lang);
+    setTranslationCookies(lang);
+    if (lang !== DEFAULT_LANGUAGE) loadGoogleTranslate();
+
+    toArray(document.querySelectorAll("[data-bf-language-switcher]")).forEach(function (switcher) {
+      if (switcher.getAttribute("data-bf-language-bound") === "true") return;
+      switcher.setAttribute("data-bf-language-bound", "true");
+      switcher.addEventListener("click", function (event) {
+        var button = event.target.closest("[data-bf-lang]");
+        if (!button) return;
+        var nextLang = button.getAttribute("data-bf-lang") || DEFAULT_LANGUAGE;
+        if (TRANSLATION_LANGUAGES.indexOf(nextLang) === -1) return;
+        try {
+          localStorage.setItem("bfLanguage", nextLang);
+        } catch (error) {}
+        setTranslationCookies(nextLang);
+        updateLanguageButtons(nextLang);
+        if (nextLang !== lang) window.location.reload();
+      });
+    });
   }
 
   function normalizePrice(value) {
@@ -2382,7 +2520,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       return productMatchesPart(product, state.activePartUid) && productMatchesQuery(product, query);
     }), state.sort);
     if (!visible.length) {
-      mount.innerHTML = '<div class="bf-products__status">' + escapeHtml(state.emptyMessage || "Товары не найдены.") + "</div>";
+      mount.innerHTML = '<div class="bf-products__status">' + escapeHtml(state.emptyMessage || "Preces nav atrastas.") + "</div>";
       return;
     }
     mount.innerHTML = visible.map(function (product) {
@@ -2452,8 +2590,8 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
           (sku ? '<span class="bf-product__sku js-store-prod-sku" hidden>' + escapeHtml(sku) + "</span>" : "") +
           '<div class="bf-product__options js-product-controls-wrapper">' + optionHtml + "</div>" +
           '<div class="bf-product__actions">' +
-            '<a class="bf-product__details" href="' + escapeHtml(url) + '">Подробнее</a>' +
-            '<a class="bf-product__cart" href="#order" aria-label="Добавить в корзину">' + (soldOut ? "×" : "+") + "</a>" +
+            '<a class="bf-product__details" href="' + escapeHtml(url) + '">Vairāk</a>' +
+            '<a class="bf-product__cart" href="#order" aria-label="Pievienot grozam">' + (soldOut ? "×" : "+") + "</a>" +
           "</div>" +
         "</div>" +
       "</article>"
@@ -2570,7 +2708,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
   function load(root, state, append) {
     var mount = root.querySelector("[data-bf-products]");
     if (!append && mount) {
-      mount.innerHTML = '<div class="bf-products__status">Загружаем товары...</div>';
+      mount.innerHTML = '<div class="bf-products__status">Ielādējam preces...</div>';
     }
     requestJson(buildApiUrl(root, state, state.slice))
       .then(function (data) {
@@ -2583,7 +2721,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
           return;
         }
         if (mount) {
-          mount.innerHTML = '<div class="bf-products__error">Не удалось загрузить товары. Проверьте API каталога Tilda.</div>';
+          mount.innerHTML = '<div class="bf-products__error">Neizdevās ielādēt preces. Lūdzu, mēģiniet vēlreiz.</div>';
         }
         console.error(error);
       });
@@ -2606,6 +2744,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       sort: "",
       slice: 1
     };
+    state.activePartUid = root.getAttribute("data-bf-default-partuid") || "";
     var more = root.querySelector("[data-bf-load-more]");
     if (more) {
       more.addEventListener("click", function () {
@@ -2627,6 +2766,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
 
   function boot() {
     renderCommonChrome();
+    bindLanguageSwitcher();
     bindStickyHeader();
     bindMobileMenu();
     bindCartBridge();
@@ -2648,9 +2788,10 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     <div
   class="bf-page"
   data-bf-app
-  data-storepartuid="420955341102"
+  data-storepartuid="918290603733"
   data-recid="2176935951"
   data-products-size="36"
+  data-products-limit="10"
 >
   <div data-bf-header></div>
 
@@ -2658,17 +2799,17 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     <div class="bf-shell bf-hero__panel">
       <div class="bf-hero__copy">
         <div class="bf-tags">
-          <span>Мясо</span>
-          <span>Птица</span>
-          <span>Деликатесы</span>
-          <span>+12</span>
+          <span>Svaiga gaļa</span>
+          <span>Putnu gaļa</span>
+          <span>Delikateses</span>
+          <span>Piegāde mājās</span>
         </div>
         <div class="bf-hero__meta">
-          <span>Доставляем со среды по субботу</span>
-          <span>С 16 до 23 часов</span>
+          <span>Piegāde no trešdienas līdz sestdienai</span>
+          <span>No 16:00 līdz 23:00</span>
         </div>
-        <h1>Доставляем свежие продукты 4 раза в неделю</h1>
-        <a class="bf-button bf-button_light" href="#catalog">Смотреть каталог</a>
+        <h1>Svaigi produkti ģimenei ar piegādi 4 reizes nedēļā</h1>
+        <a class="bf-button bf-button_light" href="#catalog">Apskatīt katalogu</a>
       </div>
       <div class="bf-hero__media">
         <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/hero-products.png" alt="Свежие фермерские продукты" />
@@ -2678,47 +2819,47 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
 
   <section class="bf-section bf-categories" id="catalog">
     <div class="bf-shell">
-      <h2>Фермерские продукты</h2>
+      <h2>Ko var pasūtīt šodien</h2>
       <div class="bf-category-grid">
-        <a class="bf-category-card" href="#offers" data-bf-category="Мясо">
-          <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/category-meat.png" alt="Мясо" />
-          <span>Мясо</span>
+        <a class="bf-category-card" href="/catalog">
+          <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/category-meat.png" alt="Svaiga gaļa" />
+          <span>Svaiga gaļa</span>
         </a>
-        <a class="bf-category-card" href="#offers" data-bf-category="Деликатесы">
-          <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/category-delicacies.png" alt="Деликатесы" />
-          <span>Деликатесы</span>
+        <a class="bf-category-card" href="/catalog">
+          <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/category-delicacies.png" alt="Delikateses" />
+          <span>Delikateses</span>
         </a>
-        <a class="bf-category-card" href="#offers" data-bf-category="Птица и яйца">
-          <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/category-poultry-eggs.png" alt="Птица и яйца" />
-          <span>Птица и яйца</span>
+        <a class="bf-category-card" href="/catalog">
+          <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/category-poultry-eggs.png" alt="Olas un putnu gaļa" />
+          <span>Olas un putnu gaļa</span>
         </a>
-        <a class="bf-category-card" href="#offers" data-bf-category="Рыба и икра">
-          <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/category-fish-caviar.png" alt="Рыба и икра" />
-          <span>Рыба и икра</span>
+        <a class="bf-category-card" href="/catalog">
+          <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/category-fish-caviar.png" alt="Zivis un jūras veltes" />
+          <span>Zivis un jūras veltes</span>
         </a>
-        <a class="bf-category-card" href="#offers" data-bf-category="Заморозка">
-          <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/category-frozen.png" alt="Заморозка" />
-          <span>Заморозка</span>
+        <a class="bf-category-card" href="/catalog">
+          <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/category-frozen.png" alt="Saldētie ēdieni" />
+          <span>Saldētie ēdieni</span>
         </a>
-        <a class="bf-category-card" href="#offers" data-bf-category="Консервы">
-          <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/category-canned.png" alt="Консервы" />
-          <span>Консервы</span>
+        <a class="bf-category-card" href="/catalog">
+          <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/category-canned.png" alt="Konservējumi" />
+          <span>Konservējumi</span>
         </a>
-        <a class="bf-category-card" href="#offers" data-bf-category="Молочное">
-          <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/category-dairy.png" alt="Молочное" />
-          <span>Молочное</span>
+        <a class="bf-category-card" href="/catalog">
+          <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/category-dairy.png" alt="Piena produkti" />
+          <span>Piena produkti</span>
         </a>
-        <a class="bf-category-card" href="#offers" data-bf-category="Ягоды и фрукты">
-          <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/category-berries-fruits.png" alt="Ягоды и фрукты" />
-          <span>Ягоды и фрукты</span>
+        <a class="bf-category-card" href="/catalog">
+          <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/category-berries-fruits.png" alt="Augļi un ogas" />
+          <span>Augļi un ogas</span>
         </a>
-        <a class="bf-category-card" href="#offers" data-bf-category="Овощи и грибы">
-          <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/category-vegetables-mushrooms.png" alt="Овощи и грибы" />
-          <span>Овощи и грибы</span>
+        <a class="bf-category-card" href="/catalog">
+          <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/category-vegetables-mushrooms.png" alt="Dārzeņi un zaļumi" />
+          <span>Dārzeņi un zaļumi</span>
         </a>
-        <a class="bf-category-card" href="#offers" data-bf-category="Напитки">
-          <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/category-drinks.png" alt="Напитки" />
-          <span>Напитки</span>
+        <a class="bf-category-card" href="/catalog">
+          <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/category-drinks.png" alt="Dzērieni" />
+          <span>Dzērieni</span>
         </a>
       </div>
     </div>
@@ -2727,32 +2868,31 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
   <section class="bf-section bf-offers" id="offers">
     <div class="bf-shell">
       <div class="bf-section__head">
-        <h2>Акции</h2>
-        <div class="bf-store-parts" data-bf-parts hidden></div>
+        <h2>Svaigas gaļas izlase</h2>
       </div>
       <div class="bf-products" data-bf-products aria-live="polite">
-        <div class="bf-products__status">Загружаем товары...</div>
+        <div class="bf-products__status">Ielādējam preces...</div>
       </div>
-      <button class="bf-load-more" type="button" data-bf-load-more hidden>Показать еще</button>
+      <button class="bf-load-more" type="button" data-bf-load-more hidden>Rādīt vēl</button>
     </div>
   </section>
 
   <section class="bf-section bf-newsletter" id="about">
     <div class="bf-shell">
       <div class="bf-newsletter__intro">
-        <h2>Натуральные фермерские продукты с доставкой</h2>
+        <h2>Dabiski produkti ar ērtu piegādi</h2>
         <p>
-          Магазин фермерских продуктов BrokolisFarm предлагает покупателю полезные натуральные продукты и свежее мясо напрямую с собственной фермы.
+          BrokolisFarm apvieno svaigu gaļu, vietējos produktus, delikateses un sezonas atradumus vienā pasūtījumā.
         </p>
       </div>
       <div class="bf-newsletter__panel">
-        <img class="bf-newsletter__image bf-newsletter__image_left" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/newsletter-vegetables.png" alt="Фермерские овощи" />
+        <img class="bf-newsletter__image bf-newsletter__image_left" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/newsletter-vegetables.png" alt="Svaigi dārzeņi" />
         <form class="bf-newsletter__form">
-          <h3>Подписывайтесь на нашу рассылку и получайте скидки и промокоды</h3>
-          <input type="email" name="email" placeholder="Ваш email" aria-label="Ваш email" />
-          <button type="submit">Подписаться</button>
+          <h3>Piesakieties jaunumiem un saņemiet sezonas piedāvājumus</h3>
+          <input type="email" name="email" placeholder="Jūsu e-pasts" aria-label="Jūsu e-pasts" />
+          <button type="submit">Pieteikties</button>
         </form>
-        <img class="bf-newsletter__image bf-newsletter__image_right" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/newsletter-products.png" alt="Свежие продукты" />
+        <img class="bf-newsletter__image bf-newsletter__image_right" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/newsletter-products.png" alt="Svaigi produkti" />
       </div>
     </div>
   </section>
@@ -2760,16 +2900,16 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
   <section class="bf-section bf-delivery" id="delivery">
     <div class="bf-shell">
       <p class="bf-about-text">
-        Brokolisfarm - это не просто магазин натуральных продуктов, это целая ферма, где все выращивается и производится своими руками и с любовью. Мы гарантируем свежесть и высокое качество нашей продукции.
+        BrokolisFarm ir par ēdienu, kuram var uzticēties: rūpīgi atlasīti produkti, skaidra izcelsme un piegāde laikā, kad ģimenei tas ir ērti.
       </p>
       <div class="bf-delivery__card">
-        <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/delivery-products.svg" alt="Доставка свежих продуктов" />
+        <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/delivery-products.svg" alt="Svaigu produktu piegāde" />
         <div class="bf-delivery__overlay">
-          <h2>Доставляем свежие продукты 4 раза в неделю</h2>
+          <h2>Piegādājam svaigus produktus 4 reizes nedēļā</h2>
           <ol>
-            <li>Доставляем со среды по субботу</li>
-            <li>С 16.00 до 23.00</li>
-            <li>Свяжемся за час до доставки</li>
+            <li>Piegāde no trešdienas līdz sestdienai</li>
+            <li>No 16:00 līdz 23:00</li>
+            <li>Pirms piegādes sazināmies ar klientu</li>
           </ol>
         </div>
       </div>
@@ -2778,19 +2918,19 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
 
   <section class="bf-section bf-benefits">
     <div class="bf-shell">
-      <h2>Brokolisfarm - это продукты высочайшего класса</h2>
+      <h2>BrokolisFarm - svaigums, garša un rūpīga atlase</h2>
       <div class="bf-benefit-grid">
         <article class="bf-benefit">
-          <span>Местное производство</span>
-          <p>Мы за то, чтобы в каждой семье было мясо, и всегда готовы предложить актуальные акции и бонусы.</p>
+          <span>Vietējie ražotāji</span>
+          <p>Izvēlamies produktus, kuru izcelsme un kvalitāte ir saprotama jau pirms pasūtījuma.</p>
         </article>
         <article class="bf-benefit">
-          <span>Контроль качества</span>
-          <p>Все мясо проходит ветеринарную экспертизу и имеет необходимую сертификацию.</p>
+          <span>Kvalitātes kontrole</span>
+          <p>Gaļai un svaigajiem produktiem pievēršam īpašu uzmanību: glabāšana, iepakošana un piegāde ir daļa no kvalitātes.</p>
         </article>
         <article class="bf-benefit">
-          <span>Забота о вашем времени</span>
-          <p>Доставляем фермерские продукты к вам домой по Латвии и +20 км от центра.</p>
+          <span>Ērta piegāde</span>
+          <p>Piegādājam pasūtījumus Rīgā un tuvākajā apkārtnē, lai ikdienas iepirkšanās aizņemtu mazāk laika.</p>
         </article>
       </div>
     </div>
@@ -2799,12 +2939,12 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
   <section class="bf-section bf-instagram">
     <div class="bf-shell bf-instagram__panel">
       <div>
-        <h2>Подписывайтесь на нашу страницу в Instagram</h2>
-        <p>Получайте секретные промокоды, новости и другие интересные бонусы</p>
-        <a class="bf-button" href="https://www.instagram.com/" target="_blank" rel="noopener">Подписаться</a>
+        <h2>Sekojiet mums Instagram</h2>
+        <p>Tur publicējam sezonas jaunumus, idejas vakariņām un īpašus piedāvājumus.</p>
+        <a class="bf-button" href="https://www.instagram.com/" target="_blank" rel="noopener">Sekot</a>
       </div>
       <div class="bf-phone-preview">
-        <img class="bf-phone-preview__screen" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/instagram-screen.png" alt="BrokolisFarm в Instagram" />
+        <img class="bf-phone-preview__screen" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/instagram-screen.png" alt="BrokolisFarm Instagram" />
         <img class="bf-phone-preview__frame" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/instagram-frame.png" alt="" />
       </div>
     </div>
@@ -2813,19 +2953,19 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
   <section class="bf-section bf-editorial">
     <div class="bf-shell bf-editorial__grid">
       <article class="bf-editorial-card">
-        <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/editorial-recipes.png" alt="Рецепты" />
+        <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/editorial-recipes.png" alt="Receptes" />
         <div>
-          <h2>Рецепты</h2>
-          <p>Подскажем и покажем, что приготовить из наших продуктов</p>
-          <a class="bf-button" href="#recipes">Подробнее</a>
+          <h2>Receptes</h2>
+          <p>Iedvesma brokastīm, vakariņām un brīvdienu galdam no mūsu produktiem.</p>
+          <a class="bf-button" href="#recipes">Lasīt vairāk</a>
         </div>
       </article>
       <article class="bf-editorial-card">
-        <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/editorial-blog.png" alt="Блог" />
+        <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/editorial-blog.png" alt="Stāsti" />
         <div>
-          <h2>Блог</h2>
-          <p>Рассказываем интересные факты, лайфхаки и советы</p>
-          <a class="bf-button" href="#blog">Подробнее</a>
+          <h2>Stāsti</h2>
+          <p>Rakstām par ražotājiem, sezonas produktiem un gudru uzglabāšanu.</p>
+          <a class="bf-button" href="#blog">Lasīt vairāk</a>
         </div>
       </article>
     </div>

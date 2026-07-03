@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = path.join(root, "dist");
-const loaderVersion = "2026-07-03-5";
+const loaderVersion = "2026-07-03-6";
 
 const css = await readFile(path.join(root, "src", "brokolisfarm-tilda.css"), "utf8");
 const js = await readFile(path.join(root, "src", "brokolisfarm-tilda.js"), "utf8");
@@ -13,16 +13,16 @@ const header = await readFile(path.join(root, "src", "partials", "header.html"),
 const footer = await readFile(path.join(root, "src", "partials", "footer.html"), "utf8");
 
 const pages = [
-  ["home", path.join(root, "src", "block.html"), "BrokolisFarm Tilda Preview"],
-  ["catalog", path.join(root, "src", "pages", "catalog.html"), "BrokolisFarm Catalog"],
-  ["offers", path.join(root, "src", "pages", "offers.html"), "BrokolisFarm Offers"],
-  ["new", path.join(root, "src", "pages", "new.html"), "BrokolisFarm New Products"],
-  ["about", path.join(root, "src", "pages", "about.html"), "BrokolisFarm About"],
-  ["delivery", path.join(root, "src", "pages", "delivery.html"), "BrokolisFarm Delivery"],
-  ["contacts", path.join(root, "src", "pages", "contacts.html"), "BrokolisFarm Contacts"],
-  ["privacy", path.join(root, "src", "pages", "privacy.html"), "BrokolisFarm Privacy"],
-  ["terms", path.join(root, "src", "pages", "terms.html"), "BrokolisFarm Terms"],
-  ["not-found", path.join(root, "src", "pages", "not-found.html"), "BrokolisFarm 404"]
+  ["home", path.join(root, "src", "block.html"), "BrokolisFarm"],
+  ["catalog", path.join(root, "src", "pages", "catalog.html"), "BrokolisFarm katalogs"],
+  ["offers", path.join(root, "src", "pages", "offers.html"), "BrokolisFarm akcijas"],
+  ["new", path.join(root, "src", "pages", "new.html"), "BrokolisFarm jaunumi"],
+  ["about", path.join(root, "src", "pages", "about.html"), "Par BrokolisFarm"],
+  ["delivery", path.join(root, "src", "pages", "delivery.html"), "Apmaksa un piegāde"],
+  ["contacts", path.join(root, "src", "pages", "contacts.html"), "BrokolisFarm kontakti"],
+  ["privacy", path.join(root, "src", "pages", "privacy.html"), "Privātuma politika"],
+  ["terms", path.join(root, "src", "pages", "terms.html"), "Pirkuma noteikumi"],
+  ["not-found", path.join(root, "src", "pages", "not-found.html"), "Lapa nav atrasta"]
 ];
 
 const headStyles = `<style id="brokolisfarm-global-styles">\n${css}\n</style>\n`;
@@ -51,7 +51,7 @@ function renderPageSource(source) {
 
 function previewDocument(title, body) {
   return `<!doctype html>
-<html lang="ru">
+<html lang="lv">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

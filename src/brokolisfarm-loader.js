@@ -169,7 +169,7 @@
       '<div class="bf-loader-screen" role="status" aria-live="polite">' +
         '<div class="bf-loader-card">' +
           '<span class="bf-loader-logo" aria-hidden="true">B</span>' +
-          '<span class="bf-loader-label">Загружаем BrokolisFarm</span>' +
+          '<span class="bf-loader-label">Ielādējam BrokolisFarm</span>' +
           '<span class="bf-loader-track" aria-hidden="true"><span class="bf-loader-bar" data-bf-loader-bar></span></span>' +
           '<span class="bf-loader-percent" data-bf-loader-percent>0%</span>' +
         "</div>" +
@@ -209,7 +209,7 @@
   }
 
   function setError(mount) {
-    mount.innerHTML = '<div class="bf-page"><div class="bf-shell"><div class="bf-loader-status bf-loader-status_error">Не удалось загрузить страницу.</div></div></div>';
+    mount.innerHTML = '<div class="bf-page"><div class="bf-shell"><div class="bf-loader-status bf-loader-status_error">Neizdevās ielādēt lapu.</div></div></div>';
   }
 
   function fetchText(url) {

@@ -173,13 +173,45 @@ body {
   margin-left: auto;
 }
 
-.bf-flag {
-  background: linear-gradient(to bottom, #fff 0 33%, #0c47b7 33% 66%, #e53b35 66% 100%);
-  display: inline-block;
-  height: 14px;
-  margin-left: 8px;
-  vertical-align: -2px;
-  width: 22px;
+.bf-language {
+  align-items: center;
+  display: inline-flex;
+  gap: 7px;
+}
+
+.bf-language__label {
+  color: rgba(46, 46, 57, 0.72);
+}
+
+.bf-language__button {
+  background: #ffffff;
+  border: 1px solid rgba(109, 172, 74, 0.28);
+  border-radius: 999px;
+  color: var(--bf-text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  height: 22px;
+  min-width: 34px;
+  padding: 0 8px;
+}
+
+.bf-language__button.is-active {
+  background: var(--bf-green);
+  border-color: var(--bf-green);
+  color: #ffffff;
+}
+
+.bf-translate-widget,
+.goog-te-banner-frame,
+.goog-te-balloon-frame,
+#goog-gt-tt {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
 }
 
 .bf-nav {
@@ -245,7 +277,7 @@ body {
 
 .bf-button_light {
   background: #ffffff;
-  color: var(--bf-green);
+  color: var(--bf-text);
 }
 
 .bf-catalog-button:hover,
@@ -420,6 +452,10 @@ body.bf-mobile-menu-open {
 
 .bf-hero .bf-button {
   align-self: flex-start;
+}
+
+.bf-hero .bf-button_light {
+  color: var(--bf-text);
 }
 
 .bf-hero__media {
@@ -1546,9 +1582,12 @@ body.bf-mobile-menu-open {
 
   .bf-topbar__inner {
     font-size: 12px;
+    gap: 10px;
+    justify-content: space-between;
   }
 
-  .bf-language {
+  .bf-language__label,
+  .bf-phone {
     display: none;
   }
 

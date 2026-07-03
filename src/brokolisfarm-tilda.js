@@ -4,6 +4,8 @@
   var DEFAULT_API = "https://store.tildaapi.com/api/getproductslist/";
   var DEFAULT_CURRENCY = "€";
   var DEFAULT_PARTS_LIMIT = 12;
+  var DEFAULT_LANGUAGE = "lv";
+  var TRANSLATION_LANGUAGES = ["lv", "ru", "en"];
   var LOCAL_FALLBACK_DATA = {
     partuid: 420955341102,
     total: 3,
@@ -282,6 +284,103 @@
     } catch (error) {
       return fallback;
     }
+  }
+
+  function getCookie(name) {
+    var match = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/[.$?*|{}()[\]\\/+^]/g, "\\$&") + "=([^;]*)"));
+    return match ? decodeURIComponent(match[1]) : "";
+  }
+
+  function setCookie(name, value, days, domain) {
+    var expires = "";
+    if (days) {
+      var date = new Date();
+      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+      expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + value + expires + "; path=/" + (domain ? "; domain=" + domain : "");
+  }
+
+  function clearCookie(name, domain) {
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/" + (domain ? "; domain=" + domain : "");
+  }
+
+  function cookieDomain() {
+    var host = window.location && window.location.hostname || "";
+    return host && host.indexOf(".") !== -1 && !/^\d+\.\d+\.\d+\.\d+$/.test(host) ? "." + host.replace(/^www\./, "") : "";
+  }
+
+  function currentLanguage() {
+    var stored = "";
+    try {
+      stored = localStorage.getItem("bfLanguage") || "";
+    } catch (error) {}
+    var cookie = getCookie("googtrans");
+    var translated = cookie.split("/").filter(Boolean).pop();
+    var lang = stored || translated || DEFAULT_LANGUAGE;
+    return TRANSLATION_LANGUAGES.indexOf(lang) === -1 ? DEFAULT_LANGUAGE : lang;
+  }
+
+  function setTranslationCookies(lang) {
+    var domain = cookieDomain();
+    if (lang === DEFAULT_LANGUAGE) {
+      clearCookie("googtrans");
+      if (domain) clearCookie("googtrans", domain);
+      return;
+    }
+    var value = "/" + DEFAULT_LANGUAGE + "/" + lang;
+    setCookie("googtrans", value, 365);
+    if (domain) setCookie("googtrans", value, 365, domain);
+  }
+
+  function updateLanguageButtons(lang) {
+    document.documentElement.lang = lang;
+    toArray(document.querySelectorAll("[data-bf-lang]")).forEach(function (button) {
+      var isActive = button.getAttribute("data-bf-lang") === lang;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
+  }
+
+  function loadGoogleTranslate() {
+    if (document.getElementById("bf-google-translate-script")) return;
+    window.bfGoogleTranslateInit = function () {
+      if (!window.google || !window.google.translate) return;
+      new window.google.translate.TranslateElement({
+        autoDisplay: false,
+        includedLanguages: TRANSLATION_LANGUAGES.join(","),
+        pageLanguage: DEFAULT_LANGUAGE
+      }, "google_translate_element");
+    };
+    var script = document.createElement("script");
+    script.id = "bf-google-translate-script";
+    script.src = "https://translate.google.com/translate_a/element.js?cb=bfGoogleTranslateInit";
+    script.async = true;
+    document.head.appendChild(script);
+  }
+
+  function bindLanguageSwitcher() {
+    var lang = currentLanguage();
+    updateLanguageButtons(lang);
+    setTranslationCookies(lang);
+    if (lang !== DEFAULT_LANGUAGE) loadGoogleTranslate();
+
+    toArray(document.querySelectorAll("[data-bf-language-switcher]")).forEach(function (switcher) {
+      if (switcher.getAttribute("data-bf-language-bound") === "true") return;
+      switcher.setAttribute("data-bf-language-bound", "true");
+      switcher.addEventListener("click", function (event) {
+        var button = event.target.closest("[data-bf-lang]");
+        if (!button) return;
+        var nextLang = button.getAttribute("data-bf-lang") || DEFAULT_LANGUAGE;
+        if (TRANSLATION_LANGUAGES.indexOf(nextLang) === -1) return;
+        try {
+          localStorage.setItem("bfLanguage", nextLang);
+        } catch (error) {}
+        setTranslationCookies(nextLang);
+        updateLanguageButtons(nextLang);
+        if (nextLang !== lang) window.location.reload();
+      });
+    });
   }
 
   function normalizePrice(value) {
@@ -611,7 +710,7 @@
       return productMatchesPart(product, state.activePartUid) && productMatchesQuery(product, query);
     }), state.sort);
     if (!visible.length) {
-      mount.innerHTML = '<div class="bf-products__status">' + escapeHtml(state.emptyMessage || "Товары не найдены.") + "</div>";
+      mount.innerHTML = '<div class="bf-products__status">' + escapeHtml(state.emptyMessage || "Preces nav atrastas.") + "</div>";
       return;
     }
     mount.innerHTML = visible.map(function (product) {
@@ -681,8 +780,8 @@
           (sku ? '<span class="bf-product__sku js-store-prod-sku" hidden>' + escapeHtml(sku) + "</span>" : "") +
           '<div class="bf-product__options js-product-controls-wrapper">' + optionHtml + "</div>" +
           '<div class="bf-product__actions">' +
-            '<a class="bf-product__details" href="' + escapeHtml(url) + '">Подробнее</a>' +
-            '<a class="bf-product__cart" href="#order" aria-label="Добавить в корзину">' + (soldOut ? "×" : "+") + "</a>" +
+            '<a class="bf-product__details" href="' + escapeHtml(url) + '">Vairāk</a>' +
+            '<a class="bf-product__cart" href="#order" aria-label="Pievienot grozam">' + (soldOut ? "×" : "+") + "</a>" +
           "</div>" +
         "</div>" +
       "</article>"
@@ -799,7 +898,7 @@
   function load(root, state, append) {
     var mount = root.querySelector("[data-bf-products]");
     if (!append && mount) {
-      mount.innerHTML = '<div class="bf-products__status">Загружаем товары...</div>';
+      mount.innerHTML = '<div class="bf-products__status">Ielādējam preces...</div>';
     }
     requestJson(buildApiUrl(root, state, state.slice))
       .then(function (data) {
@@ -812,7 +911,7 @@
           return;
         }
         if (mount) {
-          mount.innerHTML = '<div class="bf-products__error">Не удалось загрузить товары. Проверьте API каталога Tilda.</div>';
+          mount.innerHTML = '<div class="bf-products__error">Neizdevās ielādēt preces. Lūdzu, mēģiniet vēlreiz.</div>';
         }
         console.error(error);
       });
@@ -835,6 +934,7 @@
       sort: "",
       slice: 1
     };
+    state.activePartUid = root.getAttribute("data-bf-default-partuid") || "";
     var more = root.querySelector("[data-bf-load-more]");
     if (more) {
       more.addEventListener("click", function () {
@@ -856,6 +956,7 @@
 
   function boot() {
     renderCommonChrome();
+    bindLanguageSwitcher();
     bindStickyHeader();
     bindMobileMenu();
     bindCartBridge();
