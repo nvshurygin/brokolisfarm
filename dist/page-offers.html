@@ -1,0 +1,98 @@
+<div
+  class="bf-page bf-page_offers"
+  data-bf-app
+  data-storepartuid="420955341102"
+  data-recid="2176935951"
+  data-products-size="36"
+  data-products-limit="12"
+  data-bf-product-mode="offers"
+  data-bf-empty-message="Сейчас акционные товары обновляются. Загляните чуть позже или откройте весь каталог."
+>
+  <div data-bf-header></div>
+
+  <section class="bf-page-hero">
+    <div class="bf-shell bf-page-hero__inner">
+      <div>
+        <span class="bf-kicker">Акции</span>
+        <h1>Выгодные предложения на фермерские продукты</h1>
+        <p>Собираем продукты со скидками, сезонные наборы и короткие предложения из каталога BrokolisFarm.</p>
+        <div class="bf-page-hero__actions">
+          <a class="bf-button" href="#offers-products">Смотреть акции</a>
+          <a class="bf-button bf-button_light" href="/catalog">Весь каталог</a>
+        </div>
+      </div>
+      <div class="bf-page-hero__stats" aria-label="Преимущества акций">
+        <div class="bf-page-hero__stat">
+          <strong>-15%</strong>
+          <span>Сезонные скидки и специальные цены на выбранные позиции.</span>
+        </div>
+        <div class="bf-page-hero__stat">
+          <strong>4 дня</strong>
+          <span>Доставка со среды по субботу по актуальному графику.</span>
+        </div>
+        <div class="bf-page-hero__stat">
+          <strong>100%</strong>
+          <span>Карточки товаров берутся из каталога Tilda.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bf-section">
+    <div class="bf-shell bf-promo-grid">
+      <article class="bf-promo-card">
+        <div>
+          <strong>Скидки недели</strong>
+          <p>Отмечаем товары со старой ценой и показываем их в первую очередь.</p>
+        </div>
+        <span>Обновляется из Tilda</span>
+      </article>
+      <article class="bf-promo-card">
+        <div>
+          <strong>Сезонные наборы</strong>
+          <p>Подборки для семьи, ужина или запасов на неделю можно вести прямо в каталоге.</p>
+        </div>
+        <span>Для быстрых заказов</span>
+      </article>
+      <article class="bf-promo-card">
+        <div>
+          <strong>Свежая выдача</strong>
+          <p>Если специальных скидок нет, страница показывает актуальные товары, чтобы не пустовать.</p>
+        </div>
+        <span>Без ручной верстки</span>
+      </article>
+    </div>
+  </section>
+
+  <section class="bf-section bf-catalog-page" id="offers-products">
+    <div class="bf-shell">
+      <div class="bf-section__head">
+        <h2>Товары по акции</h2>
+      </div>
+      <p class="bf-product-page-note">Фильтр ищет товары со скидкой, старой ценой или акционными пометками в данных каталога.</p>
+      <div class="bf-catalog-toolbar">
+        <label class="bf-field">
+          <span>Поиск</span>
+          <input type="search" placeholder="Название, SKU или описание" data-bf-search />
+        </label>
+        <label class="bf-field">
+          <span>Сортировка</span>
+          <select data-bf-sort>
+            <option value="">По умолчанию</option>
+            <option value="price:asc">Сначала дешевле</option>
+            <option value="price:desc">Сначала дороже</option>
+            <option value="title:asc">Название А-Я</option>
+            <option value="title:desc">Название Я-А</option>
+          </select>
+        </label>
+      </div>
+      <div class="bf-products bf-products_catalog" data-bf-products aria-live="polite">
+        <div class="bf-products__status">Загружаем товары...</div>
+      </div>
+    </div>
+  </section>
+
+  <div data-bf-footer></div>
+</div>
+
+<script>window.BrokolisFarmTilda && window.BrokolisFarmTilda.boot && window.BrokolisFarmTilda.boot();</script>

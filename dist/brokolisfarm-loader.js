@@ -11,6 +11,20 @@
     "/index.html": "home",
     "/catalog": "catalog",
     "/catalog/": "catalog",
+    "/offers": "offers",
+    "/offers/": "offers",
+    "/akcii": "offers",
+    "/akcii/": "offers",
+    "/sale": "offers",
+    "/sale/": "offers",
+    "/new": "new",
+    "/new/": "new",
+    "/novinki": "new",
+    "/novinki/": "new",
+    "/about": "about",
+    "/about/": "about",
+    "/o-nas": "about",
+    "/o-nas/": "about",
     "/delivery": "delivery",
     "/delivery/": "delivery",
     "/contacts": "contacts",
@@ -77,6 +91,22 @@
     document.head.appendChild(link);
   }
 
+  function ensureLoaderStyles() {
+    if (document.getElementById("brokolisfarm-loader-critical-css")) return;
+    var style = document.createElement("style");
+    style.id = "brokolisfarm-loader-critical-css";
+    style.textContent =
+      ".bf-loader-screen{align-items:center;background:#fff;color:#2e2e39;display:flex;font-family:Ubuntu,Arial,sans-serif;justify-content:center;min-height:320px;padding:64px 20px}" +
+      ".bf-loader-card{align-items:center;display:grid;gap:16px;justify-items:center;max-width:360px;width:100%}" +
+      ".bf-loader-logo{align-items:center;background:#6dac4a;border-radius:12px;box-shadow:0 16px 36px rgba(109,172,74,.24);color:#fff;display:inline-flex;font-family:Comfortaa,Ubuntu,Arial,sans-serif;font-size:34px;font-weight:600;height:68px;justify-content:center;width:68px;animation:bfLoaderBlink 1s ease-in-out infinite}" +
+      ".bf-loader-label{font-size:14px;font-weight:500;letter-spacing:0;text-align:center}" +
+      ".bf-loader-track{background:#ececec;border-radius:999px;height:8px;overflow:hidden;width:100%}" +
+      ".bf-loader-bar{background:#6dac4a;border-radius:999px;display:block;height:100%;transition:width .18s ease;width:0}" +
+      ".bf-loader-percent{color:#6dac4a;font-family:Comfortaa,Ubuntu,Arial,sans-serif;font-size:13px;font-weight:600}" +
+      "@keyframes bfLoaderBlink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.42;transform:scale(.94)}}";
+    document.head.appendChild(style);
+  }
+
   function ensureFonts() {
     if (!document.getElementById("bf-fonts-preconnect")) {
       var preconnect = document.createElement("link");
@@ -134,7 +164,48 @@
   }
 
   function setLoading(mount) {
-    mount.innerHTML = '<div class="bf-page"><div class="bf-shell"><div class="bf-loader-status">Загружаем страницу...</div></div></div>';
+    ensureLoaderStyles();
+    mount.innerHTML =
+      '<div class="bf-loader-screen" role="status" aria-live="polite">' +
+        '<div class="bf-loader-card">' +
+          '<span class="bf-loader-logo" aria-hidden="true">B</span>' +
+          '<span class="bf-loader-label">Загружаем BrokolisFarm</span>' +
+          '<span class="bf-loader-track" aria-hidden="true"><span class="bf-loader-bar" data-bf-loader-bar></span></span>' +
+          '<span class="bf-loader-percent" data-bf-loader-percent>0%</span>' +
+        "</div>" +
+      "</div>";
+    return startLoadingProgress(mount);
+  }
+
+  function startLoadingProgress(mount) {
+    var value = 0;
+    var bar = mount.querySelector("[data-bf-loader-bar]");
+    var percent = mount.querySelector("[data-bf-loader-percent]");
+
+    function setProgress(nextValue) {
+      value = Math.max(0, Math.min(100, Math.round(nextValue)));
+      if (bar) bar.style.width = value + "%";
+      if (percent) percent.textContent = value + "%";
+    }
+
+    setProgress(0);
+    var timer = window.setInterval(function () {
+      var step = value < 48 ? 7 : value < 78 ? 4 : 1;
+      setProgress(Math.min(94, value + step));
+    }, 130);
+
+    return {
+      stop: function () {
+        window.clearInterval(timer);
+      },
+      complete: function () {
+        window.clearInterval(timer);
+        setProgress(100);
+        return new Promise(function (resolve) {
+          window.setTimeout(resolve, 220);
+        });
+      }
+    };
   }
 
   function setError(mount) {
@@ -155,20 +226,23 @@
   }
 
   function renderPage(baseUrl, page, mount) {
-    setLoading(mount);
+    var progress = setLoading(mount);
     return fetchText(pageUrl(baseUrl, page))
       .catch(function (error) {
         if (page === "not-found") throw error;
         return fetchText(pageUrl(baseUrl, "not-found"));
       })
       .then(function (html) {
-        mount.innerHTML = html;
-        mount.setAttribute("data-bf-loaded-page", page);
-        bootApp();
-        window.dispatchEvent(new CustomEvent("brokolisfarm:page-loaded", { detail: { page: page } }));
+        return progress.complete().then(function () {
+          mount.innerHTML = html;
+          mount.setAttribute("data-bf-loaded-page", page);
+          bootApp();
+          window.dispatchEvent(new CustomEvent("brokolisfarm:page-loaded", { detail: { page: page } }));
+        });
       })
       .catch(function (error) {
         console.error(error);
+        progress.stop();
         setError(mount);
       });
   }

@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = path.join(root, "dist");
-const loaderVersion = "2026-07-03-2";
+const loaderVersion = "2026-07-03-3";
 
 const css = await readFile(path.join(root, "src", "brokolisfarm-tilda.css"), "utf8");
 const js = await readFile(path.join(root, "src", "brokolisfarm-tilda.js"), "utf8");
@@ -15,6 +15,9 @@ const footer = await readFile(path.join(root, "src", "partials", "footer.html"),
 const pages = [
   ["home", path.join(root, "src", "block.html"), "BrokolisFarm Tilda Preview"],
   ["catalog", path.join(root, "src", "pages", "catalog.html"), "BrokolisFarm Catalog"],
+  ["offers", path.join(root, "src", "pages", "offers.html"), "BrokolisFarm Offers"],
+  ["new", path.join(root, "src", "pages", "new.html"), "BrokolisFarm New Products"],
+  ["about", path.join(root, "src", "pages", "about.html"), "BrokolisFarm About"],
   ["delivery", path.join(root, "src", "pages", "delivery.html"), "BrokolisFarm Delivery"],
   ["contacts", path.join(root, "src", "pages", "contacts.html"), "BrokolisFarm Contacts"],
   ["privacy", path.join(root, "src", "pages", "privacy.html"), "BrokolisFarm Privacy"],

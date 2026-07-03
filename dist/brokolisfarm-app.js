@@ -480,6 +480,60 @@
     return haystack.indexOf(query) !== -1;
   }
 
+  function productText(product) {
+    var characteristics = Array.isArray(product.characteristics) ? product.characteristics : [];
+    return [
+      product.title,
+      product.descr,
+      product.text,
+      product.sku,
+      product.mark,
+      product.badge,
+      characteristics.map(function (item) {
+        return [item.title, item.value, item.name].join(" ");
+      }).join(" ")
+    ].map(normalizeText).join(" ");
+  }
+
+  function productHasAnyWord(product, words) {
+    var text = productText(product);
+    return words.some(function (word) {
+      return text.indexOf(word) !== -1;
+    });
+  }
+
+  function productHasDiscount(product) {
+    var edition = firstAvailableEdition(product);
+    var price = normalizePrice(edition.price != null && edition.price !== "" ? edition.price : product.price);
+    var oldPrice = normalizePrice(edition.priceold || product.priceold || "");
+    if (!oldPrice) return false;
+    if (!price) return true;
+    return Number(oldPrice) > Number(price);
+  }
+
+  function productIsOffer(product) {
+    return productHasDiscount(product) || productHasAnyWord(product, ["акц", "скид", "sale", "discount", "offer"]);
+  }
+
+  function productIsNew(product) {
+    return productHasAnyWord(product, ["новин", "new", "fresh", "jaun"]);
+  }
+
+  function productsByMode(products, state) {
+    var list = products || [];
+    if (state.mode === "offers") {
+      var offers = list.filter(productIsOffer);
+      list = offers.length ? offers : list.slice(0, state.limit || 12);
+    } else if (state.mode === "new") {
+      var newest = list.filter(productIsNew);
+      list = newest.length ? newest : list.slice(0, state.limit || 12);
+    }
+    if (state.limit && list.length > state.limit) {
+      list = list.slice(0, state.limit);
+    }
+    return list;
+  }
+
   function productPrice(product) {
     var edition = firstAvailableEdition(product);
     var price = edition.price != null && edition.price !== "" ? edition.price : product.price;
@@ -513,11 +567,11 @@
     var mount = root.querySelector("[data-bf-products]");
     if (!mount) return;
     var query = normalizeText(state.query);
-    var visible = sortProducts((products || []).filter(function (product) {
+    var visible = sortProducts(productsByMode(products, state).filter(function (product) {
       return productMatchesPart(product, state.activePartUid) && productMatchesQuery(product, query);
     }), state.sort);
     if (!visible.length) {
-      mount.innerHTML = '<div class="bf-products__status">Товары не найдены.</div>';
+      mount.innerHTML = '<div class="bf-products__status">' + escapeHtml(state.emptyMessage || "Товары не найдены.") + "</div>";
       return;
     }
     mount.innerHTML = visible.map(function (product) {
@@ -725,6 +779,9 @@
       activePartUid: "",
       currency: root.getAttribute("data-currency") || DEFAULT_CURRENCY,
       nextSlice: "",
+      emptyMessage: root.getAttribute("data-bf-empty-message") || "",
+      limit: Number(root.getAttribute("data-products-limit") || 0),
+      mode: root.getAttribute("data-bf-product-mode") || "",
       parts: [],
       products: [],
       query: "",

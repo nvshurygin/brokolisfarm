@@ -39,10 +39,10 @@ Open `http://127.0.0.1:4173/`.
 ```html
 <script>
 window.BrokolisFarmLoaderConfig = {
-  version: "2026-07-03-2"
+  version: "2026-07-03-3"
 };
 </script>
-<script src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/brokolisfarm-loader.js?v=2026-07-03-2"></script>
+<script src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/brokolisfarm-loader.js?v=2026-07-03-3"></script>
 ```
 
 3. Paste that snippet once into Tilda HEAD. The loader automatically pulls:
@@ -50,12 +50,15 @@ window.BrokolisFarmLoaderConfig = {
    - `dist/brokolisfarm-templates.js`
    - `dist/brokolisfarm-app.js`
    - `dist/pages/<page>.html`
-4. Create real Tilda pages for routes such as `/`, `/catalog`, `/delivery`, `/contacts`, `/privacy`, and `/terms`.
+4. Create real Tilda pages for routes such as `/`, `/catalog`, `/offers`, `/new`, `/about`, `/delivery`, `/contacts`, `/privacy`, and `/terms`.
 5. Add one HTML block to each page with its page key:
 
 ```html
 <div data-bf-page="home"></div>
 <div data-bf-page="catalog"></div>
+<div data-bf-page="offers"></div>
+<div data-bf-page="new"></div>
+<div data-bf-page="about"></div>
 <div data-bf-page="delivery"></div>
 <div data-bf-page="contacts"></div>
 <div data-bf-page="privacy"></div>
@@ -74,6 +77,9 @@ Prefer `cdn.jsdelivr.net/gh/...` over `raw.githubusercontent.com` for production
 3. Add one HTML block per page and paste the matching page file:
    - `dist/page-home.html`
    - `dist/page-catalog.html`
+   - `dist/page-offers.html`
+   - `dist/page-new.html`
+   - `dist/page-about.html`
    - `dist/page-delivery.html`
    - `dist/page-contacts.html`
    - `dist/page-privacy.html`
