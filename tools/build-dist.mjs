@@ -1,9 +1,10 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { cp, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = path.join(root, "dist");
+const loaderVersion = "2026-07-03-2";
 
 const css = await readFile(path.join(root, "src", "brokolisfarm-tilda.css"), "utf8");
 const js = await readFile(path.join(root, "src", "brokolisfarm-tilda.js"), "utf8");
@@ -32,10 +33,10 @@ const pageInit = `<script>window.BrokolisFarmTilda && window.BrokolisFarmTilda.b
 const templatesJs = `window.BrokolisFarmTemplates = ${JSON.stringify({ header, footer })};\n`;
 const loaderSnippet = `<script>
 window.BrokolisFarmLoaderConfig = {
-  version: "${new Date().toISOString().slice(0, 10)}"
+  version: "${loaderVersion}"
 };
 </script>
-<script src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/brokolisfarm-loader.js?v=${new Date().toISOString().slice(0, 10)}"></script>
+<script src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/brokolisfarm-loader.js?v=${loaderVersion}"></script>
 `;
 const loaderContainer = `<div data-bf-page="home"></div>\n`;
 
@@ -66,6 +67,10 @@ function previewDocument(title, body) {
 
 await mkdir(distDir, { recursive: true });
 await mkdir(path.join(distDir, "pages"), { recursive: true });
+await cp(path.join(root, "src", "assets"), path.join(distDir, "assets"), {
+  recursive: true,
+  force: true
+});
 await writeFile(path.join(distDir, "00-global-head.html"), globalHead);
 await writeFile(path.join(distDir, "00-global-styles.html"), headStyles);
 await writeFile(path.join(distDir, "00-global-js.html"), headJs);

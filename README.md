@@ -39,10 +39,10 @@ Open `http://127.0.0.1:4173/`.
 ```html
 <script>
 window.BrokolisFarmLoaderConfig = {
-  version: "2026-07-03-1"
+  version: "2026-07-03-2"
 };
 </script>
-<script src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/brokolisfarm-loader.js?v=2026-07-03-1"></script>
+<script src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/brokolisfarm-loader.js?v=2026-07-03-2"></script>
 ```
 
 3. Paste that snippet once into Tilda HEAD. The loader automatically pulls:
@@ -82,7 +82,7 @@ Prefer `cdn.jsdelivr.net/gh/...` over `raw.githubusercontent.com` for production
 4. On catalog/product pages, keep these data attributes:
    - `data-storepartuid="420955341102"`
    - `data-recid="2176935951"`
-5. Replace Figma asset URLs with uploaded Tilda CDN asset URLs before production if the Figma MCP asset URLs expire.
+5. Figma images are mirrored in `src/assets` and published from `dist/assets`, so production pages do not depend on Figma MCP asset URLs.
 
 `dist/tilda-custom-block.html` remains available as a fallback when global HEAD injection cannot be used.
 
