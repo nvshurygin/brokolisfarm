@@ -501,6 +501,7 @@ body.bf-mobile-menu-open {
 }
 
 .bf-store-parts {
+  align-items: center;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -521,6 +522,21 @@ body.bf-mobile-menu-open {
 .bf-store-part.is-active {
   background: var(--bf-green);
   color: #ffffff;
+}
+
+.bf-store-part.is-hidden {
+  display: none;
+}
+
+.bf-store-part_more {
+  background: #ffffff;
+  border-color: rgba(109, 172, 74, 0.45);
+  color: var(--bf-green);
+  font-weight: 500;
+}
+
+.bf-store-part_more:hover {
+  border-color: var(--bf-green);
 }
 
 .bf-products {

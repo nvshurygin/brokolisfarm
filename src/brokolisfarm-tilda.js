@@ -3,6 +3,7 @@
 
   var DEFAULT_API = "https://store.tildaapi.com/api/getproductslist/";
   var DEFAULT_CURRENCY = "€";
+  var DEFAULT_PARTS_LIMIT = 12;
   var LOCAL_FALLBACK_DATA = {
     partuid: 420955341102,
     total: 3,
@@ -378,9 +379,9 @@
     }) || firstAvailableEdition(product);
   }
 
-  function buildApiUrl(root, slice) {
+  function buildApiUrl(root, state, slice) {
     var params = new URLSearchParams();
-    params.set("storepartuid", root.getAttribute("data-storepartuid") || "");
+    params.set("storepartuid", state.activePartUid || state.rootPartUid || root.getAttribute("data-storepartuid") || "");
     params.set("recid", root.getAttribute("data-recid") || "");
     params.set("c", String(Date.now()));
     params.set("getparts", "true");
@@ -447,32 +448,55 @@
   function renderParts(root, data, state) {
     var mount = root.querySelector("[data-bf-parts]");
     if (!mount) return;
-    var parts = Array.isArray(data.parts) ? data.parts.filter(function (part) {
+    var sourceParts = state.parts && state.parts.length ? state.parts : Array.isArray(data.parts) ? data.parts : [];
+    var parts = sourceParts.filter(function (part) {
       return !part.root && !part.hideonpublic;
-    }) : [];
+    });
     if (!parts.length) {
       mount.hidden = true;
       mount.innerHTML = "";
       return;
     }
-    var buttons = ['<button class="bf-store-part is-active" type="button" data-part="">Все</button>'];
-    parts.forEach(function (part) {
+    var limit = Number(mount.getAttribute("data-bf-parts-limit") || root.getAttribute("data-bf-parts-limit") || DEFAULT_PARTS_LIMIT);
+    var expanded = mount.getAttribute("data-bf-parts-expanded") === "true";
+    var extraCount = limit > 0 ? Math.max(parts.length - limit, 0) : 0;
+    var buttons = ['<button class="bf-store-part' + (!state.activePartUid ? " is-active" : "") + '" type="button" data-part="">Все</button>'];
+    parts.forEach(function (part, index) {
+      var isExtra = limit > 0 && index >= limit;
+      var className = "bf-store-part" +
+        (String(part.uid) === String(state.activePartUid) ? " is-active" : "") +
+        (isExtra ? " bf-store-part_extra" : "") +
+        (isExtra && !expanded ? " is-hidden" : "");
       buttons.push(
-        '<button class="bf-store-part" type="button" data-part="' + escapeHtml(String(part.uid)) + '">' +
+        '<button class="' + className + '" type="button" data-part="' + escapeHtml(String(part.uid)) + '">' +
           escapeHtml(part.title || part.path && part.path.join(" / ") || "Категория") +
           "</button>"
       );
     });
+    if (extraCount) {
+      buttons.push(
+        '<button class="bf-store-part bf-store-part_more" type="button" data-bf-parts-toggle>' +
+          (expanded ? "Свернуть" : "Еще " + extraCount) +
+          "</button>"
+      );
+    }
     mount.innerHTML = buttons.join("");
     mount.hidden = false;
     mount.onclick = function (event) {
+      var toggle = event.target.closest("[data-bf-parts-toggle]");
+      if (toggle) {
+        mount.setAttribute("data-bf-parts-expanded", expanded ? "false" : "true");
+        renderParts(root, data, state);
+        return;
+      }
       var button = event.target.closest("[data-part]");
       if (!button) return;
-      state.activePartUid = button.getAttribute("data-part");
-      toArray(mount.querySelectorAll(".bf-store-part")).forEach(function (item) {
-        item.classList.toggle("is-active", item === button);
-      });
-      renderProducts(root, state.products, state);
+      var nextPartUid = button.getAttribute("data-part");
+      if (state.activePartUid === nextPartUid && state.products.length) return;
+      state.activePartUid = nextPartUid;
+      state.slice = 1;
+      state.nextSlice = "";
+      load(root, state, false);
     };
   }
 
@@ -711,6 +735,8 @@
 
   function bindCategoryShortcuts(root, state) {
     toArray(root.querySelectorAll("[data-bf-category]")).forEach(function (link) {
+      if (link.getAttribute("data-bf-category-bound") === "true") return;
+      link.setAttribute("data-bf-category-bound", "true");
       link.addEventListener("click", function () {
         var name = link.getAttribute("data-bf-category").toLowerCase();
         var part = state.parts.find(function (item) {
@@ -718,7 +744,9 @@
         });
         if (part) {
           state.activePartUid = String(part.uid);
-          renderProducts(root, state.products, state);
+          state.slice = 1;
+          state.nextSlice = "";
+          load(root, state, false);
         }
       });
     });
@@ -756,7 +784,9 @@
 
   function applyCatalogData(root, state, data, append) {
     var products = Array.isArray(data.products) ? data.products : [];
-    state.parts = Array.isArray(data.parts) ? data.parts : [];
+    if (Array.isArray(data.parts) && data.parts.length) {
+      state.parts = data.parts;
+    }
     state.products = append ? state.products.concat(products) : products;
     state.nextSlice = data.nextslice || "";
     renderParts(root, data, state);
@@ -771,7 +801,7 @@
     if (!append && mount) {
       mount.innerHTML = '<div class="bf-products__status">Загружаем товары...</div>';
     }
-    requestJson(buildApiUrl(root, state.slice))
+    requestJson(buildApiUrl(root, state, state.slice))
       .then(function (data) {
         applyCatalogData(root, state, data, append);
       })
@@ -801,6 +831,7 @@
       parts: [],
       products: [],
       query: "",
+      rootPartUid: root.getAttribute("data-storepartuid") || "",
       sort: "",
       slice: 1
     };
