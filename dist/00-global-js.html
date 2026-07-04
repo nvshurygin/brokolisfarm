@@ -312,6 +312,90 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     });
   }
 
+  function getCurrentCart() {
+    if (window.tcart && typeof window.tcart === "object") return window.tcart;
+    if (typeof localStorage === "undefined") return { products: [] };
+    try {
+      return JSON.parse(localStorage.getItem("tcart") || '{"products":[]}');
+    } catch (error) {
+      return { products: [] };
+    }
+  }
+
+  function hasNativeTildaCartWindow() {
+    return !!document.querySelector(".t706__cartwin, .t706__sidebar, .t706__cartpage");
+  }
+
+  function tryOpenNativeCart() {
+    if (typeof window.tcart__openCart === "function" && hasNativeTildaCartWindow()) {
+      try {
+        window.tcart__openCart();
+        return true;
+      } catch (error) {}
+    }
+    var nativeOpener = document.querySelector('.t706__carticon, .t-menuwidgeticons__link_cart:not([data-bf-cart-open]), a[href="#opencart"]:not([data-bf-cart-open])');
+    if (nativeOpener) {
+      nativeOpener.click();
+      return true;
+    }
+    return false;
+  }
+
+  function renderCustomCartDrawer() {
+    var drawer = document.querySelector("[data-bf-cart-drawer]");
+    if (!drawer) {
+      drawer = document.createElement("div");
+      drawer.className = "bf-cart-drawer";
+      drawer.setAttribute("data-bf-cart-drawer", "true");
+      document.body.appendChild(drawer);
+    }
+    var cart = getCurrentCart();
+    var products = Array.isArray(cart.products)
+      ? cart.products.filter(function (product) {
+          return product && product.deleted !== "yes" && (Number(product.quantity) || 0) > 0;
+        })
+      : [];
+    var currency = cart.currency_txt_l || cart.currency || DEFAULT_CURRENCY;
+    var total = products.reduce(function (sum, product) {
+      return sum + (Number(product.amount) || (Number(product.price) || 0) * (Number(product.quantity) || 1));
+    }, 0);
+    var rows = products.length
+      ? products.map(function (product) {
+          var qty = Number(product.quantity) || 1;
+          var amount = Number(product.amount) || (Number(product.price) || 0) * qty;
+          return (
+            '<div class="bf-cart-drawer__item">' +
+              (product.img ? '<img src="' + escapeHtml(product.img) + '" alt="' + escapeHtml(product.name || "") + '" />' : '<span class="bf-cart-drawer__thumb"></span>') +
+              '<div><strong>' + escapeHtml(product.name || "Product") + '</strong><span>' + escapeHtml(qty + " × " + money(product.price || 0, currency)) + '</span></div>' +
+              '<b>' + escapeHtml(money(amount, currency)) + '</b>' +
+            "</div>"
+          );
+        }).join("")
+      : '<div class="bf-cart-drawer__empty">Grozs ir tukšs</div>';
+    drawer.innerHTML =
+      '<button class="bf-cart-drawer__backdrop" type="button" data-bf-cart-close aria-label="Aizvērt"></button>' +
+      '<aside class="bf-cart-drawer__panel" aria-label="Grozs">' +
+        '<div class="bf-cart-drawer__head"><h2>Grozs</h2><button type="button" data-bf-cart-close aria-label="Aizvērt">×</button></div>' +
+        '<div class="bf-cart-drawer__items">' + rows + "</div>" +
+        '<div class="bf-cart-drawer__total"><span>Kopā</span><strong>' + escapeHtml(money(total, currency)) + "</strong></div>" +
+      "</aside>";
+    return drawer;
+  }
+
+  function openCustomCartDrawer() {
+    var drawer = renderCustomCartDrawer();
+    requestAnimationFrame(function () {
+      drawer.classList.add("is-open");
+      document.body.classList.add("bf-cart-drawer-open");
+    });
+  }
+
+  function closeCustomCartDrawer() {
+    var drawer = document.querySelector("[data-bf-cart-drawer]");
+    if (drawer) drawer.classList.remove("is-open");
+    document.body.classList.remove("bf-cart-drawer-open");
+  }
+
   function patchTildaCartRedraw() {
     if (typeof window.tcart__reDrawCartIcon !== "function" || window.tcart__reDrawCartIcon.bfWrapped) {
       return;
@@ -330,12 +414,18 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       document.documentElement.setAttribute("data-bf-cart-bridge-bound", "true");
       document.addEventListener("click", function (event) {
         var opener = event.target.closest("[data-bf-cart-open]");
-        if (!opener || typeof window.tcart__openCart !== "function") return;
+        if (!opener) return;
         event.preventDefault();
         event.stopPropagation();
-        window.tcart__openCart();
         syncCustomCartCounter();
+        if (!tryOpenNativeCart()) openCustomCartDrawer();
       }, true);
+      document.addEventListener("click", function (event) {
+        if (event.target.closest("[data-bf-cart-close]")) closeCustomCartDrawer();
+      });
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") closeCustomCartDrawer();
+      });
       document.addEventListener("click", function (event) {
         if (typeof window.tcart__addProduct !== "function" || !event.target.closest('[href^="#order"], .t706__product-plus, .t706__product-minus, .t706__product-del')) return;
         setTimeout(syncCustomCartCounter, 250);
