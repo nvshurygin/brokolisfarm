@@ -1088,6 +1088,84 @@
     footerMount.setAttribute("data-bf-rendered", "true");
   }
 
+  function collectTildaProductData(product) {
+    var data = null;
+    if (typeof window.t_store__collectProductDataByElement === "function") {
+      try {
+        data = window.t_store__collectProductDataByElement(product);
+      } catch (error) {
+        data = null;
+      }
+    }
+    if (!data) {
+      var name = product.querySelector(".js-product-name");
+      var price = product.querySelector(".js-product-price");
+      var sku = product.querySelector(".js-store-prod-sku");
+      var image = product.getAttribute("data-product-img");
+      if (!image) {
+        var imageNode = product.querySelector(".js-product-img");
+        image = imageNode && (imageNode.getAttribute("data-original") || imageNode.getAttribute("src"));
+      }
+      data = {
+        name: name ? normalizeI18nText(name.textContent) : "",
+        price: Number(normalizePrice(price && (price.getAttribute("data-product-price-def") || price.textContent))) || 0,
+        uid: product.getAttribute("data-product-uid") || product.getAttribute("data-product-lid") || "",
+        inv: parseInt(product.getAttribute("data-product-inv"), 10) || "",
+        quantity: 1
+      };
+      if (sku) data.sku = normalizeI18nText(sku.textContent);
+      if (image) data.img = image;
+    }
+    if (!data.quantity) data.quantity = 1;
+    return data;
+  }
+
+  function bindTildaProductFallbackButton(product, button) {
+    if (!product || !button || button.getAttribute("data-bf-product-cart-bound") === "true") return;
+    button.setAttribute("data-bf-product-cart-bound", "true");
+    button.addEventListener("click", function (event) {
+      event.preventDefault();
+      var nativeButton = product.querySelector(".t-store__prod-popup__btn-wrapper .t-store__prod-popup__btn, .js-store-prod-popup-buy-btn");
+      if (nativeButton && nativeButton !== button) {
+        nativeButton.click();
+        setTimeout(syncCustomCartCounter, 250);
+        return;
+      }
+      if (typeof window.tcart__addProduct !== "function") return;
+      var productData = collectTildaProductData(product);
+      window.tcart__addProduct(productData);
+      syncCustomCartCounter();
+      button.classList.add("is-added");
+      setTimeout(function () {
+        button.classList.remove("is-added");
+      }, 700);
+    });
+  }
+
+  function ensureTildaProductFallbackButton(product, info) {
+    if (!product || !info) return;
+    var nativeButton = product.querySelector(".t-store__prod-popup__btn-wrapper .t-store__prod-popup__btn, .js-store-prod-popup-buy-btn");
+    var fallback = info.querySelector(".bf-tilda-product-action");
+    if (nativeButton) {
+      if (fallback && fallback.parentNode) fallback.parentNode.removeChild(fallback);
+      return;
+    }
+    if (!fallback) {
+      fallback = document.createElement("div");
+      fallback.className = "bf-tilda-product-action";
+      fallback.innerHTML = '<button class="bf-tilda-product-action__button" type="button" data-bf-i18n-text="Pievienot grozam">Pievienot grozam</button>';
+      var anchor = info.querySelector(".js-product-controls-wrapper") ||
+        info.querySelector(".t-store__prod-popup__links-wrapper") ||
+        info.querySelector(".t-store__prod-popup__text");
+      if (anchor) {
+        info.insertBefore(fallback, anchor);
+      } else {
+        info.appendChild(fallback);
+      }
+    }
+    bindTildaProductFallbackButton(product, fallback.querySelector("button"));
+  }
+
   function ensureTildaProductDecor(product) {
     if (!product) return;
     product.classList.add("bf-tilda-product");
@@ -1102,6 +1180,7 @@
       shell.insertBefore(breadcrumb, product);
     }
     var info = product.querySelector(".t-store__prod-popup__info") || product.querySelector(".t-store__prod-popup__col-right");
+    ensureTildaProductFallbackButton(product, info);
     if (info && !info.querySelector(".bf-tilda-product-note")) {
       var note = document.createElement("div");
       note.className = "bf-tilda-product-note";
