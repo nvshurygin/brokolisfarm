@@ -202,17 +202,6 @@ body {
   color: #ffffff;
 }
 
-.bf-translate-widget,
-.goog-te-banner-frame,
-.goog-te-balloon-frame,
-#goog-gt-tt {
-  display: none !important;
-}
-
-body {
-  top: 0 !important;
-}
-
 .bf-nav {
   align-items: center;
   border-bottom: 1px solid var(--bf-border);

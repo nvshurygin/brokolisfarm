@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = path.join(root, "dist");
-const loaderVersion = "2026-07-03-6";
+const loaderVersion = "2026-07-04-1";
 
 const css = await readFile(path.join(root, "src", "brokolisfarm-tilda.css"), "utf8");
 const js = await readFile(path.join(root, "src", "brokolisfarm-tilda.js"), "utf8");
@@ -101,7 +101,7 @@ await writeFile(path.join(distDir, "tilda-home-block.html"), homeBlock);
 await writeFile(path.join(distDir, "tilda-custom-block.html"), `${globalHead}\n${homeBlock}`);
 
 const loaderPreview = `<!doctype html>
-<html lang="ru">
+<html lang="lv">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -123,7 +123,7 @@ const loaderPreview = `<!doctype html>
 await writeFile(path.join(root, "loader.html"), loaderPreview);
 
 const loaderAttributePreview = `<!doctype html>
-<html lang="ru">
+<html lang="lv">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
