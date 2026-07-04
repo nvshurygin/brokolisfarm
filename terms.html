@@ -16,6 +16,7 @@
   --bf-border: #d9d9d9;
   --bf-shell: 1160px;
   --bf-radius: 10px;
+  --bf-header-height: 110px;
   --bf-font: "Ubuntu", Arial, sans-serif;
   --bf-accent-font: "Comfortaa", "Ubuntu", Arial, sans-serif;
 }
@@ -54,6 +55,7 @@ body {
   color: var(--bf-text);
   font-family: var(--bf-font);
   min-width: 320px;
+  padding-top: var(--bf-header-height);
 }
 
 .bf-page a {
@@ -168,10 +170,12 @@ body {
 .bf-header {
   background: #ffffff;
   color: var(--bf-text);
-  position: sticky;
-  position: -webkit-sticky;
+  left: 0;
+  position: fixed;
+  right: 0;
   top: 0;
   transition: box-shadow 0.22s ease;
+  width: 100%;
   z-index: 99990;
 }
 
@@ -1328,14 +1332,17 @@ body.bf-tilda-product-page {
 
 body.bf-tilda-product-page #allrecords {
   background: #ffffff;
+  padding-top: var(--bf-header-height);
 }
 
 body.bf-tilda-product-page #t-header {
   background: #ffffff;
-  position: sticky;
-  position: -webkit-sticky;
-  top: 0;
+  position: static;
   z-index: 99990;
+}
+
+.bf-tilda-cart-host {
+  display: none !important;
 }
 
 body.bf-tilda-product-page .bf-tilda-product-record {
@@ -1641,6 +1648,10 @@ body.bf-tilda-product-page .bf-footer {
 }
 
 @media (max-width: 960px) {
+  :root {
+    --bf-header-height: 108px;
+  }
+
   html {
     scroll-padding-top: 108px;
   }
@@ -1845,17 +1856,16 @@ body.bf-tilda-product-page .bf-footer {
 }
 
 @media (max-width: 640px) {
+  :root {
+    --bf-header-height: 104px;
+  }
+
   html {
     scroll-padding-top: 104px;
   }
 
   .bf-page [id] {
     scroll-margin-top: 104px;
-  }
-
-  body.bf-tilda-product-page #t-header {
-    position: sticky;
-    top: 0;
   }
 
   .bf-shell {
@@ -2319,23 +2329,112 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     updateStickyHeaderState();
   }
 
+  function countCartProducts(cart) {
+    if (!cart || !Array.isArray(cart.products)) return null;
+    return cart.products.reduce(function (total, product) {
+      if (!product || product.deleted === "yes") return total;
+      if (product.single === "y") return total + 1;
+      return total + (Number(product.quantity) || 0);
+    }, 0);
+  }
+
   function getStoredCartTotal() {
-    if (window.tcart && typeof window.tcart.total !== "undefined") {
-      return Number(window.tcart.total) || 0;
+    if (window.tcart) {
+      var windowCount = countCartProducts(window.tcart);
+      if (windowCount !== null) return windowCount;
+      if (typeof window.tcart.total !== "undefined") return Number(window.tcart.total) || 0;
     }
     if (typeof localStorage === "undefined") return 0;
     try {
       var stored = JSON.parse(localStorage.getItem("tcart") || "{}");
+      var storedCount = countCartProducts(stored);
+      if (storedCount !== null) return storedCount;
       if (typeof stored.total !== "undefined") return Number(stored.total) || 0;
-      if (!Array.isArray(stored.products)) return 0;
-      return stored.products.reduce(function (total, product) {
-        if (!product || product.deleted === "yes") return total;
-        if (product.single === "y") return total + 1;
-        return total + (Number(product.quantity) || 0);
-      }, 0);
     } catch (error) {
       return 0;
     }
+    return 0;
+  }
+
+  function ensureMinimalTildaCartHost() {
+    if (document.querySelector(".t706")) return;
+    var host = document.createElement("div");
+    host.className = "t706 bf-tilda-cart-host";
+    host.setAttribute("data-opencart-onorder", "");
+    host.setAttribute("data-project-currency", "€");
+    host.setAttribute("data-project-currency-side", "l");
+    host.setAttribute("data-project-currency-sep", ",");
+    host.setAttribute("data-project-currency-dec", "00");
+    host.setAttribute("aria-hidden", "true");
+    var allrecords = document.getElementById("allrecords");
+    (allrecords || document.body).appendChild(host);
+  }
+
+  function ensureTcartObject() {
+    var cart = window.tcart;
+    if (!cart && typeof localStorage !== "undefined") {
+      try {
+        cart = JSON.parse(localStorage.getItem("tcart") || "null");
+      } catch (error) {
+        cart = null;
+      }
+    }
+    if (!cart || typeof cart !== "object") cart = {};
+    if (!Array.isArray(cart.products)) cart.products = [];
+    if (!cart.currency) cart.currency = "€";
+    if (!cart.currency_txt) cart.currency_txt = "€";
+    if (!cart.currency_txt_l) cart.currency_txt_l = "€";
+    if (!cart.currency_side) cart.currency_side = "l";
+    if (!cart.currency_sep) cart.currency_sep = ",";
+    if (!cart.currency_dec) cart.currency_dec = "00";
+    window.tcart = cart;
+    return cart;
+  }
+
+  function sameCartProduct(a, b) {
+    if (!a || !b) return false;
+    if (a.uid && b.uid && String(a.uid) === String(b.uid)) return true;
+    return a.sku && b.sku && String(a.sku) === String(b.sku);
+  }
+
+  function recalcAndSaveTcart(cart) {
+    var products = Array.isArray(cart.products) ? cart.products : [];
+    var totalQty = 0;
+    var totalAmount = 0;
+    products.forEach(function (product) {
+      if (!product || product.deleted === "yes") return;
+      var qty = Number(product.quantity) || 0;
+      var price = Number(product.price) || 0;
+      product.amount = Math.round(price * qty * 100) / 100;
+      totalQty += qty;
+      totalAmount += product.amount;
+    });
+    cart.total = totalQty;
+    cart.prodamount = Math.round(totalAmount * 100) / 100;
+    cart.amount = cart.prodamount;
+    cart.updated = Math.floor(Date.now() / 1000);
+    try {
+      localStorage.setItem("tcart", JSON.stringify(cart));
+    } catch (error) {}
+  }
+
+  function addProductToLocalTcart(productData) {
+    var cart = ensureTcartObject();
+    var quantity = Number(productData.quantity) || 1;
+    var existing = cart.products.find(function (product) {
+      return sameCartProduct(product, productData);
+    });
+    if (existing) {
+      existing.quantity = (Number(existing.quantity) || 0) + quantity;
+    } else {
+      productData.quantity = quantity;
+      productData.amount = Math.round((Number(productData.price) || 0) * quantity * 100) / 100;
+      productData.ts = Math.floor(Date.now() / 1000);
+      cart.products.push(productData);
+    }
+    recalcAndSaveTcart(cart);
+    syncCustomCartCounter();
+    return true;
   }
 
   function syncCustomCartCounter() {
@@ -3257,9 +3356,17 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
         setTimeout(syncCustomCartCounter, 250);
         return;
       }
-      if (typeof window.tcart__addProduct !== "function") return;
       var productData = collectTildaProductData(product);
-      window.tcart__addProduct(productData);
+      ensureMinimalTildaCartHost();
+      if (typeof window.tcart__addProduct === "function") {
+        try {
+          window.tcart__addProduct(productData);
+        } catch (error) {
+          addProductToLocalTcart(productData);
+        }
+      } else {
+        addProductToLocalTcart(productData);
+      }
       syncCustomCartCounter();
       button.classList.add("is-added");
       setTimeout(function () {
