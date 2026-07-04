@@ -26,6 +26,19 @@ body {
   font-family: var(--bf-font);
 }
 
+.t706__carticon,
+.t706__carticon:not([class*="t-menuwidgeticons__button_hidden"]),
+.t985__search-widget-button,
+.t985__search-widget-button:not([class*="t-menuwidgeticons__button_hidden"]),
+.t-search-widget__button,
+.t1002__wishlisticon,
+.t1002__wishlisticon:not([class*="t-menuwidgeticons__button_hidden"]) {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
 .bf-page {
   background: #ffffff;
   color: var(--bf-text);

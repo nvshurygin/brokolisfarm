@@ -36,6 +36,19 @@ body {
   font-family: var(--bf-font);
 }
 
+.t706__carticon,
+.t706__carticon:not([class*="t-menuwidgeticons__button_hidden"]),
+.t985__search-widget-button,
+.t985__search-widget-button:not([class*="t-menuwidgeticons__button_hidden"]),
+.t-search-widget__button,
+.t1002__wishlisticon,
+.t1002__wishlisticon:not([class*="t-menuwidgeticons__button_hidden"]) {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
 .bf-page {
   background: #ffffff;
   color: var(--bf-text);
@@ -2086,9 +2099,24 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
   }
 
   var I18N_TEXT = {
+    lv: {
+      "Фермерские продукты BrokolisFarm": "Svaigi BrokolisFarm produkti",
+      "Свежие продукты из каталога Tilda. Карточки можно добавлять в стандартную корзину Tilda через нативный checkout.": "Izvēlieties gaļu, delikateses, piena produktus, augļus, dārzeņus un gatavās izlases ar ērtu piegādi mājās.",
+      "Каталог": "Katalogs",
+      "Поиск": "Meklēšana",
+      "Сортировка": "Kārtošana",
+      "Название, SKU или описание": "Nosaukums, SKU vai apraksts",
+      "По умолчанию": "Pēc noklusējuma",
+      "Сначала дешевле": "Sākumā lētākās",
+      "Сначала дороже": "Sākumā dārgākās",
+      "Все": "Visi",
+      "Еще": "Vairāk sadaļu",
+      "Свернуть": "Mazāk sadaļu"
+    },
     ru: {
       "Latvija": "Латвия",
       "Valoda": "Язык",
+      "Navigācija": "Навигация",
       "Katalogs": "Каталог",
       "% Akcijas": "% Акции",
       "Akcijas": "Акции",
@@ -2129,6 +2157,9 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       "Dzērieni": "Напитки",
       "Svaigas gaļas izlase": "Подборка свежего мяса",
       "Ielādējam preces...": "Загружаем товары...",
+      "Visi": "Все",
+      "Vairāk sadaļu": "Еще",
+      "Mazāk sadaļu": "Свернуть",
       "Rādīt vēl": "Показать еще",
       "Dabiski produkti ar ērtu piegādi": "Натуральные продукты с удобной доставкой",
       "BrokolisFarm apvieno svaigu gaļu, vietējos produktus, delikateses un sezonas atradumus vienā pasūtījumā.": "BrokolisFarm собирает свежее мясо, местные продукты, деликатесы и сезонные находки в одном заказе.",
@@ -2242,10 +2273,21 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       "Neizdevās ielādēt preces. Lūdzu, mēģiniet vēlreiz.": "Не удалось загрузить товары. Попробуйте еще раз.",
       "Šobrīd šī izlase tiek atjaunota. Lūdzu, ieskatieties vēlāk vai atveriet pilno katalogu.": "Сейчас эта подборка обновляется. Загляните позже или откройте полный каталог.",
       "Šobrīd jaunumu izlase tiek atjaunota. Lūdzu, ieskatieties vēlāk vai atveriet pilno katalogu.": "Сейчас подборка новинок обновляется. Загляните позже или откройте полный каталог."
+      ,
+      "Фермерские продукты BrokolisFarm": "Свежие продукты BrokolisFarm",
+      "Свежие продукты из каталога Tilda. Карточки можно добавлять в стандартную корзину Tilda через нативный checkout.": "Выбирайте мясо, деликатесы, молочные продукты, фрукты, овощи и готовые подборки с удобной доставкой домой.",
+      "Каталог": "Каталог",
+      "Поиск": "Поиск",
+      "Сортировка": "Сортировка",
+      "Название, SKU или описание": "Название, SKU или описание",
+      "По умолчанию": "По умолчанию",
+      "Сначала дешевле": "Сначала дешевле",
+      "Сначала дороже": "Сначала дороже"
     },
     en: {
       "Latvija": "Latvia",
       "Valoda": "Language",
+      "Navigācija": "Navigation",
       "Katalogs": "Catalog",
       "% Akcijas": "% Offers",
       "Akcijas": "Offers",
@@ -2286,6 +2328,9 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       "Dzērieni": "Drinks",
       "Svaigas gaļas izlase": "Fresh meat selection",
       "Ielādējam preces...": "Loading products...",
+      "Visi": "All",
+      "Vairāk sadaļu": "More",
+      "Mazāk sadaļu": "Collapse",
       "Rādīt vēl": "Show more",
       "Dabiski produkti ar ērtu piegādi": "Natural products with easy delivery",
       "BrokolisFarm apvieno svaigu gaļu, vietējos produktus, delikateses un sezonas atradumus vienā pasūtījumā.": "BrokolisFarm brings fresh meat, local products, delicacies and seasonal finds into one order.",
@@ -2398,6 +2443,154 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       "Neizdevās ielādēt preces. Lūdzu, mēģiniet vēlreiz.": "Could not load products. Please try again.",
       "Šobrīd šī izlase tiek atjaunota. Lūdzu, ieskatieties vēlāk vai atveriet pilno katalogu.": "This selection is being updated. Please check later or open the full catalog.",
       "Šobrīd jaunumu izlase tiek atjaunota. Lūdzu, ieskatieties vēlāk vai atveriet pilno katalogu.": "The new items selection is being updated. Please check later or open the full catalog."
+      ,
+      "Фермерские продукты BrokolisFarm": "Fresh BrokolisFarm products",
+      "Свежие продукты из каталога Tilda. Карточки можно добавлять в стандартную корзину Tilda через нативный checkout.": "Choose meat, delicacies, dairy products, fruit, vegetables and ready selections with convenient home delivery.",
+      "Каталог": "Catalog",
+      "Поиск": "Search",
+      "Сортировка": "Sorting",
+      "Название, SKU или описание": "Name, SKU or description",
+      "По умолчанию": "Default",
+      "Сначала дешевле": "Lowest price first",
+      "Сначала дороже": "Highest price first"
+    }
+  };
+
+  var I18N_CATALOG_TEXT = {
+    lv: {
+      "Augli": "Augļi",
+      "Ogas": "Ogas",
+      "Darzeni": "Dārzeņi",
+      "Zalumi": "Zaļumi",
+      "Govs": "Liellopu gaļa",
+      "Augu Piens Veganu Produkti": "Augu piens un vegānu produkti",
+      "Aitas Un Kazas Piens": "Aitas un kazas piens",
+      "Olas": "Olas",
+      "Siers": "Siers",
+      "Svaiga Gala": "Svaiga gaļa",
+      "Galas Izstradajumi": "Gaļas izstrādājumi",
+      "Saldeti Edieni": "Saldētie ēdieni",
+      "Pastetes Un Humuss": "Pastētes un humuss",
+      "Zivs Un Juras Veltes": "Zivis un jūras veltes",
+      "Kulinarija Un Gatavi Edieni": "Kulinārija un gatavie ēdieni",
+      "Maize": "Maize",
+      "Saldumi Cepumi Salas Uzkodas": "Saldumi, cepumi un sāļās uzkodas",
+      "Konditoreja Un Mikla": "Konditoreja un mīkla",
+      "Granolas Un Brokastu Parslas": "Granolas un brokastu pārslas",
+      "Risi Un Graudaugi": "Rīsi un graudaugi",
+      "Garsvielas": "Garšvielas",
+      "Makaroni Un Nudeles": "Makaroni un nūdeles",
+      "Milti Un Miltu Maisijumi": "Milti un miltu maisījumi",
+      "Merces Ellas Un Etiki": "Mērces, eļļas un etiķi",
+      "Zidainiem Un Berniem": "Zīdaiņiem un bērniem",
+      "Saldejums": "Saldējums",
+      "Konservejumi": "Konservējumi",
+      "Rieksti Un Seklas": "Rieksti un sēklas",
+      "Zaveti Augli": "Žāvēti augļi",
+      "Sukades": "Sukādes",
+      "Ievarijumi Sirupi": "Ievārījumi un sīrupi",
+      "Medus": "Medus",
+      "Svaigi Spiesta Sula Un Smutiji": "Svaigi spiestas sulas un smūtiji",
+      "Udens Sula Shoti": "Ūdens, sulas un šoti",
+      "Teja Kafija Kakao": "Tēja, kafija un kakao",
+      "Kombuca Limonades": "Kombuča un limonādes",
+      "Dzirkstosais Vins Un Sampanietis": "Dzirkstošais vīns un šampanietis",
+      "Citi": "Citi",
+      "Davanas Trauki Roku Darbs Ziedi Svetki": "Dāvanas, trauki, roku darbs, ziedi un svētki",
+      "Majas Smarzas Tirisanas Lidzekli Aromatic 89": "Mājas smaržas un tīrīšanas līdzekļi",
+      "FRUITS": "Augļi",
+      "Kategorija": "Kategorija",
+      "Категория": "Kategorija"
+    },
+    ru: {
+      "Augli": "Фрукты",
+      "Ogas": "Ягоды",
+      "Darzeni": "Овощи",
+      "Zalumi": "Зелень",
+      "Govs": "Говядина",
+      "Augu Piens Veganu Produkti": "Растительное молоко и веганские продукты",
+      "Aitas Un Kazas Piens": "Овечье и козье молоко",
+      "Olas": "Яйца",
+      "Siers": "Сыр",
+      "Svaiga Gala": "Свежее мясо",
+      "Galas Izstradajumi": "Мясные изделия",
+      "Saldeti Edieni": "Замороженные продукты",
+      "Pastetes Un Humuss": "Паштеты и хумус",
+      "Zivs Un Juras Veltes": "Рыба и морепродукты",
+      "Kulinarija Un Gatavi Edieni": "Кулинария и готовые блюда",
+      "Maize": "Хлеб",
+      "Saldumi Cepumi Salas Uzkodas": "Сладости, печенье и соленые закуски",
+      "Konditoreja Un Mikla": "Кондитерские изделия и тесто",
+      "Granolas Un Brokastu Parslas": "Гранола и хлопья для завтрака",
+      "Risi Un Graudaugi": "Рис и крупы",
+      "Garsvielas": "Специи",
+      "Makaroni Un Nudeles": "Макароны и лапша",
+      "Milti Un Miltu Maisijumi": "Мука и мучные смеси",
+      "Merces Ellas Un Etiki": "Соусы, масла и уксусы",
+      "Zidainiem Un Berniem": "Для младенцев и детей",
+      "Saldejums": "Мороженое",
+      "Konservejumi": "Консервы",
+      "Rieksti Un Seklas": "Орехи и семена",
+      "Zaveti Augli": "Сухофрукты",
+      "Sukades": "Цукаты",
+      "Ievarijumi Sirupi": "Варенье и сиропы",
+      "Medus": "Мед",
+      "Svaigi Spiesta Sula Un Smutiji": "Свежевыжатые соки и смузи",
+      "Udens Sula Shoti": "Вода, соки и шоты",
+      "Teja Kafija Kakao": "Чай, кофе и какао",
+      "Kombuca Limonades": "Комбуча и лимонады",
+      "Dzirkstosais Vins Un Sampanietis": "Игристое вино и шампанское",
+      "Citi": "Другое",
+      "Davanas Trauki Roku Darbs Ziedi Svetki": "Подарки, посуда, ручная работа, цветы и праздники",
+      "Majas Smarzas Tirisanas Lidzekli Aromatic 89": "Ароматы для дома и средства для уборки",
+      "FRUITS": "Фрукты",
+      "Kategorija": "Категория",
+      "Категория": "Категория"
+    },
+    en: {
+      "Augli": "Fruit",
+      "Ogas": "Berries",
+      "Darzeni": "Vegetables",
+      "Zalumi": "Greens",
+      "Govs": "Beef",
+      "Augu Piens Veganu Produkti": "Plant milk and vegan products",
+      "Aitas Un Kazas Piens": "Sheep and goat milk",
+      "Olas": "Eggs",
+      "Siers": "Cheese",
+      "Svaiga Gala": "Fresh meat",
+      "Galas Izstradajumi": "Meat products",
+      "Saldeti Edieni": "Frozen foods",
+      "Pastetes Un Humuss": "Pates and hummus",
+      "Zivs Un Juras Veltes": "Fish and seafood",
+      "Kulinarija Un Gatavi Edieni": "Cookery and ready meals",
+      "Maize": "Bread",
+      "Saldumi Cepumi Salas Uzkodas": "Sweets, cookies and salty snacks",
+      "Konditoreja Un Mikla": "Pastry and dough",
+      "Granolas Un Brokastu Parslas": "Granola and breakfast cereals",
+      "Risi Un Graudaugi": "Rice and grains",
+      "Garsvielas": "Spices",
+      "Makaroni Un Nudeles": "Pasta and noodles",
+      "Milti Un Miltu Maisijumi": "Flour and baking mixes",
+      "Merces Ellas Un Etiki": "Sauces, oils and vinegars",
+      "Zidainiem Un Berniem": "Babies and children",
+      "Saldejums": "Ice cream",
+      "Konservejumi": "Preserves",
+      "Rieksti Un Seklas": "Nuts and seeds",
+      "Zaveti Augli": "Dried fruit",
+      "Sukades": "Candied fruit",
+      "Ievarijumi Sirupi": "Jams and syrups",
+      "Medus": "Honey",
+      "Svaigi Spiesta Sula Un Smutiji": "Fresh juices and smoothies",
+      "Udens Sula Shoti": "Water, juices and shots",
+      "Teja Kafija Kakao": "Tea, coffee and cocoa",
+      "Kombuca Limonades": "Kombucha and lemonades",
+      "Dzirkstosais Vins Un Sampanietis": "Sparkling wine and champagne",
+      "Citi": "Other",
+      "Davanas Trauki Roku Darbs Ziedi Svetki": "Gifts, tableware, handmade goods, flowers and holidays",
+      "Majas Smarzas Tirisanas Lidzekli Aromatic 89": "Home fragrances and cleaning products",
+      "FRUITS": "Fruit",
+      "Kategorija": "Category",
+      "Категория": "Category"
     }
   };
 
@@ -2408,8 +2601,10 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
   function localizeText(value, lang) {
     lang = lang || currentLanguage();
     var source = normalizeI18nText(value);
-    if (!source || lang === DEFAULT_LANGUAGE) return source;
-    return (I18N_TEXT[lang] && I18N_TEXT[lang][source]) || source;
+    if (!source) return source;
+    return (I18N_TEXT[lang] && I18N_TEXT[lang][source]) ||
+      (I18N_CATALOG_TEXT[lang] && I18N_CATALOG_TEXT[lang][source]) ||
+      source;
   }
 
   function currentLanguage() {
@@ -2451,7 +2646,29 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       ["placeholder", "aria-label", "alt", "title"].forEach(function (attr) {
         translateAttribute(element, attr, lang);
       });
-      if (element.children.length || !element.childNodes.length) return;
+      if (element.children.length) {
+        var textNodes = toArray(element.childNodes).filter(function (node) {
+          return node.nodeType === 3 && normalizeI18nText(node.nodeValue);
+        });
+        if (!textNodes.length) return;
+        var nodeSourceAttr = "data-bf-i18n-text-nodes";
+        var nodeSources = parseJson(element.getAttribute(nodeSourceAttr), null);
+        if (!Array.isArray(nodeSources)) {
+          nodeSources = textNodes.map(function (node) {
+            return normalizeI18nText(node.nodeValue);
+          });
+          element.setAttribute(nodeSourceAttr, JSON.stringify(nodeSources));
+        }
+        textNodes.forEach(function (node, index) {
+          var source = nodeSources[index] || normalizeI18nText(node.nodeValue);
+          var translated = localizeText(source, lang);
+          var current = normalizeI18nText(node.nodeValue);
+          if (!current || current === translated) return;
+          node.nodeValue = node.nodeValue.replace(current, translated);
+        });
+        return;
+      }
+      if (!element.childNodes.length) return;
       var source = element.getAttribute("data-bf-i18n-text");
       if (!source) {
         source = normalizeI18nText(element.textContent);
@@ -2653,6 +2870,10 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     return null;
   }
 
+  function partTitle(part) {
+    return part.title || part.path && part.path.join(" / ") || "Kategorija";
+  }
+
   function renderParts(root, data, state) {
     var mount = root.querySelector("[data-bf-parts]");
     if (!mount) return;
@@ -2668,27 +2889,31 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     var limit = Number(mount.getAttribute("data-bf-parts-limit") || root.getAttribute("data-bf-parts-limit") || DEFAULT_PARTS_LIMIT);
     var expanded = mount.getAttribute("data-bf-parts-expanded") === "true";
     var extraCount = limit > 0 ? Math.max(parts.length - limit, 0) : 0;
-    var buttons = ['<button class="bf-store-part' + (!state.activePartUid ? " is-active" : "") + '" type="button" data-part="">Все</button>'];
+    var buttons = ['<button class="bf-store-part' + (!state.activePartUid ? " is-active" : "") + '" type="button" data-part="" data-bf-i18n-text="Visi">' + escapeHtml(localizeText("Visi")) + "</button>"];
     parts.forEach(function (part, index) {
+      var title = partTitle(part);
       var isExtra = limit > 0 && index >= limit;
       var className = "bf-store-part" +
         (String(part.uid) === String(state.activePartUid) ? " is-active" : "") +
         (isExtra ? " bf-store-part_extra" : "") +
         (isExtra && !expanded ? " is-hidden" : "");
       buttons.push(
-        '<button class="' + className + '" type="button" data-part="' + escapeHtml(String(part.uid)) + '">' +
-          escapeHtml(part.title || part.path && part.path.join(" / ") || "Категория") +
+        '<button class="' + className + '" type="button" data-part="' + escapeHtml(String(part.uid)) + '" data-bf-i18n-text="' + escapeHtml(title) + '">' +
+          escapeHtml(localizeText(title)) +
           "</button>"
       );
     });
     if (extraCount) {
       buttons.push(
         '<button class="bf-store-part bf-store-part_more" type="button" data-bf-parts-toggle>' +
-          (expanded ? "Свернуть" : "Еще " + extraCount) +
+          (expanded
+            ? '<span data-bf-i18n-text="Mazāk sadaļu">' + escapeHtml(localizeText("Mazāk sadaļu")) + "</span>"
+            : '<span data-bf-i18n-text="Vairāk sadaļu">' + escapeHtml(localizeText("Vairāk sadaļu")) + "</span> <span>" + escapeHtml(String(extraCount)) + "</span>") +
           "</button>"
       );
     }
     mount.innerHTML = buttons.join("");
+    applyCurrentLanguage(mount);
     mount.hidden = false;
     mount.onclick = function (event) {
       var toggle = event.target.closest("[data-bf-parts-toggle]");
