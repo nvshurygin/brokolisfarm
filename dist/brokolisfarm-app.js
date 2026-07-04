@@ -343,6 +343,19 @@
       "Augļi un ogas": "Фрукты и ягоды",
       "Dārzeņi un zaļumi": "Овощи и зелень",
       "Dzērieni": "Напитки",
+      "Augļi, dārzeņi, ogas, zaļumi": "Фрукты, овощи, ягоды и зелень",
+      "Piena produkti, olas un vegāniem": "Молочные продукты, яйца и веганские товары",
+      "Gaļa, zivis un saldēti produkti": "Мясо, рыба и замороженные продукты",
+      "Kulinārija un gatavi ēdieni": "Кулинария и готовые блюда",
+      "Maize, konditoreja un uzkodas": "Хлеб, выпечка и закуски",
+      "Graudaugi, milti, garšvielas, mērces, granolas": "Крупы, мука, специи, соусы и гранола",
+      "Zīdaiņiem un bērniem": "Для младенцев и детей",
+      "Saldējums": "Мороженое",
+      "Konservējumi un ilgstoši uzglabājami produkti": "Консервы и продукты длительного хранения",
+      "Dzērieni un svaigi spiesta sula": "Напитки и свежевыжатые соки",
+      "Alkoholiskie dzērieni": "Алкогольные напитки",
+      "Dāvanas, trauki, roku darbs, ziedi, svētki": "Подарки, посуда, ручная работа, цветы и праздники",
+      "Mājas smaržas un tīrīšanas līdzekļi": "Ароматы для дома и средства для уборки",
       "Svaigas gaļas izlase": "Подборка свежего мяса",
       "Ielādējam preces...": "Загружаем товары...",
       "Visi": "Все",
@@ -514,6 +527,19 @@
       "Augļi un ogas": "Fruit and berries",
       "Dārzeņi un zaļumi": "Vegetables and greens",
       "Dzērieni": "Drinks",
+      "Augļi, dārzeņi, ogas, zaļumi": "Fruit, vegetables, berries and greens",
+      "Piena produkti, olas un vegāniem": "Dairy products, eggs and vegan goods",
+      "Gaļa, zivis un saldēti produkti": "Meat, fish and frozen products",
+      "Kulinārija un gatavi ēdieni": "Cookery and ready meals",
+      "Maize, konditoreja un uzkodas": "Bread, pastry and snacks",
+      "Graudaugi, milti, garšvielas, mērces, granolas": "Grains, flour, spices, sauces and granola",
+      "Zīdaiņiem un bērniem": "Babies and children",
+      "Saldējums": "Ice cream",
+      "Konservējumi un ilgstoši uzglabājami produkti": "Preserves and shelf-stable products",
+      "Dzērieni un svaigi spiesta sula": "Drinks and fresh juice",
+      "Alkoholiskie dzērieni": "Alcoholic drinks",
+      "Dāvanas, trauki, roku darbs, ziedi, svētki": "Gifts, tableware, handmade goods, flowers and holidays",
+      "Mājas smaržas un tīrīšanas līdzekļi": "Home fragrances and cleaning products",
       "Svaigas gaļas izlase": "Fresh meat selection",
       "Ielādējam preces...": "Loading products...",
       "Visi": "All",
@@ -1062,6 +1088,35 @@
     return part.title || part.path && part.path.join(" / ") || "Kategorija";
   }
 
+  function normalizeCategoryKey(value) {
+    var text = String(value || "");
+    if (text.normalize) {
+      text = text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+    return text.toLowerCase().replace(/[^a-z0-9а-яё]+/g, " ").trim();
+  }
+
+  function requestedCategoryKey(root) {
+    var params = new URLSearchParams(window.location.search || "");
+    return root.getAttribute("data-bf-default-category") || params.get("category") || params.get("part") || "";
+  }
+
+  function findPartByCategory(parts, value) {
+    var target = normalizeCategoryKey(value);
+    if (!target) return null;
+    return (parts || []).find(function (part) {
+      var values = [
+        part.uid,
+        part.title,
+        part.path && part.path.join(" / "),
+        localizeText(partTitle(part), "lv")
+      ];
+      return values.some(function (item) {
+        return normalizeCategoryKey(item) === target;
+      });
+    }) || null;
+  }
+
   function renderParts(root, data, state) {
     var mount = root.querySelector("[data-bf-parts]");
     if (!mount) return;
@@ -1361,10 +1416,7 @@
       if (link.getAttribute("data-bf-category-bound") === "true") return;
       link.setAttribute("data-bf-category-bound", "true");
       link.addEventListener("click", function () {
-        var name = link.getAttribute("data-bf-category").toLowerCase();
-        var part = state.parts.find(function (item) {
-          return String(item.title || "").toLowerCase() === name;
-        });
+        var part = findPartByCategory(state.parts, link.getAttribute("data-bf-category"));
         if (part) {
           state.activePartUid = String(part.uid);
           state.slice = 1;
@@ -1410,6 +1462,17 @@
     if (Array.isArray(data.parts) && data.parts.length) {
       state.parts = data.parts;
     }
+    if (!append && state.requestedCategory && !state.activePartUid) {
+      var requestedPart = findPartByCategory(state.parts, state.requestedCategory);
+      if (requestedPart) {
+        state.activePartUid = String(requestedPart.uid);
+        state.requestedCategory = "";
+        state.slice = 1;
+        state.nextSlice = "";
+        load(root, state, false);
+        return;
+      }
+    }
     state.products = append ? state.products.concat(products) : products;
     state.nextSlice = data.nextslice || "";
     renderParts(root, data, state);
@@ -1454,11 +1517,13 @@
       parts: [],
       products: [],
       query: "",
+      requestedCategory: "",
       rootPartUid: root.getAttribute("data-storepartuid") || "",
       sort: "",
       slice: 1
     };
     state.activePartUid = root.getAttribute("data-bf-default-partuid") || "";
+    state.requestedCategory = requestedCategoryKey(root);
     var more = root.querySelector("[data-bf-load-more]");
     if (more) {
       more.addEventListener("click", function () {
