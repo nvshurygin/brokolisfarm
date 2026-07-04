@@ -1295,6 +1295,210 @@ body.bf-mobile-menu-open {
   max-width: 860px;
 }
 
+body.bf-tilda-product-page {
+  background: #ffffff;
+  color: var(--bf-text);
+  font-family: var(--bf-font);
+}
+
+body.bf-tilda-product-page #allrecords {
+  background: #ffffff;
+}
+
+body.bf-tilda-product-page #t-header {
+  background: #ffffff;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  z-index: 99990;
+}
+
+body.bf-tilda-product-page .bf-tilda-product-record {
+  padding: 42px 20px 72px;
+}
+
+body.bf-tilda-product-page .bf-tilda-product-shell {
+  color: var(--bf-text);
+  font-family: var(--bf-font);
+  margin: 0 auto;
+  max-width: var(--bf-shell);
+}
+
+body.bf-tilda-product-page .bf-tilda-product-breadcrumb {
+  align-items: center;
+  color: rgba(46, 46, 57, 0.62);
+  display: flex;
+  font-size: 14px;
+  gap: 10px;
+  margin: 0 0 18px;
+}
+
+body.bf-tilda-product-page .bf-tilda-product-breadcrumb a {
+  color: var(--bf-green);
+  text-decoration: none;
+}
+
+body.bf-tilda-product-page .bf-tilda-product {
+  background: var(--bf-muted);
+  border-radius: 16px;
+  margin: 0 auto;
+  padding: 34px;
+}
+
+body.bf-tilda-product-page .bf-tilda-product .t-container {
+  max-width: none !important;
+  padding: 0 !important;
+  width: 100% !important;
+}
+
+body.bf-tilda-product-page .bf-tilda-product .t-container > div {
+  align-items: start;
+  display: grid;
+  gap: 36px;
+  grid-template-columns: minmax(0, 0.95fr) minmax(340px, 0.75fr);
+}
+
+body.bf-tilda-product-page .t-store__prod-popup__col-left,
+body.bf-tilda-product-page .t-store__prod-popup__col-right {
+  float: none !important;
+  margin: 0 !important;
+  max-width: none !important;
+  padding: 0 !important;
+  width: auto !important;
+}
+
+body.bf-tilda-product-page .t-slds,
+body.bf-tilda-product-page .t-slds__main,
+body.bf-tilda-product-page .t-slds__container,
+body.bf-tilda-product-page .t-slds__wrapper,
+body.bf-tilda-product-page .t-slds__imgwrapper,
+body.bf-tilda-product-page .t-slds__bgimg {
+  border-radius: 14px !important;
+}
+
+body.bf-tilda-product-page .t-slds__bgimg {
+  background-color: #ffffff;
+  background-position: center !important;
+  background-size: cover !important;
+}
+
+body.bf-tilda-product-page .t-store__prod-popup__info {
+  background: #ffffff;
+  border-radius: 14px;
+  display: grid;
+  gap: 18px;
+  padding: 28px !important;
+}
+
+body.bf-tilda-product-page .t-store__prod-popup__title-wrapper,
+body.bf-tilda-product-page .t-store__prod-popup__price-wrapper,
+body.bf-tilda-product-page .t-store__prod-popup__text,
+body.bf-tilda-product-page .t-store__prod-popup__btn-wrapper {
+  margin: 0 !important;
+}
+
+body.bf-tilda-product-page .t-store__prod-popup__name {
+  color: var(--bf-text) !important;
+  font-family: var(--bf-font) !important;
+  font-size: clamp(28px, 4vw, 42px) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.08 !important;
+  margin: 0 !important;
+}
+
+body.bf-tilda-product-page .t-store__prod-popup__sku {
+  color: rgba(46, 46, 57, 0.58) !important;
+  font-family: var(--bf-font) !important;
+  font-size: 13px !important;
+  margin-top: 8px !important;
+}
+
+body.bf-tilda-product-page .t-store__prod-popup__price-wrapper {
+  align-items: baseline;
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+body.bf-tilda-product-page .t-store__prod-popup__price {
+  color: var(--bf-green) !important;
+  font-family: var(--bf-accent-font) !important;
+  font-size: 30px !important;
+  font-weight: 600 !important;
+}
+
+body.bf-tilda-product-page .t-store__prod-popup__price_old {
+  color: rgba(46, 46, 57, 0.42) !important;
+  font-size: 18px !important;
+}
+
+body.bf-tilda-product-page .t-store__prod-popup__text,
+body.bf-tilda-product-page .t-store__prod-popup__text * {
+  color: rgba(46, 46, 57, 0.74) !important;
+  font-family: var(--bf-font) !important;
+  font-size: 16px !important;
+  font-weight: 300 !important;
+  line-height: 1.58 !important;
+}
+
+body.bf-tilda-product-page .bf-tilda-product .t-btn,
+body.bf-tilda-product-page .bf-tilda-product .t-store__prod-popup__btn,
+body.bf-tilda-product-page .bf-tilda-product .js-store-prod-popup-buy-btn {
+  align-items: center !important;
+  background: var(--bf-green) !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+  display: inline-flex !important;
+  font-family: var(--bf-font) !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  justify-content: center !important;
+  min-height: 48px !important;
+  padding: 0 24px !important;
+  text-decoration: none !important;
+}
+
+body.bf-tilda-product-page .bf-tilda-product .t-btn:hover,
+body.bf-tilda-product-page .bf-tilda-product .t-store__prod-popup__btn:hover,
+body.bf-tilda-product-page .bf-tilda-product .js-store-prod-popup-buy-btn:hover {
+  background: #5c9a3f !important;
+}
+
+body.bf-tilda-product-page .t-product__option,
+body.bf-tilda-product-page .t-store__prod-popup__option {
+  font-family: var(--bf-font) !important;
+}
+
+body.bf-tilda-product-page .t-store__prod-popup__select,
+body.bf-tilda-product-page .t-store__prod-popup__input {
+  border: 1px solid var(--bf-border) !important;
+  border-radius: 10px !important;
+  color: var(--bf-text) !important;
+  font-family: var(--bf-font) !important;
+}
+
+body.bf-tilda-product-page .bf-tilda-product-note {
+  border-top: 1px solid rgba(46, 46, 57, 0.1);
+  display: grid;
+  gap: 8px;
+  margin-top: 4px;
+  padding-top: 18px;
+}
+
+body.bf-tilda-product-page .bf-tilda-product-note span {
+  color: rgba(46, 46, 57, 0.68);
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+body.bf-tilda-product-page .bf-footer {
+  margin-top: 0;
+}
+
 .bf-footer {
   background: #2e2e39;
   color: #ffffff;
@@ -1355,9 +1559,15 @@ body.bf-mobile-menu-open {
   color: rgba(255, 255, 255, 0.58);
   display: flex;
   font-size: 13px;
+  gap: 24px;
   justify-content: space-between;
   margin-top: 42px;
   padding-top: 20px;
+}
+
+.bf-footer__bottom span:last-child {
+  max-width: 760px;
+  text-align: right;
 }
 
 @media (max-width: 1180px) {
@@ -1378,6 +1588,10 @@ body.bf-mobile-menu-open {
 
   .bf-footer__inner {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  body.bf-tilda-product-page .bf-tilda-product .t-container > div {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -1571,6 +1785,18 @@ body.bf-mobile-menu-open {
   .bf-instagram__panel {
     gap: 20px;
   }
+
+  body.bf-tilda-product-page .bf-tilda-product-record {
+    padding: 28px 16px 54px;
+  }
+
+  body.bf-tilda-product-page .bf-tilda-product {
+    padding: 22px;
+  }
+
+  body.bf-tilda-product-page .t-store__prod-popup__info {
+    padding: 22px !important;
+  }
 }
 
 @media (max-width: 640px) {
@@ -1580,6 +1806,11 @@ body.bf-mobile-menu-open {
 
   .bf-page [id] {
     scroll-margin-top: 104px;
+  }
+
+  body.bf-tilda-product-page #t-header {
+    position: sticky;
+    top: 0;
   }
 
   .bf-shell {
@@ -1796,5 +2027,44 @@ body.bf-mobile-menu-open {
     align-items: flex-start;
     flex-direction: column;
     gap: 8px;
+  }
+
+  .bf-footer__bottom span:last-child {
+    max-width: none;
+    text-align: left;
+  }
+
+  body.bf-tilda-product-page .bf-tilda-product-record {
+    padding: 20px 12px 44px;
+  }
+
+  body.bf-tilda-product-page .bf-tilda-product {
+    border-radius: 14px;
+    padding: 14px;
+  }
+
+  body.bf-tilda-product-page .bf-tilda-product-breadcrumb {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  body.bf-tilda-product-page .t-store__prod-popup__info {
+    border-radius: 12px;
+    gap: 14px;
+    padding: 18px !important;
+  }
+
+  body.bf-tilda-product-page .t-store__prod-popup__name {
+    font-size: 26px !important;
+  }
+
+  body.bf-tilda-product-page .t-store__prod-popup__price {
+    font-size: 24px !important;
+  }
+
+  body.bf-tilda-product-page .bf-tilda-product .t-btn,
+  body.bf-tilda-product-page .bf-tilda-product .t-store__prod-popup__btn,
+  body.bf-tilda-product-page .bf-tilda-product .js-store-prod-popup-buy-btn {
+    width: 100% !important;
   }
 }

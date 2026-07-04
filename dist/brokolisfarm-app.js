@@ -808,6 +808,133 @@
     }
   };
 
+  var SITE_I18N_TEXT = {
+    lv: {
+      "_Buy_now_": "Pievienot grozam",
+      "Buy now": "Pievienot grozam",
+      "Артикул:": "SKU:",
+      "Фермерские продукты BrokolisFarm": "Svaigi BrokolisFarm produkti",
+      "Свежие продукты из каталога Tilda. Карточки можно добавлять в стандартную корзину Tilda через нативный checkout.": "Izvēlieties svaigus produktus no BrokolisFarm kataloga un pievienojiet tos grozam.",
+      "Prece": "Prece",
+      "Atpakaļ uz katalogu": "Atpakaļ uz katalogu",
+      "Piegāde Jūrmalā un tuvākajā apkārtnē": "Piegāde Jūrmalā un tuvākajā apkārtnē",
+      "Darba laiks: katru dienu no 10:00": "Darba laiks: katru dienu no 10:00",
+      "Pirms pasūtījuma precizējam pieejamību un detaļas.": "Pirms pasūtījuma precizējam pieejamību un detaļas.",
+      "Neliels ģimenes uzņēmums, kuram produktu kvalitāte ir īpaši svarīga. Rūpīgi atlasām garšīgus un veselīgus produktus ikdienai.": "Neliels ģimenes uzņēmums, kuram produktu kvalitāte ir īpaši svarīga. Rūpīgi atlasām garšīgus un veselīgus produktus ikdienai.",
+      "Jomas iela 74, LV-2015 Jūrmala": "Jomas iela 74, LV-2015 Jūrmala",
+      "Darba laiks: P.-C. 10:00-22:00, Pk.-S. 10:00-23:00, Sv. 10:00-22:00.": "Darba laiks: P.-C. 10:00-22:00, Pk.-S. 10:00-23:00, Sv. 10:00-22:00.",
+      "SIA Mocat, reģ. nr. 40203106742, alkohola tirdzniecības licences nr. 00000015496. Alkohola lietošana negatīvi ietekmē veselību. Alkoholiskos dzērienus aizliegts pārdot, iegādāties un nodot nepilngadīgām personām.": "SIA Mocat, reģ. nr. 40203106742, alkohola tirdzniecības licences nr. 00000015496. Alkohola lietošana negatīvi ietekmē veselību. Alkoholiskos dzērienus aizliegts pārdot, iegādāties un nodot nepilngadīgām personām.",
+      "SIA Mocat, reģ. nr. 40203106742, alkohola tirdzniecības licences nr. 00000015496.": "SIA Mocat, reģ. nr. 40203106742, alkohola tirdzniecības licences nr. 00000015496.",
+      "Alkohola lietošana negatīvi ietekmē veselību. Alkoholiskos dzērienus aizliegts pārdot, iegādāties un nodot nepilngadīgām personām.": "Alkohola lietošana negatīvi ietekmē veselību. Alkoholiskos dzērienus aizliegts pārdot, iegādāties un nodot nepilngadīgām personām.",
+      "Svaigi produkti ģimenei no BrokolisFarm": "Svaigi produkti ģimenei no BrokolisFarm",
+      "Darba laiks katru dienu": "Darba laiks katru dienu",
+      "10:00-22:00, piektdien un sestdien līdz 23:00": "10:00-22:00, piektdien un sestdien līdz 23:00",
+      "BrokolisFarm ir neliels ģimenes uzņēmums. Mēs rūpējamies par savu un bērnu veselību, tāpēc soli pa solim atrodam produktus, ko ar prieku izvēlētos arī sev.": "BrokolisFarm ir neliels ģimenes uzņēmums. Mēs rūpējamies par savu un bērnu veselību, tāpēc soli pa solim atrodam produktus, ko ar prieku izvēlētos arī sev.",
+      "Darba laiks katru dienu, piegādes detaļas precizējam pirms pasūtījuma.": "Darba laiks katru dienu, piegādes detaļas precizējam pirms pasūtījuma.",
+      "BrokolisFarm - ģimenes uzņēmums ar rūpīgu atlasi": "BrokolisFarm - ģimenes uzņēmums ar rūpīgu atlasi",
+      "Esam neliels ģimenes uzņēmums, kuram produktu kvalitāte ir īpaši svarīga. Rūpējoties par sevi un saviem bērniem, vēlamies parūpēties arī par jums.": "Esam neliels ģimenes uzņēmums, kuram produktu kvalitāte ir īpaši svarīga. Rūpējoties par sevi un saviem bērniem, vēlamies parūpēties arī par jums.",
+      "Soli pa solim atrodam garšīgus un veselīgus produktus, lai jūs tos varētu baudīt kopā ar mums.": "Soli pa solim atrodam garšīgus un veselīgus produktus, lai jūs tos varētu baudīt kopā ar mums.",
+      "Rūpēs par jums, BrokolisFarm komanda": "Rūpēs par jums, BrokolisFarm komanda",
+      "Darba un piegādes grafiks": "Darba un piegādes grafiks",
+      "Strādājam katru dienu: pirmdien-ceturtdien un svētdien no 10:00 līdz 22:00, piektdien un sestdien no 10:00 līdz 23:00.": "Strādājam katru dienu: pirmdien-ceturtdien un svētdien no 10:00 līdz 22:00, piektdien un sestdien no 10:00 līdz 23:00.",
+      "Jomas iela 74": "Jomas iela 74",
+      "LV-2015 Jūrmala": "LV-2015 Jūrmala",
+      "Tālrunis": "Tālrunis",
+      "Adrese": "Adrese",
+      "Skatīt kartē": "Skatīt kartē",
+      "Katru dienu": "Katru dienu",
+      "BrokolisFarm sākās ar vienkāršu domu: izvēlēties tādus produktus, kurus paši ar prieku liktu uz ģimenes galda.": "BrokolisFarm sākās ar vienkāršu domu: izvēlēties tādus produktus, kurus paši ar prieku liktu uz ģimenes galda.",
+      "Sekojam līdzi produktu kvalitātei, izcelsmei, glabāšanai un tam, kā tie nonāk līdz pircējam.": "Sekojam līdzi produktu kvalitātei, izcelsmei, glabāšanai un tam, kā tie nonāk līdz pircējam.",
+      "Strādājam katru dienu un pirms pasūtījuma precizējam pieejamību, laiku un detaļas.": "Strādājam katru dienu un pirms pasūtījuma precizējam pieejamību, laiku un detaļas.",
+      "Piegādājam svaigus produktus Jūrmalā un tuvākajā apkārtnē. Pirms pasūtījuma precizējam pieejamību, laiku un detaļas.": "Piegādājam svaigus produktus Jūrmalā un tuvākajā apkārtnē. Pirms pasūtījuma precizējam pieejamību, laiku un detaļas.",
+      "Piegādājam pasūtījumus Jūrmalā un tuvākajā apkārtnē, lai ikdienas iepirkšanās aizņemtu mazāk laika.": "Piegādājam pasūtījumus Jūrmalā un tuvākajā apkārtnē, lai ikdienas iepirkšanās aizņemtu mazāk laika.",
+      "Juridiskā informācija": "Juridiskā informācija"
+    },
+    ru: {
+      "_Buy_now_": "Добавить в корзину",
+      "Buy now": "Добавить в корзину",
+      "Артикул:": "SKU:",
+      "Prece": "Товар",
+      "Atpakaļ uz katalogu": "Назад в каталог",
+      "Piegāde Jūrmalā un tuvākajā apkārtnē": "Доставка в Юрмале и ближайших районах",
+      "Darba laiks: katru dienu no 10:00": "Режим работы: каждый день с 10:00",
+      "Pirms pasūtījuma precizējam pieejamību un detaļas.": "Перед заказом уточняем наличие и детали.",
+      "Neliels ģimenes uzņēmums, kuram produktu kvalitāte ir īpaši svarīga. Rūpīgi atlasām garšīgus un veselīgus produktus ikdienai.": "Небольшой семейный бизнес, для которого качество продуктов особенно важно. Мы тщательно выбираем вкусные и полезные продукты на каждый день.",
+      "Jomas iela 74, LV-2015 Jūrmala": "Jomas iela 74, LV-2015 Jūrmala",
+      "Darba laiks: P.-C. 10:00-22:00, Pk.-S. 10:00-23:00, Sv. 10:00-22:00.": "Режим работы: пн.-чт. 10:00-22:00, пт.-сб. 10:00-23:00, вс. 10:00-22:00.",
+      "SIA Mocat, reģ. nr. 40203106742, alkohola tirdzniecības licences nr. 00000015496. Alkohola lietošana negatīvi ietekmē veselību. Alkoholiskos dzērienus aizliegts pārdot, iegādāties un nodot nepilngadīgām personām.": "SIA Mocat, рег. номер 40203106742, лицензия на торговлю алкоголем № 00000015496. Употребление алкоголя негативно влияет на здоровье. Алкогольные напитки запрещено продавать, покупать и передавать несовершеннолетним.",
+      "SIA Mocat, reģ. nr. 40203106742, alkohola tirdzniecības licences nr. 00000015496.": "SIA Mocat, рег. номер 40203106742, лицензия на торговлю алкоголем № 00000015496.",
+      "Alkohola lietošana negatīvi ietekmē veselību. Alkoholiskos dzērienus aizliegts pārdot, iegādāties un nodot nepilngadīgām personām.": "Употребление алкоголя негативно влияет на здоровье. Алкогольные напитки запрещено продавать, покупать и передавать несовершеннолетним.",
+      "Svaigi produkti ģimenei no BrokolisFarm": "Свежие продукты для семьи от BrokolisFarm",
+      "Darba laiks katru dienu": "Работаем каждый день",
+      "10:00-22:00, piektdien un sestdien līdz 23:00": "10:00-22:00, в пятницу и субботу до 23:00",
+      "BrokolisFarm ir neliels ģimenes uzņēmums. Mēs rūpējamies par savu un bērnu veselību, tāpēc soli pa solim atrodam produktus, ko ar prieku izvēlētos arī sev.": "BrokolisFarm - небольшой семейный бизнес. Мы заботимся о своем здоровье и здоровье детей, поэтому шаг за шагом находим продукты, которые с радостью выбрали бы для себя.",
+      "Darba laiks katru dienu, piegādes detaļas precizējam pirms pasūtījuma.": "Работаем каждый день, детали доставки уточняем перед заказом.",
+      "BrokolisFarm - ģimenes uzņēmums ar rūpīgu atlasi": "BrokolisFarm - семейный бизнес с тщательным отбором",
+      "Esam neliels ģimenes uzņēmums, kuram produktu kvalitāte ir īpaši svarīga. Rūpējoties par sevi un saviem bērniem, vēlamies parūpēties arī par jums.": "Мы небольшой семейный бизнес, для которого качество продуктов особенно важно. Заботясь о себе и своих детях, мы хотим позаботиться и о вас.",
+      "Soli pa solim atrodam garšīgus un veselīgus produktus, lai jūs tos varētu baudīt kopā ar mums.": "Шаг за шагом мы находим вкусные и полезные продукты, чтобы вы могли наслаждаться ими вместе с нами.",
+      "Rūpēs par jums, BrokolisFarm komanda": "С заботой о вас, команда BrokolisFarm",
+      "Darba un piegādes grafiks": "График работы и доставки",
+      "Strādājam katru dienu: pirmdien-ceturtdien un svētdien no 10:00 līdz 22:00, piektdien un sestdien no 10:00 līdz 23:00.": "Работаем каждый день: понедельник-четверг и воскресенье с 10:00 до 22:00, пятница и суббота с 10:00 до 23:00.",
+      "Jomas iela 74": "Jomas iela 74",
+      "LV-2015 Jūrmala": "LV-2015 Jūrmala",
+      "Tālrunis": "Телефон",
+      "Adrese": "Адрес",
+      "Skatīt kartē": "Смотреть на карте",
+      "Katru dienu": "Каждый день",
+      "BrokolisFarm sākās ar vienkāršu domu: izvēlēties tādus produktus, kurus paši ar prieku liktu uz ģimenes galda.": "BrokolisFarm начался с простой идеи: выбирать продукты, которые мы сами с радостью поставили бы на семейный стол.",
+      "Sekojam līdzi produktu kvalitātei, izcelsmei, glabāšanai un tam, kā tie nonāk līdz pircējam.": "Мы следим за качеством, происхождением, хранением продуктов и тем, как они доходят до покупателя.",
+      "Strādājam katru dienu un pirms pasūtījuma precizējam pieejamību, laiku un detaļas.": "Работаем каждый день и перед заказом уточняем наличие, время и детали.",
+      "Piegādājam svaigus produktus Jūrmalā un tuvākajā apkārtnē. Pirms pasūtījuma precizējam pieejamību, laiku un detaļas.": "Доставляем свежие продукты в Юрмале и ближайших районах. Перед заказом уточняем наличие, время и детали.",
+      "Piegādājam pasūtījumus Jūrmalā un tuvākajā apkārtnē, lai ikdienas iepirkšanās aizņemtu mazāk laika.": "Доставляем заказы в Юрмале и ближайших районах, чтобы ежедневные покупки занимали меньше времени.",
+      "Juridiskā informācija": "Юридическая информация"
+    },
+    en: {
+      "_Buy_now_": "Add to cart",
+      "Buy now": "Add to cart",
+      "Артикул:": "SKU:",
+      "Prece": "Product",
+      "Atpakaļ uz katalogu": "Back to catalog",
+      "Piegāde Jūrmalā un tuvākajā apkārtnē": "Delivery in Jurmala and nearby areas",
+      "Darba laiks: katru dienu no 10:00": "Opening hours: daily from 10:00",
+      "Pirms pasūtījuma precizējam pieejamību un detaļas.": "We confirm availability and details before the order.",
+      "Neliels ģimenes uzņēmums, kuram produktu kvalitāte ir īpaši svarīga. Rūpīgi atlasām garšīgus un veselīgus produktus ikdienai.": "A small family business where product quality really matters. We carefully select tasty and healthy products for everyday life.",
+      "Jomas iela 74, LV-2015 Jūrmala": "Jomas iela 74, LV-2015 Jurmala",
+      "Darba laiks: P.-C. 10:00-22:00, Pk.-S. 10:00-23:00, Sv. 10:00-22:00.": "Opening hours: Mon-Thu 10:00-22:00, Fri-Sat 10:00-23:00, Sun 10:00-22:00.",
+      "SIA Mocat, reģ. nr. 40203106742, alkohola tirdzniecības licences nr. 00000015496. Alkohola lietošana negatīvi ietekmē veselību. Alkoholiskos dzērienus aizliegts pārdot, iegādāties un nodot nepilngadīgām personām.": "SIA Mocat, reg. no. 40203106742, alcohol trade licence no. 00000015496. Alcohol consumption has a negative effect on health. Alcoholic beverages must not be sold, purchased or transferred to minors.",
+      "SIA Mocat, reģ. nr. 40203106742, alkohola tirdzniecības licences nr. 00000015496.": "SIA Mocat, reg. no. 40203106742, alcohol trade licence no. 00000015496.",
+      "Alkohola lietošana negatīvi ietekmē veselību. Alkoholiskos dzērienus aizliegts pārdot, iegādāties un nodot nepilngadīgām personām.": "Alcohol consumption has a negative effect on health. Alcoholic beverages must not be sold, purchased or transferred to minors.",
+      "Svaigi produkti ģimenei no BrokolisFarm": "Fresh products for the family from BrokolisFarm",
+      "Darba laiks katru dienu": "Open every day",
+      "10:00-22:00, piektdien un sestdien līdz 23:00": "10:00-22:00, Friday and Saturday until 23:00",
+      "BrokolisFarm ir neliels ģimenes uzņēmums. Mēs rūpējamies par savu un bērnu veselību, tāpēc soli pa solim atrodam produktus, ko ar prieku izvēlētos arī sev.": "BrokolisFarm is a small family business. We care about our health and our children's health, so step by step we find products we would gladly choose for ourselves.",
+      "Darba laiks katru dienu, piegādes detaļas precizējam pirms pasūtījuma.": "Open every day; we confirm delivery details before the order.",
+      "BrokolisFarm - ģimenes uzņēmums ar rūpīgu atlasi": "BrokolisFarm - a family business with careful selection",
+      "Esam neliels ģimenes uzņēmums, kuram produktu kvalitāte ir īpaši svarīga. Rūpējoties par sevi un saviem bērniem, vēlamies parūpēties arī par jums.": "We are a small family business for whom product quality is highly important. By caring for ourselves and our children, we want to take care of you too.",
+      "Soli pa solim atrodam garšīgus un veselīgus produktus, lai jūs tos varētu baudīt kopā ar mums.": "Step by step we gather tasty and healthy products so you can enjoy them together with us.",
+      "Rūpēs par jums, BrokolisFarm komanda": "Caring for you, the BrokolisFarm team",
+      "Darba un piegādes grafiks": "Opening and delivery schedule",
+      "Strādājam katru dienu: pirmdien-ceturtdien un svētdien no 10:00 līdz 22:00, piektdien un sestdien no 10:00 līdz 23:00.": "We are open every day: Monday-Thursday and Sunday from 10:00 to 22:00, Friday and Saturday from 10:00 to 23:00.",
+      "Jomas iela 74": "Jomas iela 74",
+      "LV-2015 Jūrmala": "LV-2015 Jurmala",
+      "Tālrunis": "Phone",
+      "Adrese": "Address",
+      "Skatīt kartē": "See map",
+      "Katru dienu": "Every day",
+      "BrokolisFarm sākās ar vienkāršu domu: izvēlēties tādus produktus, kurus paši ar prieku liktu uz ģimenes galda.": "BrokolisFarm started with a simple idea: to choose products we would gladly put on our own family table.",
+      "Sekojam līdzi produktu kvalitātei, izcelsmei, glabāšanai un tam, kā tie nonāk līdz pircējam.": "We watch product quality, origin, storage and the way products reach the customer.",
+      "Strādājam katru dienu un pirms pasūtījuma precizējam pieejamību, laiku un detaļas.": "We are open every day and confirm availability, time and details before the order.",
+      "Piegādājam svaigus produktus Jūrmalā un tuvākajā apkārtnē. Pirms pasūtījuma precizējam pieejamību, laiku un detaļas.": "We deliver fresh products in Jurmala and nearby areas. Before the order, we confirm availability, time and details.",
+      "Piegādājam pasūtījumus Jūrmalā un tuvākajā apkārtnē, lai ikdienas iepirkšanās aizņemtu mazāk laika.": "We deliver orders in Jurmala and nearby areas so everyday shopping takes less time.",
+      "Juridiskā informācija": "Legal information"
+    }
+  };
+
+  Object.keys(SITE_I18N_TEXT).forEach(function (lang) {
+    I18N_TEXT[lang] = I18N_TEXT[lang] || {};
+    Object.assign(I18N_TEXT[lang], SITE_I18N_TEXT[lang]);
+  });
+
   function normalizeI18nText(value) {
     return String(value == null ? "" : value).replace(/\s+/g, " ").trim();
   }
@@ -920,6 +1047,107 @@
         lang = nextLang;
         applyCurrentLanguage(document);
       });
+    });
+  }
+
+  function ensureTildaProductHeader(templates) {
+    if (!templates.header) return;
+    var allrecords = document.getElementById("allrecords");
+    var headerMount = document.getElementById("t-header");
+    if (!headerMount) {
+      headerMount = document.createElement("div");
+      headerMount.id = "t-header";
+      if (allrecords && allrecords.parentNode) {
+        allrecords.parentNode.insertBefore(headerMount, allrecords);
+      } else {
+        document.body.insertBefore(headerMount, document.body.firstChild);
+      }
+    }
+    if (headerMount.getAttribute("data-bf-rendered") === "true") return;
+    headerMount.innerHTML = templates.header;
+    headerMount.setAttribute("data-bf-rendered", "true");
+    headerMount.classList.add("bf-tilda-product-header");
+  }
+
+  function ensureTildaProductFooter(templates) {
+    if (!templates.footer) return;
+    var footerMount = document.querySelector("[data-bf-product-footer]");
+    if (!footerMount) {
+      var allrecords = document.getElementById("allrecords");
+      footerMount = document.createElement("div");
+      footerMount.setAttribute("data-bf-footer", "");
+      footerMount.setAttribute("data-bf-product-footer", "true");
+      if (allrecords && allrecords.parentNode) {
+        allrecords.parentNode.insertBefore(footerMount, allrecords.nextSibling);
+      } else {
+        document.body.appendChild(footerMount);
+      }
+    }
+    if (footerMount.getAttribute("data-bf-rendered") === "true") return;
+    footerMount.innerHTML = templates.footer;
+    footerMount.setAttribute("data-bf-rendered", "true");
+  }
+
+  function ensureTildaProductDecor(product) {
+    if (!product) return;
+    product.classList.add("bf-tilda-product");
+    var record = product.closest(".r") || document.getElementById("rec1");
+    if (record) record.classList.add("bf-tilda-product-record");
+    var shell = product.closest(".t-store__prod-snippet__container") || product.parentNode;
+    if (shell && shell.classList) shell.classList.add("bf-tilda-product-shell");
+    if (shell && !shell.querySelector(".bf-tilda-product-breadcrumb")) {
+      var breadcrumb = document.createElement("div");
+      breadcrumb.className = "bf-tilda-product-breadcrumb";
+      breadcrumb.innerHTML = '<a href="/catalog">Katalogs</a><span>/</span><span>Prece</span>';
+      shell.insertBefore(breadcrumb, product);
+    }
+    var info = product.querySelector(".t-store__prod-popup__info") || product.querySelector(".t-store__prod-popup__col-right");
+    if (info && !info.querySelector(".bf-tilda-product-note")) {
+      var note = document.createElement("div");
+      note.className = "bf-tilda-product-note";
+      note.innerHTML =
+        '<span>Piegāde Jūrmalā un tuvākajā apkārtnē</span>' +
+        '<span>Darba laiks: katru dienu no 10:00</span>' +
+        '<span>Pirms pasūtījuma precizējam pieejamību un detaļas.</span>';
+      info.appendChild(note);
+    }
+    toArray(product.querySelectorAll(".t-store__prod-popup__btn, .js-store-prod-popup-buy-btn, .t-btn")).forEach(function (button) {
+      var text = normalizeI18nText(button.textContent);
+      if (text === "_Buy_now_" || text === "Buy now") {
+        button.setAttribute("data-bf-i18n-text", "Pievienot grozam");
+      }
+    });
+  }
+
+  function ensureTildaProductPage(scheduleRetries) {
+    var isProductUrl = window.location && window.location.pathname.indexOf("/tproduct/") === 0;
+    var product = document.querySelector(".t-store__product-snippet, .js-store-product");
+    if (!isProductUrl && !product) return;
+    document.body.classList.add("bf-tilda-product-page");
+    var templates = window.BrokolisFarmTemplates || {};
+    ensureTildaProductHeader(templates);
+    ensureTildaProductFooter(templates);
+    ensureTildaProductDecor(product);
+    applyCurrentLanguage(document);
+    setTimeout(function () {
+      try {
+        window.dispatchEvent(new Event("resize"));
+      } catch (error) {
+        var event = document.createEvent("UIEvents");
+        event.initUIEvent("resize", true, false, window, 0);
+        window.dispatchEvent(event);
+      }
+    }, 0);
+
+    if (scheduleRetries === false || document.documentElement.getAttribute("data-bf-product-page-retries") === "true") return;
+    document.documentElement.setAttribute("data-bf-product-page-retries", "true");
+    [350, 1200, 2800].forEach(function (delay) {
+      setTimeout(function () {
+        ensureTildaProductPage(false);
+        bindMobileMenu();
+        bindStickyHeader();
+        bindCartBridge();
+      }, delay);
     });
   }
 
@@ -1545,6 +1773,7 @@
 
   function boot() {
     renderCommonChrome();
+    ensureTildaProductPage();
     bindLanguageSwitcher();
     bindStickyHeader();
     bindMobileMenu();

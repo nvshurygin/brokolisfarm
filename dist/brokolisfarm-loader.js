@@ -140,10 +140,16 @@
     return map[path] || "not-found";
   }
 
+  function isTildaProductPage() {
+    return normalizePath(window.location.pathname).indexOf("/tproduct/") === 0 ||
+      !!document.querySelector(".t-store__product-snippet, .js-store-product");
+  }
+
   function getMount() {
     var selector = config.mountSelector || "[data-bf-page], [data-bf-loader-root]";
     var mount = document.querySelector(selector);
     if (mount) return mount;
+    if (isTildaProductPage() && config.autoMount !== true) return null;
     if (config.autoMount === false) return null;
 
     mount = document.createElement("div");
@@ -270,7 +276,8 @@
   function start() {
     var baseUrl = getScriptBaseUrl();
     var mount = getMount();
-    if (!mount) return;
+    var productPage = !mount && isTildaProductPage();
+    if (!mount && !productPage) return;
     ensureFonts();
     ensureStylesheet(baseUrl + "brokolisfarm.css", "brokolisfarm-global-css");
     Promise.resolve()
@@ -281,12 +288,17 @@
         return loadScript(baseUrl + "brokolisfarm-app.js", "brokolisfarm-app-js");
       })
       .then(function () {
+        if (!mount) {
+          bootApp();
+          window.dispatchEvent(new CustomEvent("brokolisfarm:product-page-ready"));
+          return null;
+        }
         bindClientNavigation(baseUrl, mount);
         return renderPage(baseUrl, pageFromUrl(mount), mount);
       })
       .catch(function (error) {
         console.error(error);
-        setError(mount);
+        if (mount) setError(mount);
       });
   }
 
