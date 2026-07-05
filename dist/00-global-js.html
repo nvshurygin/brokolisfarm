@@ -372,23 +372,54 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     });
   }
 
+  function bindNativeCartFormGuard(nativeCart) {
+    if (!nativeCart || !nativeCart.cart) return;
+    var form = nativeCart.cart.querySelector("form.js-form-proccess");
+    if (!form || form.getAttribute("data-bf-cart-form-guard") === "true") return;
+    form.setAttribute("data-bf-cart-form-guard", "true");
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+    }, true);
+  }
+
+  function prepareNativeTildaCart(nativeCart) {
+    nativeCart = nativeCart || getNativeTildaCartRecord();
+    if (!nativeCart) return false;
+    if (typeof window.t_forms__initForms === "function") {
+      try {
+        window.t_forms__initForms();
+      } catch (error) {}
+    }
+    if (typeof window.t_forms__calculateInputsWidth === "function" && nativeCart.recordId) {
+      try {
+        window.t_forms__calculateInputsWidth(nativeCart.recordId);
+      } catch (error) {}
+    }
+    if (typeof window.tcart__syncProductsObject__LStoObj === "function") window.tcart__syncProductsObject__LStoObj();
+    if (typeof window.tcart__reDrawCartIcon === "function") window.tcart__reDrawCartIcon();
+    if (typeof window.tcart__reDrawProducts === "function") window.tcart__reDrawProducts();
+    if (typeof window.tcart__reDrawTotal === "function") window.tcart__reDrawTotal();
+    bindNativeCartFormGuard(nativeCart);
+    patchTildaCartRedraw();
+    syncCustomCartCounter();
+    return hasNativeTildaCartWindow();
+  }
+
   function initNativeTildaCart() {
     if (typeof window.tcart__init !== "function") return Promise.resolve(false);
     var nativeCart = getNativeTildaCartRecord();
     var recordId = nativeCart && nativeCart.recordId;
     if (!recordId) return Promise.resolve(false);
-    return Promise.resolve(window.tcart__init(recordId))
+    if (nativeCart.record && nativeCart.record.getAttribute("data-bf-native-cart-inited") === "true") {
+      return Promise.resolve(prepareNativeTildaCart(nativeCart));
+    }
+    return Promise.resolve(window.tcart__init(recordId, { cssClassName: "" }))
       .catch(function () {
         return false;
       })
       .then(function () {
-        if (typeof window.tcart__syncProductsObject__LStoObj === "function") window.tcart__syncProductsObject__LStoObj();
-        if (typeof window.tcart__reDrawCartIcon === "function") window.tcart__reDrawCartIcon();
-        if (typeof window.tcart__reDrawProducts === "function") window.tcart__reDrawProducts();
-        if (typeof window.tcart__reDrawTotal === "function") window.tcart__reDrawTotal();
-        patchTildaCartRedraw();
-        syncCustomCartCounter();
-        return hasNativeTildaCartWindow();
+        if (nativeCart.record) nativeCart.record.setAttribute("data-bf-native-cart-inited", "true");
+        return prepareNativeTildaCart(nativeCart);
       });
   }
 
@@ -422,8 +453,32 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     return nativeCartPromise;
   }
 
+  function resetNativeCartOpeningState() {
+    document.body.classList.remove("t706__body_cartwinshowed", "t706__body_cartsidebarshowed", "t706__body_cartpageshowed");
+    toArray(document.querySelectorAll(".t706__cartwin_showed")).forEach(function (element) {
+      element.classList.remove("t706__cartwin_showed");
+      element.style.display = "none";
+      element.style.opacity = "";
+    });
+    toArray(document.querySelectorAll(".t706__sidebar_showed")).forEach(function (element) {
+      element.classList.remove("t706__sidebar_showed");
+      element.style.display = "none";
+      element.style.opacity = "";
+    });
+    toArray(document.querySelectorAll(".t706__sidebar-content_showed")).forEach(function (element) {
+      element.classList.remove("t706__sidebar-content_showed");
+    });
+    toArray(document.querySelectorAll(".t706__cartpage_showed")).forEach(function (element) {
+      element.classList.remove("t706__cartpage_showed");
+      element.style.display = "none";
+      element.style.opacity = "";
+    });
+  }
+
   function tryOpenNativeCart() {
     removeLegacyCustomCartDrawer();
+    prepareNativeTildaCart();
+    resetNativeCartOpeningState();
     if (typeof window.tcart__openCart === "function" && hasNativeTildaCartWindow()) {
       try {
         window.tcart__openCart();
