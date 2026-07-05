@@ -13,6 +13,54 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
   var TILDA_CART_SOURCE_RECORD_ID = "2439950731";
   var TILDA_CART_SOURCE_PATH = "/offers";
   var TRANSLATION_LANGUAGES = ["lv", "ru", "en"];
+  var BF_DELIVERY_STORAGE_KEY = "bfDeliveryZone";
+  var BF_DELIVERY_ADDRESS_STORAGE_KEY = "bfDeliveryAddress";
+  var BF_DELIVERY_ZONES = [
+    {
+      id: "jurmala-center",
+      title: "Jūrmala centrs",
+      caption: "Majori, Dzintari, Dubulti, Bulduri",
+      price: 3,
+      color: "#6dac4a",
+      polygon: [
+        [56.998, 23.626],
+        [56.992, 23.760],
+        [56.982, 23.842],
+        [56.958, 23.858],
+        [56.948, 23.748],
+        [56.960, 23.635]
+      ]
+    },
+    {
+      id: "jurmala-west",
+      title: "Jūrmala rietumi",
+      caption: "Asari, Melluži, Vaivari, Kauguri, Sloka",
+      price: 5,
+      color: "#3b82f6",
+      polygon: [
+        [57.004, 23.412],
+        [56.995, 23.612],
+        [56.959, 23.650],
+        [56.937, 23.575],
+        [56.940, 23.450],
+        [56.972, 23.405]
+      ]
+    },
+    {
+      id: "pieriga-east",
+      title: "Piņķi un Babīte",
+      caption: "Piņķi, Babīte, Imanta, lidostas apkārtne",
+      price: 7,
+      color: "#f59e0b",
+      polygon: [
+        [56.997, 23.850],
+        [56.986, 24.020],
+        [56.915, 24.020],
+        [56.910, 23.845],
+        [56.950, 23.805]
+      ]
+    }
+  ];
   var LOCAL_FALLBACK_DATA = {
     partuid: 420955341102,
     total: 3,
@@ -372,6 +420,265 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     });
   }
 
+  function deliveryPriceLabel(price) {
+    var value = normalizePrice(price);
+    return value ? "€ " + value : "Bez maksas";
+  }
+
+  function getStoredDeliveryZoneId() {
+    try {
+      var value = localStorage.getItem(BF_DELIVERY_STORAGE_KEY);
+      if (BF_DELIVERY_ZONES.some(function (zone) { return zone.id === value; })) return value;
+    } catch (error) {}
+    return BF_DELIVERY_ZONES[0].id;
+  }
+
+  function ensureHiddenField(form, name, value) {
+    if (!form) return null;
+    var field = form.querySelector('input[type="hidden"][name="' + name + '"]');
+    if (!field) {
+      field = document.createElement("input");
+      field.type = "hidden";
+      field.name = name;
+      form.appendChild(field);
+    }
+    field.value = value == null ? "" : String(value);
+    return field;
+  }
+
+  function syncDeliveryZoneToTilda(nativeCart, zone, address) {
+    if (!nativeCart || !zone) return;
+    var form = nativeCart.cart.querySelector("form.js-form-proccess");
+    var wrapper = nativeCart.cart.querySelector("#customdelivery");
+    var deliveryGuard = wrapper && wrapper.querySelector('input[name="delivery-badresponse-comment"]');
+    var deliveryInput = wrapper && wrapper.querySelector('[data-zone-id="' + zone.id + '"] input[name="bf-delivery-zone"]');
+    var usedNativeDelivery = false;
+    if (deliveryGuard) deliveryGuard.value = zone.title;
+    if (deliveryInput) {
+      deliveryInput.checked = true;
+      deliveryInput.value = zone.title + " = " + zone.price;
+      deliveryInput.setAttribute("data-delivery-price", String(zone.price));
+    }
+    ensureHiddenField(form, "Delivery Zone", zone.title);
+    ensureHiddenField(form, "Delivery Zone Details", zone.caption);
+    ensureHiddenField(form, "Delivery Price", deliveryPriceLabel(zone.price));
+    ensureHiddenField(form, "Delivery Address", address || "");
+    if (!window.tcart || typeof window.tcart !== "object") ensureTcartObject();
+    if (deliveryInput && typeof window.tcart__processDelivery === "function") {
+      try {
+        usedNativeDelivery = window.tcart__processDelivery(deliveryInput);
+      } catch (error) {
+        usedNativeDelivery = false;
+      }
+    }
+    if (!usedNativeDelivery) {
+      window.tcart.delivery = {
+        name: zone.title,
+        price: Number(zone.price) || 0,
+        "service-id": "bf-" + zone.id
+      };
+    }
+    if (typeof window.tcart__updateTotalProductsinCartObj === "function") window.tcart__updateTotalProductsinCartObj();
+    if (typeof window.tcart__reDrawTotal === "function") window.tcart__reDrawTotal();
+    if (typeof window.tcart__saveLocalObj === "function") {
+      try {
+        window.tcart__saveLocalObj();
+      } catch (error) {}
+    }
+  }
+
+  function renderDeliveryFallbackMap(mapMount, selectedZoneId, onSelect) {
+    var points = {
+      "jurmala-west": "23,23 37,18 38,44 28,57 15,45",
+      "jurmala-center": "38,37 70,28 75,48 53,60 33,52",
+      "pieriga-east": "71,38 93,47 82,70 61,60"
+    };
+    mapMount.innerHTML =
+      '<svg class="bf-delivery-map-svg" viewBox="0 0 100 78" role="img" aria-label="Jūrmalas piegādes zonas">' +
+        '<rect width="100" height="78" rx="10" fill="#d9edf3"></rect>' +
+        '<path d="M0 55 C18 44, 31 64, 46 53 C62 41, 75 64, 100 48 L100 78 L0 78 Z" fill="#dff1d9"></path>' +
+        BF_DELIVERY_ZONES.map(function (zone) {
+          return '<polygon class="bf-delivery-map-svg__zone' + (zone.id === selectedZoneId ? " is-active" : "") + '" data-zone-id="' + zone.id + '" points="' + points[zone.id] + '" fill="' + zone.color + '" stroke="' + zone.color + '"></polygon>';
+        }).join("") +
+        '<text x="49" y="39" text-anchor="middle">Jūrmala</text>' +
+      "</svg>";
+    toArray(mapMount.querySelectorAll("[data-zone-id]")).forEach(function (node) {
+      node.addEventListener("click", function () {
+        onSelect(node.getAttribute("data-zone-id"));
+      });
+    });
+  }
+
+  var leafletPromise = null;
+
+  function loadLeaflet() {
+    if (window.L && window.L.map) return Promise.resolve(window.L);
+    if (leafletPromise) return leafletPromise;
+    leafletPromise = new Promise(function (resolve, reject) {
+      if (!document.getElementById("bf-leaflet-css")) {
+        var link = document.createElement("link");
+        link.id = "bf-leaflet-css";
+        link.rel = "stylesheet";
+        link.href = "https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css";
+        document.head.appendChild(link);
+      }
+      var script = document.getElementById("bf-leaflet-js");
+      if (!script) {
+        script = document.createElement("script");
+        script.id = "bf-leaflet-js";
+        script.src = "https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js";
+        script.onload = function () {
+          resolve(window.L);
+        };
+        script.onerror = reject;
+        document.head.appendChild(script);
+      } else {
+        script.addEventListener("load", function () { resolve(window.L); }, { once: true });
+        script.addEventListener("error", reject, { once: true });
+      }
+    });
+    return leafletPromise;
+  }
+
+  function renderLeafletDeliveryMap(mapMount, selectedZoneId, onSelect) {
+    loadLeaflet()
+      .then(function (L) {
+        if (!mapMount || mapMount.getAttribute("data-bf-leaflet-ready") === "true") {
+          if (mapMount && mapMount._bfLeafletMap) setTimeout(function () { mapMount._bfLeafletMap.invalidateSize(); }, 120);
+          return;
+        }
+        mapMount.setAttribute("data-bf-leaflet-ready", "true");
+        var map = L.map(mapMount, {
+          attributionControl: false,
+          scrollWheelZoom: false,
+          zoomControl: false
+        }).setView([56.965, 23.735], 11);
+        mapMount._bfLeafletMap = map;
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 16
+        }).addTo(map);
+        var bounds = [];
+        BF_DELIVERY_ZONES.forEach(function (zone) {
+          bounds = bounds.concat(zone.polygon);
+          var polygon = L.polygon(zone.polygon, {
+            color: zone.color,
+            fillColor: zone.color,
+            fillOpacity: zone.id === selectedZoneId ? 0.26 : 0.12,
+            opacity: 0.9,
+            weight: zone.id === selectedZoneId ? 3 : 2
+          }).addTo(map);
+          polygon.on("click", function () {
+            onSelect(zone.id);
+          });
+          zone._bfLeafletPolygon = polygon;
+        });
+        map.fitBounds(bounds, { padding: [12, 12] });
+        setTimeout(function () { map.invalidateSize(); }, 180);
+      })
+      .catch(function () {
+        renderDeliveryFallbackMap(mapMount, selectedZoneId, onSelect);
+      });
+  }
+
+  function updateDeliveryZoneUi(root, zoneId) {
+    toArray(root.querySelectorAll("[data-bf-delivery-choice]")).forEach(function (choice) {
+      var active = choice.getAttribute("data-zone-id") === zoneId;
+      choice.classList.toggle("is-active", active);
+      var input = choice.querySelector("input");
+      if (input) input.checked = active;
+    });
+    toArray(root.querySelectorAll(".bf-delivery-map-svg__zone")).forEach(function (node) {
+      node.classList.toggle("is-active", node.getAttribute("data-zone-id") === zoneId);
+    });
+    BF_DELIVERY_ZONES.forEach(function (zone) {
+      if (zone._bfLeafletPolygon && zone._bfLeafletPolygon.setStyle) {
+        zone._bfLeafletPolygon.setStyle({
+          fillOpacity: zone.id === zoneId ? 0.26 : 0.12,
+          weight: zone.id === zoneId ? 3 : 2
+        });
+      }
+    });
+  }
+
+  function ensureDeliveryZonePicker(nativeCart) {
+    if (!nativeCart || !nativeCart.cart) return;
+    var wrapper = nativeCart.cart.querySelector("#customdelivery");
+    if (!wrapper) return;
+    var form = nativeCart.cart.querySelector("form.js-form-proccess");
+    var picker = wrapper.querySelector("[data-bf-delivery-zone]");
+    if (!picker) {
+      picker = document.createElement("div");
+      picker.className = "bf-delivery-zone";
+      picker.setAttribute("data-bf-delivery-zone", "true");
+      picker.innerHTML =
+        '<div class="bf-delivery-zone__head">' +
+          '<strong>Piegādes zona</strong>' +
+          '<span>Izvēlieties zonu kartē vai sarakstā. Piegādes cena uzreiz tiek pieskaitīta grozam.</span>' +
+        "</div>" +
+        '<div class="bf-delivery-zone__map" data-bf-delivery-map></div>' +
+        '<div class="bf-delivery-zone__choices">' +
+          BF_DELIVERY_ZONES.map(function (zone) {
+            return (
+              '<label class="bf-delivery-zone__choice t-radio_delivery" data-bf-delivery-choice data-zone-id="' + zone.id + '" data-service-id="bf-' + zone.id + '">' +
+                '<input type="radio" name="bf-delivery-zone" value="' + escapeHtml(zone.title + " = " + zone.price) + '" data-delivery-price="' + escapeHtml(zone.price) + '">' +
+                '<span class="bf-delivery-zone__dot" style="--bf-zone-color:' + escapeHtml(zone.color) + '"></span>' +
+                '<span><b>' + escapeHtml(zone.title) + '</b><small>' + escapeHtml(zone.caption) + '</small></span>' +
+                '<em>' + escapeHtml(deliveryPriceLabel(zone.price)) + '</em>' +
+              "</label>"
+            );
+          }).join("") +
+        "</div>" +
+        '<label class="bf-delivery-zone__address">' +
+          '<span>Piegādes adrese</span>' +
+          '<input class="t-input" type="text" data-bf-delivery-address placeholder="Iela, māja, dzīvoklis">' +
+        "</label>";
+      wrapper.insertBefore(picker, wrapper.firstChild);
+    }
+
+    var selectedZoneId = getStoredDeliveryZoneId();
+    var addressInput = picker.querySelector("[data-bf-delivery-address]");
+    try {
+      if (addressInput && !addressInput.value) addressInput.value = localStorage.getItem(BF_DELIVERY_ADDRESS_STORAGE_KEY) || "";
+    } catch (error) {}
+
+    var applyZone = function (zoneId) {
+      var zone = BF_DELIVERY_ZONES.find(function (item) { return item.id === zoneId; }) || BF_DELIVERY_ZONES[0];
+      selectedZoneId = zone.id;
+      try {
+        localStorage.setItem(BF_DELIVERY_STORAGE_KEY, zone.id);
+      } catch (error) {}
+      updateDeliveryZoneUi(picker, zone.id);
+      syncDeliveryZoneToTilda(nativeCart, zone, addressInput && addressInput.value);
+    };
+
+    if (picker.getAttribute("data-bf-delivery-bound") !== "true") {
+      picker.setAttribute("data-bf-delivery-bound", "true");
+      picker.addEventListener("change", function (event) {
+        var input = event.target.closest('input[name="bf-delivery-zone"]');
+        if (!input) return;
+        var choice = input.closest("[data-zone-id]");
+        if (choice) applyZone(choice.getAttribute("data-zone-id"));
+      });
+      picker.addEventListener("click", function (event) {
+        var choice = event.target.closest("[data-bf-delivery-choice]");
+        if (choice) applyZone(choice.getAttribute("data-zone-id"));
+      });
+      if (addressInput) {
+        addressInput.addEventListener("input", function () {
+          try {
+            localStorage.setItem(BF_DELIVERY_ADDRESS_STORAGE_KEY, addressInput.value);
+          } catch (error) {}
+          var zone = BF_DELIVERY_ZONES.find(function (item) { return item.id === selectedZoneId; }) || BF_DELIVERY_ZONES[0];
+          syncDeliveryZoneToTilda(nativeCart, zone, addressInput.value);
+        });
+      }
+    }
+
+    renderLeafletDeliveryMap(picker.querySelector("[data-bf-delivery-map]"), selectedZoneId, applyZone);
+    applyZone(selectedZoneId);
+    ensureHiddenField(form, "Delivery Provider", "BrokolisFarm zone map");
+  }
+
   function bindNativeCartFormGuard(nativeCart) {
     if (!nativeCart || !nativeCart.cart) return;
     var form = nativeCart.cart.querySelector("form.js-form-proccess");
@@ -399,6 +706,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     if (typeof window.tcart__reDrawCartIcon === "function") window.tcart__reDrawCartIcon();
     if (typeof window.tcart__reDrawProducts === "function") window.tcart__reDrawProducts();
     if (typeof window.tcart__reDrawTotal === "function") window.tcart__reDrawTotal();
+    ensureDeliveryZonePicker(nativeCart);
     bindNativeCartFormGuard(nativeCart);
     patchTildaCartRedraw();
     syncCustomCartCounter();
@@ -1137,7 +1445,23 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       "Strādājam katru dienu un pirms pasūtījuma precizējam pieejamību, laiku un detaļas.": "Strādājam katru dienu un pirms pasūtījuma precizējam pieejamību, laiku un detaļas.",
       "Piegādājam svaigus produktus Jūrmalā un tuvākajā apkārtnē. Pirms pasūtījuma precizējam pieejamību, laiku un detaļas.": "Piegādājam svaigus produktus Jūrmalā un tuvākajā apkārtnē. Pirms pasūtījuma precizējam pieejamību, laiku un detaļas.",
       "Piegādājam pasūtījumus Jūrmalā un tuvākajā apkārtnē, lai ikdienas iepirkšanās aizņemtu mazāk laika.": "Piegādājam pasūtījumus Jūrmalā un tuvākajā apkārtnē, lai ikdienas iepirkšanās aizņemtu mazāk laika.",
-      "Juridiskā informācija": "Juridiskā informācija"
+      "Juridiskā informācija": "Juridiskā informācija",
+      "Piegādes zona": "Piegādes zona",
+      "Izvēlieties zonu kartē vai sarakstā. Piegādes cena uzreiz tiek pieskaitīta grozam.": "Izvēlieties zonu kartē vai sarakstā. Piegādes cena uzreiz tiek pieskaitīta grozam.",
+      "Piegādes adrese": "Piegādes adrese",
+      "Iela, māja, dzīvoklis": "Iela, māja, dzīvoklis",
+      "Jūrmala centrs": "Jūrmala centrs",
+      "Majori, Dzintari, Dubulti, Bulduri": "Majori, Dzintari, Dubulti, Bulduri",
+      "Jūrmala rietumi": "Jūrmala rietumi",
+      "Asari, Melluži, Vaivari, Kauguri, Sloka": "Asari, Melluži, Vaivari, Kauguri, Sloka",
+      "Piņķi un Babīte": "Piņķi un Babīte",
+      "Piņķi, Babīte, Imanta, lidostas apkārtne": "Piņķi, Babīte, Imanta, lidostas apkārtne",
+      "Bez maksas": "Bez maksas",
+      "Vēl no šīs kategorijas": "Vēl no šīs kategorijas",
+      "Skatiet arī": "Skatiet arī",
+      "Produkti, kas bieži der kopā ar šo izvēli.": "Produkti, kas bieži der kopā ar šo izvēli.",
+      "Ielādējam līdzīgas preces...": "Ielādējam līdzīgas preces...",
+      "Līdzīgas preces šobrīd nav atrastas.": "Līdzīgas preces šobrīd nav atrastas."
     },
     ru: {
       "_Buy_now_": "Добавить в корзину",
@@ -1176,7 +1500,23 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       "Strādājam katru dienu un pirms pasūtījuma precizējam pieejamību, laiku un detaļas.": "Работаем каждый день и перед заказом уточняем наличие, время и детали.",
       "Piegādājam svaigus produktus Jūrmalā un tuvākajā apkārtnē. Pirms pasūtījuma precizējam pieejamību, laiku un detaļas.": "Доставляем свежие продукты в Юрмале и ближайших районах. Перед заказом уточняем наличие, время и детали.",
       "Piegādājam pasūtījumus Jūrmalā un tuvākajā apkārtnē, lai ikdienas iepirkšanās aizņemtu mazāk laika.": "Доставляем заказы в Юрмале и ближайших районах, чтобы ежедневные покупки занимали меньше времени.",
-      "Juridiskā informācija": "Юридическая информация"
+      "Juridiskā informācija": "Юридическая информация",
+      "Piegādes zona": "Зона доставки",
+      "Izvēlieties zonu kartē vai sarakstā. Piegādes cena uzreiz tiek pieskaitīta grozam.": "Выберите зону на карте или в списке. Стоимость доставки сразу добавится к корзине.",
+      "Piegādes adrese": "Адрес доставки",
+      "Iela, māja, dzīvoklis": "Улица, дом, квартира",
+      "Jūrmala centrs": "Центр Юрмалы",
+      "Majori, Dzintari, Dubulti, Bulduri": "Майори, Дзинтари, Дубулты, Булдури",
+      "Jūrmala rietumi": "Запад Юрмалы",
+      "Asari, Melluži, Vaivari, Kauguri, Sloka": "Асари, Меллужи, Вайвари, Каугури, Слока",
+      "Piņķi un Babīte": "Пиньки и Бабите",
+      "Piņķi, Babīte, Imanta, lidostas apkārtne": "Пиньки, Бабите, Иманта, район аэропорта",
+      "Bez maksas": "Бесплатно",
+      "Vēl no šīs kategorijas": "Еще из этой категории",
+      "Skatiet arī": "Смотрите также",
+      "Produkti, kas bieži der kopā ar šo izvēli.": "Товары, которые часто подходят к этому выбору.",
+      "Ielādējam līdzīgas preces...": "Загружаем похожие товары...",
+      "Līdzīgas preces šobrīd nav atrastas.": "Похожие товары сейчас не найдены."
     },
     en: {
       "_Buy_now_": "Add to cart",
@@ -1215,7 +1555,23 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       "Strādājam katru dienu un pirms pasūtījuma precizējam pieejamību, laiku un detaļas.": "We are open every day and confirm availability, time and details before the order.",
       "Piegādājam svaigus produktus Jūrmalā un tuvākajā apkārtnē. Pirms pasūtījuma precizējam pieejamību, laiku un detaļas.": "We deliver fresh products in Jurmala and nearby areas. Before the order, we confirm availability, time and details.",
       "Piegādājam pasūtījumus Jūrmalā un tuvākajā apkārtnē, lai ikdienas iepirkšanās aizņemtu mazāk laika.": "We deliver orders in Jurmala and nearby areas so everyday shopping takes less time.",
-      "Juridiskā informācija": "Legal information"
+      "Juridiskā informācija": "Legal information",
+      "Piegādes zona": "Delivery zone",
+      "Izvēlieties zonu kartē vai sarakstā. Piegādes cena uzreiz tiek pieskaitīta grozam.": "Choose a zone on the map or in the list. Delivery cost is added to the cart right away.",
+      "Piegādes adrese": "Delivery address",
+      "Iela, māja, dzīvoklis": "Street, house, apartment",
+      "Jūrmala centrs": "Jurmala centre",
+      "Majori, Dzintari, Dubulti, Bulduri": "Majori, Dzintari, Dubulti, Bulduri",
+      "Jūrmala rietumi": "West Jurmala",
+      "Asari, Melluži, Vaivari, Kauguri, Sloka": "Asari, Melluzi, Vaivari, Kauguri, Sloka",
+      "Piņķi un Babīte": "Pinki and Babite",
+      "Piņķi, Babīte, Imanta, lidostas apkārtne": "Pinki, Babite, Imanta, airport area",
+      "Bez maksas": "Free",
+      "Vēl no šīs kategorijas": "More from this category",
+      "Skatiet arī": "You may also like",
+      "Produkti, kas bieži der kopā ar šo izvēli.": "Products that often go well with this choice.",
+      "Ielādējam līdzīgas preces...": "Loading similar products...",
+      "Līdzīgas preces šobrīd nav atrastas.": "Similar products are not available right now."
     }
   };
 
@@ -1455,6 +1811,162 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     bindTildaProductFallbackButton(product, fallback.querySelector("button"));
   }
 
+  function getCurrentTildaProductPayload(product) {
+    if (window.product && typeof window.product === "object" && window.product.uid) return window.product;
+    var productUid = product && (product.getAttribute("data-product-gen-uid") || product.getAttribute("data-product-uid") || product.getAttribute("data-product-lid"));
+    var scripts = toArray(document.querySelectorAll("script"));
+    for (var index = scripts.length - 1; index >= 0; index -= 1) {
+      var text = scripts[index].textContent || "";
+      if (productUid && text.indexOf('"uid":' + productUid) === -1 && text.indexOf('"uid":"' + productUid + '"') === -1) continue;
+      var match = text.match(/var\s+product\s*=\s*(\{[\s\S]*?\});/);
+      if (!match) continue;
+      try {
+        return JSON.parse(match[1]);
+      } catch (error) {}
+    }
+    return null;
+  }
+
+  function productIdentityValues(product) {
+    var ids = [];
+    if (!product) return ids;
+    if (product.uid) ids.push(String(product.uid));
+    if (product.externalid) ids.push(String(product.externalid));
+    if (product.sku) ids.push(String(product.sku));
+    if (Array.isArray(product.editions)) {
+      product.editions.forEach(function (edition) {
+        if (edition.uid) ids.push(String(edition.uid));
+        if (edition.sku) ids.push(String(edition.sku));
+      });
+    }
+    return unique(ids);
+  }
+
+  function buildRelatedProductsUrl(partUid, size) {
+    var params = new URLSearchParams();
+    params.set("storepartuid", partUid || "420955341102");
+    params.set("recid", "2176935951");
+    params.set("c", String(Date.now()));
+    params.set("getparts", "true");
+    params.set("getoptions", "true");
+    params.set("slice", "1");
+    params.set("size", String(size || 8));
+    params.set("flag_root", "withroot");
+    return DEFAULT_API + "?" + params.toString();
+  }
+
+  function renderRelatedProducts(section, products, currentProduct) {
+    var grid = section.querySelector("[data-bf-related-grid]");
+    if (!grid) return;
+    var currentIds = productIdentityValues(currentProduct);
+    var visible = products.filter(function (product) {
+      var ids = productIdentityValues(product);
+      return !ids.some(function (id) { return currentIds.indexOf(id) !== -1; });
+    }).slice(0, 4);
+    if (!visible.length) {
+      section.hidden = true;
+      return;
+    }
+    section.hidden = false;
+    grid.innerHTML = visible.map(function (product) {
+      return productCardHtml(product, DEFAULT_CURRENCY);
+    }).join("");
+    bindEditionControls(grid, DEFAULT_CURRENCY);
+    applyCurrentLanguage(grid);
+  }
+
+  function loadRelatedProducts(section, currentProduct) {
+    var grid = section.querySelector("[data-bf-related-grid]");
+    if (!grid || section.getAttribute("data-bf-related-loaded") === "true") return;
+    section.setAttribute("data-bf-related-loaded", "true");
+    var partUids = getPartUids(currentProduct || {});
+    var firstPartUid = partUids[0] || "420955341102";
+    grid.innerHTML = '<div class="bf-products__status" data-bf-i18n-text="Ielādējam līdzīgas preces...">' + escapeHtml(localizeText("Ielādējam līdzīgas preces...")) + "</div>";
+    var loadPart = function (partUid, allowFallback) {
+      requestJson(buildRelatedProductsUrl(partUid, 8))
+        .then(function (data) {
+          var products = Array.isArray(data.products) ? data.products : [];
+          if (!products.length && allowFallback && partUid !== "420955341102") {
+            section.setAttribute("data-bf-related-loaded", "retry");
+            loadPart("420955341102", false);
+            return;
+          }
+          renderRelatedProducts(section, products, currentProduct);
+        })
+        .catch(function () {
+          if (allowFallback && partUid !== "420955341102") {
+            section.setAttribute("data-bf-related-loaded", "retry");
+            loadPart("420955341102", false);
+            return;
+          }
+          grid.innerHTML = '<div class="bf-products__status" data-bf-i18n-text="Līdzīgas preces šobrīd nav atrastas.">' + escapeHtml(localizeText("Līdzīgas preces šobrīd nav atrastas.")) + "</div>";
+        });
+    };
+    loadPart(firstPartUid, true);
+  }
+
+  function ensureRelatedProducts(product, currentProduct, shell) {
+    if (!product || !shell || shell.querySelector("[data-bf-related-products]")) return;
+    var section = document.createElement("section");
+    section.className = "bf-related-products";
+    section.setAttribute("data-bf-related-products", "true");
+    section.innerHTML =
+      '<div class="bf-related-products__head">' +
+        '<span data-bf-i18n-text="Vēl no šīs kategorijas">' + escapeHtml(localizeText("Vēl no šīs kategorijas")) + "</span>" +
+        '<h2 data-bf-i18n-text="Skatiet arī">' + escapeHtml(localizeText("Skatiet arī")) + "</h2>" +
+        '<p data-bf-i18n-text="Produkti, kas bieži der kopā ar šo izvēli.">' + escapeHtml(localizeText("Produkti, kas bieži der kopā ar šo izvēli.")) + "</p>" +
+      "</div>" +
+      '<div class="bf-products bf-products_related" data-bf-related-grid></div>';
+    shell.appendChild(section);
+    loadRelatedProducts(section, currentProduct);
+  }
+
+  function ensureProductStickyBar(product) {
+    if (!product || document.querySelector("[data-bf-product-sticky]")) return;
+    var name = product.querySelector(".js-product-name");
+    var price = product.querySelector(".js-product-price");
+    var title = name ? normalizeI18nText(name.textContent) : "";
+    var priceText = price ? normalizeI18nText(price.textContent) : "";
+    var bar = document.createElement("div");
+    bar.className = "bf-product-sticky";
+    bar.setAttribute("data-bf-product-sticky", "true");
+    bar.innerHTML =
+      '<div class="bf-product-sticky__summary">' +
+        '<strong>' + escapeHtml(title) + "</strong>" +
+        '<span>' + escapeHtml(priceText) + "</span>" +
+      "</div>" +
+      '<button type="button" data-bf-i18n-text="Pievienot grozam">' + escapeHtml(localizeText("Pievienot grozam")) + "</button>";
+    document.body.appendChild(bar);
+    bar.querySelector("button").addEventListener("click", function () {
+      var nativeButton = product.querySelector(".t-store__prod-popup__btn-wrapper .t-store__prod-popup__btn, .js-store-prod-popup-buy-btn, .bf-tilda-product-action__button");
+      if (nativeButton) {
+        nativeButton.click();
+        return;
+      }
+      var productData = collectTildaProductData(product);
+      var finish = function () {
+        syncCustomCartCounter();
+        bar.classList.add("is-added");
+        setTimeout(function () {
+          bar.classList.remove("is-added");
+        }, 700);
+      };
+      if (typeof window.tcart__addProduct === "function") {
+        ensureNativeTildaCart().then(function () {
+          try {
+            window.tcart__addProduct(productData);
+          } catch (error) {
+            addProductToLocalTcart(productData);
+          }
+          finish();
+        });
+      } else {
+        addProductToLocalTcart(productData);
+        finish();
+      }
+    });
+  }
+
   function ensureTildaProductDecor(product) {
     if (!product) return;
     product.classList.add("bf-tilda-product");
@@ -1462,6 +1974,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     if (record) record.classList.add("bf-tilda-product-record");
     var shell = product.closest(".t-store__prod-snippet__container") || product.parentNode;
     if (shell && shell.classList) shell.classList.add("bf-tilda-product-shell");
+    var currentProduct = getCurrentTildaProductPayload(product);
     if (shell && !shell.querySelector(".bf-tilda-product-breadcrumb")) {
       var breadcrumb = document.createElement("div");
       breadcrumb.className = "bf-tilda-product-breadcrumb";
@@ -1485,6 +1998,8 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
         button.setAttribute("data-bf-i18n-text", "Pievienot grozam");
       }
     });
+    ensureProductStickyBar(product);
+    ensureRelatedProducts(product, currentProduct, shell);
   }
 
   function ensureTildaProductPage(scheduleRetries) {

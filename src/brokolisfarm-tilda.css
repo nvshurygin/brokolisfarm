@@ -1448,6 +1448,164 @@ body.bf-tilda-product-page #t-header {
   display: none !important;
 }
 
+.bf-delivery-zone {
+  border: 1px solid rgba(109, 172, 74, 0.26);
+  border-radius: 10px;
+  display: grid;
+  gap: 14px;
+  margin: 0 0 18px;
+  padding: 16px;
+}
+
+.bf-delivery-zone__head {
+  display: grid;
+  gap: 4px;
+}
+
+.bf-delivery-zone__head strong {
+  color: var(--bf-text);
+  font-family: var(--bf-font);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.bf-delivery-zone__head span {
+  color: rgba(46, 46, 57, 0.68);
+  font-family: var(--bf-font);
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.35;
+}
+
+.bf-delivery-zone__map {
+  background: #eef7f2;
+  border-radius: 10px;
+  height: 260px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.bf-delivery-zone__map .leaflet-container {
+  font-family: var(--bf-font);
+}
+
+.bf-delivery-zone__choices {
+  display: grid;
+  gap: 8px;
+}
+
+.bf-delivery-zone__choice {
+  align-items: center;
+  border: 1px solid var(--bf-border);
+  border-radius: 8px;
+  cursor: pointer;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+  margin: 0;
+  padding: 10px 12px;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.bf-delivery-zone__choice:hover,
+.bf-delivery-zone__choice.is-active {
+  background: rgba(109, 172, 74, 0.06);
+  border-color: var(--bf-green);
+  box-shadow: 0 0 0 1px rgba(109, 172, 74, 0.22);
+}
+
+.bf-delivery-zone__choice input {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.bf-delivery-zone__dot {
+  background: var(--bf-zone-color);
+  border-radius: 999px;
+  height: 12px;
+  width: 12px;
+}
+
+.bf-delivery-zone__choice b,
+.bf-delivery-zone__choice small,
+.bf-delivery-zone__choice em,
+.bf-delivery-zone__address span {
+  font-family: var(--bf-font);
+}
+
+.bf-delivery-zone__choice b {
+  color: var(--bf-text);
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.bf-delivery-zone__choice small {
+  color: rgba(46, 46, 57, 0.62);
+  display: block;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.3;
+  margin-top: 2px;
+}
+
+.bf-delivery-zone__choice em {
+  color: var(--bf-green);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.bf-delivery-zone__address {
+  display: grid;
+  gap: 6px;
+}
+
+.bf-delivery-zone__address span {
+  color: var(--bf-text);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.bf-delivery-zone__address input {
+  border: 1px solid var(--bf-border) !important;
+  border-radius: 8px !important;
+  color: var(--bf-text) !important;
+  font-family: var(--bf-font) !important;
+  height: 42px !important;
+  padding: 0 12px !important;
+}
+
+.bf-delivery-map-svg {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.bf-delivery-map-svg text {
+  fill: rgba(46, 46, 57, 0.7);
+  font-family: var(--bf-font);
+  font-size: 7px;
+  font-weight: 700;
+}
+
+.bf-delivery-map-svg__zone {
+  cursor: pointer;
+  fill-opacity: 0.18;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  transition: fill-opacity 0.18s ease, stroke-width 0.18s ease;
+}
+
+.bf-delivery-map-svg__zone.is-active {
+  fill-opacity: 0.34;
+  stroke-width: 3;
+}
+
 body.bf-tilda-product-page .bf-tilda-product-record {
   padding: 24px 16px 52px;
 }
@@ -1651,6 +1809,109 @@ body.bf-tilda-product-page .bf-tilda-product-note span {
   line-height: 1.4;
 }
 
+.bf-related-products {
+  display: grid;
+  gap: 22px;
+  margin: 34px 0 0;
+}
+
+.bf-related-products__head {
+  display: grid;
+  gap: 8px;
+  max-width: 620px;
+}
+
+.bf-related-products__head span {
+  color: var(--bf-green);
+  font-family: var(--bf-accent-font);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.bf-related-products__head h2 {
+  color: var(--bf-text);
+  font-family: var(--bf-font);
+  font-size: clamp(28px, 3.8vw, 44px);
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.08;
+  margin: 0;
+}
+
+.bf-related-products__head p {
+  color: rgba(46, 46, 57, 0.68);
+  font-family: var(--bf-font);
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.48;
+  margin: 0;
+}
+
+.bf-products_related {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.bf-product-sticky {
+  align-items: center;
+  background: #ffffff;
+  border-top: 1px solid rgba(46, 46, 57, 0.1);
+  bottom: 0;
+  box-shadow: 0 -12px 30px rgba(46, 46, 57, 0.12);
+  display: none;
+  gap: 12px;
+  left: 0;
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+  position: fixed;
+  right: 0;
+  z-index: 100000;
+}
+
+.bf-product-sticky__summary {
+  display: grid;
+  flex: 1;
+  gap: 2px;
+  min-width: 0;
+}
+
+.bf-product-sticky__summary strong,
+.bf-product-sticky__summary span,
+.bf-product-sticky button {
+  font-family: var(--bf-font);
+}
+
+.bf-product-sticky__summary strong {
+  color: var(--bf-text);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bf-product-sticky__summary span {
+  color: var(--bf-green);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.bf-product-sticky button {
+  background: var(--bf-green);
+  border: 0;
+  border-radius: 10px;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  min-height: 44px;
+  padding: 0 16px;
+  white-space: nowrap;
+}
+
+.bf-product-sticky.is-added button {
+  background: #5c9a3f;
+}
+
 body.bf-tilda-product-page .bf-footer {
   margin-top: 0;
 }
@@ -1744,6 +2005,10 @@ body.bf-tilda-product-page .bf-footer {
 
   .bf-footer__inner {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bf-products_related {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   body.bf-tilda-product-page .bf-tilda-product .t-container > div {
@@ -1930,6 +2195,10 @@ body.bf-tilda-product-page .bf-footer {
     grid-template-columns: 1fr;
   }
 
+  .bf-products_related {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .bf-newsletter__image_right {
     display: none;
   }
@@ -2062,6 +2331,40 @@ body.bf-tilda-product-page .bf-footer {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     overflow: visible;
     padding-bottom: 0;
+  }
+
+  .bf-delivery-zone {
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .bf-delivery-zone__map {
+    height: 220px;
+  }
+
+  .bf-delivery-zone__choice {
+    grid-template-columns: 18px minmax(0, 1fr);
+  }
+
+  .bf-delivery-zone__choice em {
+    grid-column: 2;
+  }
+
+  body.bf-tilda-product-page {
+    padding-bottom: 70px;
+  }
+
+  body.bf-tilda-product-page .bf-product-sticky {
+    display: flex;
+  }
+
+  .bf-related-products {
+    gap: 16px;
+    margin-top: 26px;
+  }
+
+  .bf-related-products__head h2 {
+    font-size: 26px;
   }
 
   .bf-category-card {
