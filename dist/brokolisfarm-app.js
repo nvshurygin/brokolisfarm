@@ -93,56 +93,38 @@
     }
   }
 
-  function isTildaProductContext() {
-    return !!(
-      window.location && window.location.pathname.indexOf("/tproduct/") === 0 ||
-      document.querySelector(".t-store__product-snippet, .js-store-product")
-    );
-  }
-
-  function ensureTildaHeaderMount(templates, mountAttribute, headerClass) {
+  function ensureStandaloneHeaderMount(templates, mountAttribute, headerClass) {
     if (!templates.header) return null;
-    var allrecords = document.getElementById("allrecords");
-    var headerRoot = document.getElementById("t-header");
-    if (!headerRoot) {
-      headerRoot = document.createElement("div");
-      headerRoot.id = "t-header";
-      if (allrecords && allrecords.parentNode) {
-        allrecords.parentNode.insertBefore(headerRoot, allrecords);
-      } else {
-        document.body.insertBefore(headerRoot, document.body.firstChild);
-      }
-    }
-    var headerMount = headerRoot.querySelector("[" + mountAttribute + "]");
+    var headerMount = document.querySelector("[" + mountAttribute + "]");
     if (!headerMount) {
       headerMount = document.createElement("div");
       headerMount.setAttribute(mountAttribute, "true");
-      headerRoot.insertBefore(headerMount, headerRoot.firstChild);
+      var tildaHeader = document.getElementById("t-header");
+      var allrecords = document.getElementById("allrecords");
+      var anchor = tildaHeader || allrecords || document.body.firstChild;
+      if (anchor && anchor.parentNode) {
+        anchor.parentNode.insertBefore(headerMount, anchor);
+      } else {
+        document.body.insertBefore(headerMount, document.body.firstChild);
+      }
     }
     if (headerMount.getAttribute("data-bf-rendered") !== "true") {
       headerMount.innerHTML = templates.header;
       headerMount.setAttribute("data-bf-rendered", "true");
     }
-    if (headerClass) headerRoot.classList.add(headerClass);
+    if (headerClass) headerMount.classList.add(headerClass);
     return headerMount;
   }
 
   function renderCommonChrome() {
     var templates = window.BrokolisFarmTemplates || {};
     if (templates.header) {
-      if (!isTildaProductContext()) {
-        ensureTildaHeaderMount(templates, "data-bf-shared-header-mount", "bf-tilda-shared-header");
-        toArray(document.querySelectorAll("[data-bf-header]")).forEach(function (mount) {
-          if (mount.parentNode) mount.parentNode.removeChild(mount);
-        });
-      } else {
-        toArray(document.querySelectorAll("[data-bf-header]")).forEach(function (mount) {
-          if (!mount.getAttribute("data-bf-rendered")) {
-            mount.innerHTML = templates.header;
-            mount.setAttribute("data-bf-rendered", "true");
-          }
-        });
-      }
+      toArray(document.querySelectorAll("[data-bf-header]")).forEach(function (mount) {
+        if (!mount.getAttribute("data-bf-rendered")) {
+          mount.innerHTML = templates.header;
+          mount.setAttribute("data-bf-rendered", "true");
+        }
+      });
     }
     if (templates.footer) {
       toArray(document.querySelectorAll("[data-bf-footer]")).forEach(function (mount) {
@@ -426,7 +408,8 @@
 
         removeMinimalTildaCartHost();
         var imported = document.importNode(record, true);
-        document.body.appendChild(imported);
+        var tildaHeader = document.getElementById("t-header");
+        (tildaHeader || document.body).appendChild(imported);
         return initNativeTildaCart();
       })
       .catch(function () {
@@ -440,6 +423,18 @@
     if (typeof window.tcart__openCart === "function" && hasNativeTildaCartWindow()) {
       try {
         window.tcart__openCart();
+        return true;
+      } catch (error) {}
+    }
+    if (typeof window.tcart__openCartSidebar === "function" && hasNativeTildaCartWindow()) {
+      try {
+        window.tcart__openCartSidebar();
+        return true;
+      } catch (error) {}
+    }
+    if (typeof window.tcart__openCartFullscreen === "function" && hasNativeTildaCartWindow()) {
+      try {
+        window.tcart__openCartFullscreen();
         return true;
       } catch (error) {}
     }
@@ -1286,7 +1281,7 @@
   }
 
   function ensureTildaProductHeader(templates) {
-    ensureTildaHeaderMount(templates, "data-bf-product-header-mount", "bf-tilda-product-header");
+    ensureStandaloneHeaderMount(templates, "data-bf-product-header-mount", "bf-tilda-product-header");
   }
 
   function ensureTildaProductFooter(templates) {
