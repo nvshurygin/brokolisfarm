@@ -3488,20 +3488,26 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
   function ensureTildaProductHeader(templates) {
     if (!templates.header) return;
     var allrecords = document.getElementById("allrecords");
-    var headerMount = document.getElementById("t-header");
+    var headerRoot = document.getElementById("t-header");
+    if (!headerRoot) {
+      headerRoot = document.createElement("div");
+      headerRoot.id = "t-header";
+      if (allrecords && allrecords.parentNode) {
+        allrecords.parentNode.insertBefore(headerRoot, allrecords);
+      } else {
+        document.body.insertBefore(headerRoot, document.body.firstChild);
+      }
+    }
+    var headerMount = headerRoot.querySelector("[data-bf-product-header-mount]");
     if (!headerMount) {
       headerMount = document.createElement("div");
-      headerMount.id = "t-header";
-      if (allrecords && allrecords.parentNode) {
-        allrecords.parentNode.insertBefore(headerMount, allrecords);
-      } else {
-        document.body.insertBefore(headerMount, document.body.firstChild);
-      }
+      headerMount.setAttribute("data-bf-product-header-mount", "true");
+      headerRoot.insertBefore(headerMount, headerRoot.firstChild);
     }
     if (headerMount.getAttribute("data-bf-rendered") === "true") return;
     headerMount.innerHTML = templates.header;
     headerMount.setAttribute("data-bf-rendered", "true");
-    headerMount.classList.add("bf-tilda-product-header");
+    headerRoot.classList.add("bf-tilda-product-header");
   }
 
   function ensureTildaProductFooter(templates) {
