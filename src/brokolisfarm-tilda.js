@@ -886,14 +886,7 @@
         if (!button) return;
         event.preventDefault();
         event.stopPropagation();
-        var map = mapMount._bfLeafletMap;
-        if (!map) return;
-        if (button.getAttribute("data-bf-map-zoom") === "in" && map.zoomIn) {
-          map.zoomIn(1);
-        } else if (map.zoomOut) {
-          map.zoomOut(1);
-        }
-        setTimeout(invalidateDeliveryMaps, 40);
+        zoomDeliveryMapFromButton(button);
       }, true);
       ["mousedown", "mouseup", "pointerdown", "pointerup", "touchstart", "touchend"].forEach(function (eventName) {
         mapWrap.addEventListener(eventName, function (event) {
@@ -902,6 +895,54 @@
       });
     }
     return mapMount;
+  }
+
+  function ensureAllDeliveryMapZoomControls() {
+    toArray(document.querySelectorAll("[data-bf-delivery-zone]")).forEach(function (picker) {
+      ensureDeliveryMapZoomControls(picker);
+    });
+  }
+
+  function bindDeliveryMapObserver() {
+    if (document.documentElement.getAttribute("data-bf-delivery-map-observer") === "true") return;
+    if (typeof MutationObserver === "undefined" || !document.body) return;
+    document.documentElement.setAttribute("data-bf-delivery-map-observer", "true");
+    var scheduled = false;
+    var observer = new MutationObserver(function (mutations) {
+      var hasDeliveryChange = mutations.some(function (mutation) {
+        return toArray(mutation.addedNodes).some(function (node) {
+          return node && node.nodeType === 1 && (
+            (node.matches && node.matches("[data-bf-delivery-zone], [data-bf-delivery-map], #customdelivery")) ||
+            (node.querySelector && node.querySelector("[data-bf-delivery-zone], [data-bf-delivery-map], #customdelivery"))
+          );
+        });
+      });
+      if (!hasDeliveryChange || scheduled) return;
+      scheduled = true;
+      setTimeout(function () {
+        scheduled = false;
+        ensureAllDeliveryMapZoomControls();
+      }, 60);
+    });
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  function zoomDeliveryMapFromButton(button) {
+    if (!button) return false;
+    var mapWrap = button.closest("[data-bf-delivery-map-wrap]");
+    var mapMount = mapWrap && mapWrap.querySelector("[data-bf-delivery-map]");
+    var map = mapMount && mapMount._bfLeafletMap;
+    if (!map) return false;
+    if (button.getAttribute("data-bf-map-zoom") === "in" && map.zoomIn) {
+      map.zoomIn(1);
+    } else if (map.zoomOut) {
+      map.zoomOut(1);
+    }
+    setTimeout(invalidateDeliveryMaps, 40);
+    return true;
   }
 
   function ensureDeliveryZonePicker(nativeCart) {
@@ -1097,6 +1138,7 @@
     if (typeof window.tcart__reDrawProducts === "function") window.tcart__reDrawProducts();
     if (typeof window.tcart__reDrawTotal === "function") window.tcart__reDrawTotal();
     ensureDeliveryZonePicker(nativeCart);
+    ensureAllDeliveryMapZoomControls();
     setTimeout(invalidateDeliveryMaps, 120);
     setTimeout(invalidateDeliveryMaps, 450);
     bindNativeCartFormGuard(nativeCart);
@@ -1230,6 +1272,13 @@
     if (document.documentElement.getAttribute("data-bf-cart-bridge-bound") !== "true") {
       document.documentElement.setAttribute("data-bf-cart-bridge-bound", "true");
       document.addEventListener("click", function (event) {
+        var zoomButton = event.target.closest("[data-bf-map-zoom]");
+        if (zoomButton) {
+          event.preventDefault();
+          event.stopPropagation();
+          zoomDeliveryMapFromButton(zoomButton);
+          return;
+        }
         var opener = event.target.closest("[data-bf-cart-open]");
         if (!opener) return;
         event.preventDefault();
@@ -1251,10 +1300,12 @@
 
     patchTildaCartRedraw();
     removeLegacyCustomCartDrawer();
+    ensureAllDeliveryMapZoomControls();
     syncCustomCartCounter();
     [100, 500, 1200, 2500].forEach(function (delay) {
       setTimeout(function () {
         patchTildaCartRedraw();
+        ensureAllDeliveryMapZoomControls();
         syncCustomCartCounter();
       }, delay);
     });
@@ -3076,7 +3127,12 @@
     bindStickyHeader();
     bindMobileMenu();
     bindCartBridge();
+    bindDeliveryMapObserver();
     initAll();
+    ensureAllDeliveryMapZoomControls();
+    [250, 900, 1800].forEach(function (delay) {
+      setTimeout(ensureAllDeliveryMapZoomControls, delay);
+    });
   }
 
   ready(boot);
