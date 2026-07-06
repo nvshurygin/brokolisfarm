@@ -586,15 +586,31 @@
     var params = new URLSearchParams();
     params.set("q", query);
     params.set("limit", "7");
-    params.set("lang", currentLanguage());
     params.set("lat", "56.974079");
     params.set("lon", "23.807684");
+    if (currentLanguage() === "en") params.set("lang", "en");
     return requestJson(BF_DELIVERY_GEOCODER_API + "?" + params.toString())
       .then(function (data) {
         var features = Array.isArray(data.features) ? data.features : [];
         return features.map(formatDeliveryAddressFeature).filter(function (item) {
           return item && deliveryPointInSearchBounds(item.point);
         }).slice(0, 5);
+      });
+  }
+
+  function requestDeliveryReverseAddress(point) {
+    if (!point) return Promise.resolve(null);
+    var params = new URLSearchParams();
+    params.set("lat", String(Number(point.lat)));
+    params.set("lon", String(Number(point.lng)));
+    if (currentLanguage() === "en") params.set("lang", "en");
+    return requestJson(BF_DELIVERY_GEOCODER_API.replace(/\/api\/?$/, "/reverse") + "?" + params.toString())
+      .then(function (data) {
+        var features = Array.isArray(data.features) ? data.features : [];
+        var addresses = features.map(formatDeliveryAddressFeature).filter(function (item) {
+          return item && deliveryPointInSearchBounds(item.point);
+        });
+        return addresses[0] || null;
       });
   }
 
@@ -665,7 +681,7 @@
     return leafletPromise;
   }
 
-  function setLeafletDeliveryPoint(mapMount, point, onPointSelect) {
+  function setLeafletDeliveryPoint(mapMount, point, onPointSelect, shouldCenter) {
     if (!mapMount || !point || !mapMount._bfLeafletMap || !window.L) return;
     var latLng = [Number(point.lat), Number(point.lng)];
     if (!mapMount._bfDeliveryMarker) {
@@ -683,7 +699,9 @@
     } else {
       mapMount._bfDeliveryMarker.setLatLng(latLng);
     }
-    mapMount._bfLeafletMap.setView(latLng, Math.max(mapMount._bfLeafletMap.getZoom(), 12), { animate: true });
+    if (shouldCenter) {
+      mapMount._bfLeafletMap.setView(latLng, Math.max(mapMount._bfLeafletMap.getZoom(), 12), { animate: true });
+    }
   }
 
   function enableLeafletDeliveryInteractions(L, mapMount, map) {
@@ -716,7 +734,7 @@
             enableLeafletDeliveryInteractions(L, mapMount, mapMount._bfLeafletMap);
             setTimeout(function () { mapMount._bfLeafletMap.invalidateSize(); }, 120);
           }
-          if (mapMount && selectedPoint) setLeafletDeliveryPoint(mapMount, selectedPoint, onPointSelect);
+          if (mapMount && selectedPoint) setLeafletDeliveryPoint(mapMount, selectedPoint, onPointSelect, false);
           return;
         }
         mapMount.setAttribute("data-bf-leaflet-ready", "true");
@@ -749,9 +767,13 @@
             fillColor: zone.color,
             fillOpacity: zone.id === selectedZoneId ? 0.26 : 0.12,
             opacity: 0.9,
-            weight: zone.id === selectedZoneId ? 3 : 2
+            weight: zone.id === selectedZoneId ? 3 : 2,
+            bubblingMouseEvents: false
           }).addTo(map);
-          polygon.on("click", function () {
+          polygon.on("click", function (event) {
+            if (event && event.originalEvent && L.DomEvent && L.DomEvent.stopPropagation) {
+              L.DomEvent.stopPropagation(event.originalEvent);
+            }
             onSelect(zone.id);
           });
           zone._bfLeafletPolygon = polygon;
@@ -763,7 +785,7 @@
           }, "map");
         });
         map.fitBounds(bounds, { padding: [12, 12] });
-        if (selectedPoint) setLeafletDeliveryPoint(mapMount, selectedPoint, onPointSelect);
+        if (selectedPoint) setLeafletDeliveryPoint(mapMount, selectedPoint, onPointSelect, false);
         setTimeout(function () { map.invalidateSize(); }, 180);
       })
       .catch(function () {
@@ -1017,9 +1039,20 @@
     var selectedPoint = getStoredDeliveryPoint();
     var addressInput = picker.querySelector("[data-bf-delivery-address]");
     var mapMount = ensureDeliveryMapZoomControls(picker);
+    var reverseRequestId = 0;
     try {
       if (addressInput && !addressInput.value) addressInput.value = localStorage.getItem(BF_DELIVERY_ADDRESS_STORAGE_KEY) || "";
     } catch (error) {}
+
+    var setDeliveryAddressValue = function (value) {
+      var address = value || "";
+      if (addressInput) addressInput.value = address;
+      try {
+        localStorage.setItem(BF_DELIVERY_ADDRESS_STORAGE_KEY, address);
+      } catch (error) {}
+      var selectedZone = BF_DELIVERY_ZONES.find(function (item) { return item.id === selectedZoneId; }) || BF_DELIVERY_ZONES[0];
+      syncDeliveryZoneToTilda(nativeCart, selectedZone, address);
+    };
 
     var selectedPointStatus = function () {
       if (!selectedPoint) return "";
@@ -1039,7 +1072,8 @@
       updateDeliveryPointUi(picker, selectedPoint, selectedPoint && deliveryZoneForPoint(selectedPoint));
     };
 
-    var applyPoint = function (point) {
+    var applyPoint = function (point, source) {
+      source = source || "manual";
       selectedPoint = point && Number.isFinite(Number(point.lat)) && Number.isFinite(Number(point.lng)) ? {
         lat: Number(point.lat),
         lng: Number(point.lng)
@@ -1048,8 +1082,28 @@
       var pointZone = selectedPoint && deliveryZoneForPoint(selectedPoint);
       updateDeliveryPointUi(picker, selectedPoint, pointZone);
       syncDeliveryPointToTilda(nativeCart, selectedPoint, selectedPointStatus());
-      if (selectedPoint) setLeafletDeliveryPoint(mapMount, selectedPoint, applyPoint);
-      if (pointZone) {
+      if (source === "suggestion") {
+        setDeliveryAddressValue(addressInput && addressInput.value);
+      }
+      if (selectedPoint && (source === "map" || source === "marker")) {
+        var fallbackAddress = formatDeliveryPoint(selectedPoint);
+        var reversePoint = {
+          lat: selectedPoint.lat,
+          lng: selectedPoint.lng
+        };
+        var currentReverseId = reverseRequestId += 1;
+        setDeliveryAddressValue(fallbackAddress);
+        requestDeliveryReverseAddress(reversePoint)
+          .then(function (item) {
+            if (currentReverseId !== reverseRequestId || !selectedPoint) return;
+            if (Math.abs(Number(selectedPoint.lat) - reversePoint.lat) > 0.000001 ||
+                Math.abs(Number(selectedPoint.lng) - reversePoint.lng) > 0.000001) return;
+            if (item && item.title) setDeliveryAddressValue(item.title);
+          })
+          .catch(function () {});
+      }
+      if (selectedPoint) setLeafletDeliveryPoint(mapMount, selectedPoint, applyPoint, source === "suggestion");
+      if (pointZone && source !== "restore") {
         applyZone(pointZone.id);
       }
     };
@@ -1065,7 +1119,7 @@
           localStorage.setItem(BF_DELIVERY_ADDRESS_STORAGE_KEY, item.title);
         } catch (error) {}
         hideDeliverySuggestions(picker);
-        applyPoint(item.point);
+        applyPoint(item.point, "suggestion");
       };
       var queueAddressSearch = function () {
         if (!addressInput) return;
@@ -1124,7 +1178,8 @@
 
     renderLeafletDeliveryMap(mapMount, selectedZoneId, applyZone, applyPoint, selectedPoint);
     if (selectedPoint) {
-      applyPoint(selectedPoint);
+      applyPoint(selectedPoint, "restore");
+      applyZone(selectedZoneId);
     } else {
       updateDeliveryPointUi(picker, null, null);
       applyZone(selectedZoneId);
