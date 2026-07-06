@@ -1510,6 +1510,12 @@ body.bf-tilda-product-page #t-header {
   width: 100%;
 }
 
+.bf-delivery-zone__map-wrap {
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
 .bf-delivery-zone__map:active {
   cursor: grabbing;
 }
@@ -1547,6 +1553,44 @@ body.bf-tilda-product-page #t-header {
 .bf-delivery-zone__map .leaflet-control-zoom a:hover {
   background: rgba(109, 172, 74, 0.12) !important;
   color: var(--bf-green) !important;
+}
+
+.bf-delivery-zone__zoom {
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(46, 46, 57, 0.16);
+  display: grid;
+  left: 10px;
+  overflow: hidden;
+  position: absolute;
+  top: 10px;
+  z-index: 1000;
+}
+
+.bf-delivery-zone__zoom button {
+  align-items: center;
+  background: #ffffff;
+  border: 0;
+  border-bottom: 1px solid rgba(46, 46, 57, 0.1);
+  color: var(--bf-text);
+  cursor: pointer;
+  display: flex;
+  font-family: var(--bf-font);
+  font-size: 22px;
+  font-weight: 700;
+  height: 36px;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  width: 36px;
+}
+
+.bf-delivery-zone__zoom button:last-child {
+  border-bottom: 0;
+}
+
+.bf-delivery-zone__zoom button:hover {
+  background: rgba(109, 172, 74, 0.12);
+  color: var(--bf-green);
 }
 
 .bf-delivery-zone__choices {
@@ -3413,7 +3457,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
           wheelDebounceTime: 30,
           wheelPxPerZoomLevel: 48,
           zoomSnap: 0.25,
-          zoomControl: true
+          zoomControl: false
         }).setView([56.965, 23.735], 11);
         mapMount._bfLeafletMap = map;
         enableLeafletDeliveryInteractions(L, mapMount, map);
@@ -3538,6 +3582,51 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     status.textContent = localizeText("Meklējam adresi...");
   }
 
+  function ensureDeliveryMapZoomControls(picker) {
+    var mapMount = picker && picker.querySelector("[data-bf-delivery-map]");
+    if (!mapMount) return null;
+    var mapWrap = mapMount.closest("[data-bf-delivery-map-wrap]");
+    if (!mapWrap) {
+      mapWrap = document.createElement("div");
+      mapWrap.className = "bf-delivery-zone__map-wrap";
+      mapWrap.setAttribute("data-bf-delivery-map-wrap", "true");
+      mapMount.parentNode.insertBefore(mapWrap, mapMount);
+      mapWrap.appendChild(mapMount);
+    }
+    if (!mapWrap.querySelector("[data-bf-map-zoom]")) {
+      var controls = document.createElement("div");
+      controls.className = "bf-delivery-zone__zoom";
+      controls.setAttribute("aria-label", "Kartes tālummaiņa");
+      controls.innerHTML =
+        '<button type="button" data-bf-map-zoom="in" aria-label="Tuvināt karti">+</button>' +
+        '<button type="button" data-bf-map-zoom="out" aria-label="Tālināt karti">−</button>';
+      mapWrap.appendChild(controls);
+    }
+    if (mapWrap.getAttribute("data-bf-map-zoom-bound") !== "true") {
+      mapWrap.setAttribute("data-bf-map-zoom-bound", "true");
+      mapWrap.addEventListener("click", function (event) {
+        var button = event.target.closest("[data-bf-map-zoom]");
+        if (!button) return;
+        event.preventDefault();
+        event.stopPropagation();
+        var map = mapMount._bfLeafletMap;
+        if (!map) return;
+        if (button.getAttribute("data-bf-map-zoom") === "in" && map.zoomIn) {
+          map.zoomIn(1);
+        } else if (map.zoomOut) {
+          map.zoomOut(1);
+        }
+        setTimeout(invalidateDeliveryMaps, 40);
+      }, true);
+      ["mousedown", "mouseup", "pointerdown", "pointerup", "touchstart", "touchend"].forEach(function (eventName) {
+        mapWrap.addEventListener(eventName, function (event) {
+          if (event.target.closest("[data-bf-map-zoom]")) event.stopPropagation();
+        }, { capture: true, passive: true });
+      });
+    }
+    return mapMount;
+  }
+
   function ensureDeliveryZonePicker(nativeCart) {
     if (!nativeCart || !nativeCart.cart) return;
     var wrapper = nativeCart.cart.querySelector("#customdelivery");
@@ -3553,7 +3642,13 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
           '<strong>Piegādes zona</strong>' +
           '<span>Izvēlieties zonu kartē vai sarakstā. Piegādes cena uzreiz tiek pieskaitīta grozam.</span>' +
         "</div>" +
-        '<div class="bf-delivery-zone__map" data-bf-delivery-map></div>' +
+        '<div class="bf-delivery-zone__map-wrap" data-bf-delivery-map-wrap="true">' +
+          '<div class="bf-delivery-zone__map" data-bf-delivery-map></div>' +
+          '<div class="bf-delivery-zone__zoom" aria-label="Kartes tālummaiņa">' +
+            '<button type="button" data-bf-map-zoom="in" aria-label="Tuvināt karti">+</button>' +
+            '<button type="button" data-bf-map-zoom="out" aria-label="Tālināt karti">−</button>' +
+          "</div>" +
+        "</div>" +
         '<div class="bf-delivery-zone__choices">' +
           BF_DELIVERY_ZONES.map(function (zone) {
             return (
@@ -3580,7 +3675,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     var selectedZoneId = getStoredDeliveryZoneId();
     var selectedPoint = getStoredDeliveryPoint();
     var addressInput = picker.querySelector("[data-bf-delivery-address]");
-    var mapMount = picker.querySelector("[data-bf-delivery-map]");
+    var mapMount = ensureDeliveryMapZoomControls(picker);
     try {
       if (addressInput && !addressInput.value) addressInput.value = localStorage.getItem(BF_DELIVERY_ADDRESS_STORAGE_KEY) || "";
     } catch (error) {}
