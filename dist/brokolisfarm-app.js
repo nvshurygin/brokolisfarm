@@ -681,13 +681,28 @@
     return leafletPromise;
   }
 
+  function getLeafletDeliveryMarkerIcon() {
+    if (!window.L || !window.L.divIcon) return null;
+    if (!window.L._bfDeliveryMarkerIcon) {
+      window.L._bfDeliveryMarkerIcon = window.L.divIcon({
+        className: "bf-delivery-marker",
+        html: '<span class="bf-delivery-marker__pin" aria-hidden="true"></span>',
+        iconAnchor: [15, 34],
+        iconSize: [30, 34],
+        popupAnchor: [0, -30]
+      });
+    }
+    return window.L._bfDeliveryMarkerIcon;
+  }
+
   function setLeafletDeliveryPoint(mapMount, point, onPointSelect, shouldCenter) {
     if (!mapMount || !point || !mapMount._bfLeafletMap || !window.L) return;
     var latLng = [Number(point.lat), Number(point.lng)];
     if (!mapMount._bfDeliveryMarker) {
       mapMount._bfDeliveryMarker = window.L.marker(latLng, {
         autoPan: true,
-        draggable: true
+        draggable: true,
+        icon: getLeafletDeliveryMarkerIcon()
       }).addTo(mapMount._bfLeafletMap);
       mapMount._bfDeliveryMarker.on("dragend", function () {
         var next = mapMount._bfDeliveryMarker.getLatLng();

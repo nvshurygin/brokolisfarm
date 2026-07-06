@@ -1581,6 +1581,35 @@ body.bf-tilda-product-page #t-header {
   color: var(--bf-green) !important;
 }
 
+.bf-delivery-zone__map .bf-delivery-marker {
+  background: transparent !important;
+  border: 0 !important;
+}
+
+.bf-delivery-marker__pin {
+  background: var(--bf-green);
+  border: 3px solid #ffffff;
+  border-radius: 50% 50% 50% 4px;
+  box-shadow: 0 8px 18px rgba(46, 46, 57, 0.24);
+  display: block;
+  height: 28px;
+  position: relative;
+  transform: rotate(-45deg);
+  width: 28px;
+}
+
+.bf-delivery-marker__pin::after {
+  background: #ffffff;
+  border-radius: 50%;
+  content: "";
+  height: 8px;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+}
+
 .bf-delivery-zone__zoom {
   border-radius: 8px;
   box-shadow: 0 8px 20px rgba(46, 46, 57, 0.16);
