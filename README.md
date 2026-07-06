@@ -39,10 +39,10 @@ Open `http://127.0.0.1:4173/`.
 ```html
 <script>
 window.BrokolisFarmLoaderConfig = {
-  version: "2026-07-06-6"
+  version: "2026-07-06-7"
 };
 </script>
-<script src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/brokolisfarm-loader.js?v=2026-07-06-6"></script>
+<script src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-06-7/dist/brokolisfarm-loader.js?v=2026-07-06-7"></script>
 ```
 
 3. Paste that snippet once into Tilda HEAD. The loader automatically pulls:
@@ -50,7 +50,7 @@ window.BrokolisFarmLoaderConfig = {
    - `dist/brokolisfarm-templates.js`
    - `dist/brokolisfarm-app.js`
    - `dist/pages/<page>.html`
-   When the loader is opened from jsDelivr, `version` is also used as the git tag for assets, so page CSS/JS are not served from the stale `@main` branch cache.
+   The loader and assets are opened from the same git tag, so page CSS/JS are not served from the stale `@main` branch cache.
 4. Create real Tilda pages for routes such as `/`, `/catalog`, `/offers`, `/new`, `/about`, `/delivery`, `/contacts`, `/privacy`, and `/terms`.
 5. Add one HTML block to each page with its page key:
 
@@ -67,7 +67,7 @@ window.BrokolisFarmLoaderConfig = {
 ```
 
 6. The loader does not enable SPA navigation by default. Header/footer links navigate to real Tilda pages, and each page loads its own fragment from Git/CDN.
-7. For updates, push to GitHub and change `version` plus the `?v=` value. For production-locking, use a commit hash in the CDN URL instead of `@main`.
+7. For updates, push to GitHub, create the matching git tag, and change `version` plus the tag in the CDN URL.
 
 Prefer `cdn.jsdelivr.net/gh/...` over `raw.githubusercontent.com` for production because it serves better cache headers and content types for browser-loaded assets.
 

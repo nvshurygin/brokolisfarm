@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = path.join(root, "dist");
-const loaderVersion = "2026-07-06-6";
+const loaderVersion = "2026-07-06-7";
 
 const css = await readFile(path.join(root, "src", "brokolisfarm-tilda.css"), "utf8");
 const js = await readFile(path.join(root, "src", "brokolisfarm-tilda.js"), "utf8");
@@ -39,7 +39,7 @@ window.BrokolisFarmLoaderConfig = {
   version: "${loaderVersion}"
 };
 </script>
-<script src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/brokolisfarm-loader.js?v=${loaderVersion}"></script>
+<script src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@${loaderVersion}/dist/brokolisfarm-loader.js?v=${loaderVersion}"></script>
 `;
 const loaderContainer = `<div data-bf-page="home"></div>\n`;
 
