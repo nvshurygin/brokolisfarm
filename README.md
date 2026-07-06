@@ -39,10 +39,10 @@ Open `http://127.0.0.1:4173/`.
 ```html
 <script>
 window.BrokolisFarmLoaderConfig = {
-  version: "2026-07-06-5"
+  version: "2026-07-06-6"
 };
 </script>
-<script src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/brokolisfarm-loader.js?v=2026-07-06-5"></script>
+<script src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/brokolisfarm-loader.js?v=2026-07-06-6"></script>
 ```
 
 3. Paste that snippet once into Tilda HEAD. The loader automatically pulls:
@@ -50,6 +50,7 @@ window.BrokolisFarmLoaderConfig = {
    - `dist/brokolisfarm-templates.js`
    - `dist/brokolisfarm-app.js`
    - `dist/pages/<page>.html`
+   When the loader is opened from jsDelivr, `version` is also used as the git tag for assets, so page CSS/JS are not served from the stale `@main` branch cache.
 4. Create real Tilda pages for routes such as `/`, `/catalog`, `/offers`, `/new`, `/about`, `/delivery`, `/contacts`, `/privacy`, and `/terms`.
 5. Add one HTML block to each page with its page key:
 

@@ -781,6 +781,26 @@
     });
   }
 
+  var deliveryMapRefreshScheduled = false;
+
+  function refreshDeliveryMaps() {
+    var nativeCart = getNativeTildaCartRecord();
+    if (nativeCart) ensureDeliveryZonePicker(nativeCart);
+    ensureAllDeliveryMapZoomControls();
+    invalidateDeliveryMaps();
+  }
+
+  function scheduleDeliveryMapRefresh() {
+    if (deliveryMapRefreshScheduled) return;
+    deliveryMapRefreshScheduled = true;
+    [0, 80, 180, 360, 700, 1200, 2000].forEach(function (delay) {
+      setTimeout(refreshDeliveryMaps, delay);
+    });
+    setTimeout(function () {
+      deliveryMapRefreshScheduled = false;
+    }, 2200);
+  }
+
   function updateDeliveryZoneUi(root, zoneId) {
     toArray(root.querySelectorAll("[data-bf-delivery-choice]")).forEach(function (choice) {
       var active = choice.getAttribute("data-zone-id") === zoneId;
@@ -907,24 +927,27 @@
     if (document.documentElement.getAttribute("data-bf-delivery-map-observer") === "true") return;
     if (typeof MutationObserver === "undefined" || !document.body) return;
     document.documentElement.setAttribute("data-bf-delivery-map-observer", "true");
-    var scheduled = false;
     var observer = new MutationObserver(function (mutations) {
       var hasDeliveryChange = mutations.some(function (mutation) {
+        if (mutation.type === "attributes") {
+          var target = mutation.target;
+          return target && target.nodeType === 1 && (
+            (target.matches && target.matches("body, html, .t706__cartwin, .t706__sidebar, .t706__cartpage, [data-bf-delivery-zone], [data-bf-delivery-map]")) ||
+            (target.querySelector && target.querySelector("[data-bf-delivery-zone], [data-bf-delivery-map], #customdelivery"))
+          );
+        }
         return toArray(mutation.addedNodes).some(function (node) {
           return node && node.nodeType === 1 && (
-            (node.matches && node.matches("[data-bf-delivery-zone], [data-bf-delivery-map], #customdelivery")) ||
+            (node.matches && node.matches("[data-bf-delivery-zone], [data-bf-delivery-map], #customdelivery, .t706__cartwin, .t706__sidebar, .t706__cartpage")) ||
             (node.querySelector && node.querySelector("[data-bf-delivery-zone], [data-bf-delivery-map], #customdelivery"))
           );
         });
       });
-      if (!hasDeliveryChange || scheduled) return;
-      scheduled = true;
-      setTimeout(function () {
-        scheduled = false;
-        ensureAllDeliveryMapZoomControls();
-      }, 60);
+      if (hasDeliveryChange) scheduleDeliveryMapRefresh();
     });
     observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["class", "style"],
       childList: true,
       subtree: true
     });
@@ -1139,8 +1162,7 @@
     if (typeof window.tcart__reDrawTotal === "function") window.tcart__reDrawTotal();
     ensureDeliveryZonePicker(nativeCart);
     ensureAllDeliveryMapZoomControls();
-    setTimeout(invalidateDeliveryMaps, 120);
-    setTimeout(invalidateDeliveryMaps, 450);
+    scheduleDeliveryMapRefresh();
     bindNativeCartFormGuard(nativeCart);
     patchTildaCartRedraw();
     syncCustomCartCounter();
@@ -1224,32 +1246,28 @@
     if (typeof window.tcart__openCart === "function" && hasNativeTildaCartWindow()) {
       try {
         window.tcart__openCart();
-        setTimeout(invalidateDeliveryMaps, 120);
-        setTimeout(invalidateDeliveryMaps, 520);
+        scheduleDeliveryMapRefresh();
         return true;
       } catch (error) {}
     }
     if (typeof window.tcart__openCartSidebar === "function" && hasNativeTildaCartWindow()) {
       try {
         window.tcart__openCartSidebar();
-        setTimeout(invalidateDeliveryMaps, 120);
-        setTimeout(invalidateDeliveryMaps, 520);
+        scheduleDeliveryMapRefresh();
         return true;
       } catch (error) {}
     }
     if (typeof window.tcart__openCartFullscreen === "function" && hasNativeTildaCartWindow()) {
       try {
         window.tcart__openCartFullscreen();
-        setTimeout(invalidateDeliveryMaps, 120);
-        setTimeout(invalidateDeliveryMaps, 520);
+        scheduleDeliveryMapRefresh();
         return true;
       } catch (error) {}
     }
     var nativeOpener = document.querySelector('.t706__carticon, .t-menuwidgeticons__link_cart:not([data-bf-cart-open]), a[href="#opencart"]:not([data-bf-cart-open])');
     if (nativeOpener) {
       nativeOpener.click();
-      setTimeout(invalidateDeliveryMaps, 120);
-      setTimeout(invalidateDeliveryMaps, 520);
+      scheduleDeliveryMapRefresh();
       return true;
     }
     return false;
@@ -2960,6 +2978,7 @@
           updateCardEdition(card, product, findEditionBySelections(product, selections), currency);
         });
       });
+      bindProductCardCartButton(card);
     });
   }
 
@@ -2986,6 +3005,41 @@
     if (skuEl) {
       skuEl.textContent = edition.sku || product.sku || "";
     }
+  }
+
+  function bindProductCardCartButton(card) {
+    var button = card && card.querySelector('.bf-product__cart[href="#order"]');
+    if (!card || !button || button.getAttribute("data-bf-card-cart-bound") === "true") return;
+    button.setAttribute("data-bf-card-cart-bound", "true");
+    button.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (card.classList.contains("is-soldout")) return;
+      var productData = collectTildaProductData(card);
+      var finish = function () {
+        syncCustomCartCounter();
+        button.classList.add("is-added");
+        setTimeout(function () {
+          button.classList.remove("is-added");
+        }, 700);
+      };
+      var addProduct = function () {
+        try {
+          if (typeof window.tcart__addProduct !== "function") throw new Error("No native cart add");
+          window.tcart__addProduct(productData);
+        } catch (error) {
+          addProductToLocalTcart(productData);
+        }
+        finish();
+        setTimeout(function () {
+          tryOpenNativeCart();
+        }, 80);
+      };
+      ensureNativeTildaCart().then(addProduct).catch(function () {
+        addProductToLocalTcart(productData);
+        finish();
+      });
+    });
   }
 
   function bindCategoryShortcuts(root, state) {

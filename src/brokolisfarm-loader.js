@@ -53,6 +53,15 @@
     return "/dist/";
   }
 
+  function pinJsdelivrBaseUrl(baseUrl) {
+    var ref = config.assetRef || config.version;
+    if (config.pinAssetsToVersion === false || !ref || /[/?#]/.test(String(ref))) return baseUrl;
+    return baseUrl.replace(
+      /\/gh\/([^@/]+\/[^@/]+)@[^/]+\/dist\/?$/,
+      "/gh/$1@" + String(ref) + "/dist/"
+    );
+  }
+
   function normalizeBaseUrl(url) {
     return String(url || "").replace(/\/?$/, "/");
   }
@@ -274,7 +283,7 @@
   }
 
   function start() {
-    var baseUrl = getScriptBaseUrl();
+    var baseUrl = pinJsdelivrBaseUrl(getScriptBaseUrl());
     var mount = getMount();
     var productPage = !mount && isTildaProductPage();
     if (!mount && !productPage) return;
