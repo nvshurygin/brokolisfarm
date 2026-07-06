@@ -1494,8 +1494,9 @@ body.bf-tilda-product-page #t-header {
   border-radius: 10px;
   cursor: grab;
   height: 260px;
+  overscroll-behavior: contain;
   overflow: hidden;
-  touch-action: auto;
+  touch-action: none;
   width: 100%;
 }
 
@@ -1505,6 +1506,37 @@ body.bf-tilda-product-page #t-header {
 
 .bf-delivery-zone__map .leaflet-container {
   font-family: var(--bf-font);
+}
+
+.bf-delivery-zone__map .leaflet-control-container {
+  pointer-events: auto;
+}
+
+.bf-delivery-zone__map .leaflet-control-zoom {
+  border: 0;
+  box-shadow: 0 8px 20px rgba(46, 46, 57, 0.16);
+  margin: 10px !important;
+}
+
+.bf-delivery-zone__map .leaflet-control-zoom a {
+  align-items: center;
+  background: #ffffff !important;
+  border: 0 !important;
+  color: var(--bf-text) !important;
+  display: flex !important;
+  font-family: var(--bf-font) !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  height: 34px !important;
+  justify-content: center;
+  line-height: 1 !important;
+  text-decoration: none !important;
+  width: 34px !important;
+}
+
+.bf-delivery-zone__map .leaflet-control-zoom a:hover {
+  background: rgba(109, 172, 74, 0.12) !important;
+  color: var(--bf-green) !important;
 }
 
 .bf-delivery-zone__choices {

@@ -686,11 +686,36 @@
     mapMount._bfLeafletMap.setView(latLng, Math.max(mapMount._bfLeafletMap.getZoom(), 12), { animate: true });
   }
 
+  function enableLeafletDeliveryInteractions(L, mapMount, map) {
+    if (!L || !mapMount || !map) return;
+    try {
+      L.DomEvent.disableClickPropagation(mapMount);
+      L.DomEvent.disableScrollPropagation(mapMount);
+    } catch (error) {}
+    ["dragging", "touchZoom", "doubleClickZoom", "scrollWheelZoom", "boxZoom", "keyboard"].forEach(function (name) {
+      if (map[name] && typeof map[name].enable === "function") {
+        try {
+          map[name].enable();
+        } catch (error) {}
+      }
+    });
+    if (mapMount.getAttribute("data-bf-map-events-bound") === "true") return;
+    mapMount.setAttribute("data-bf-map-events-bound", "true");
+    ["wheel", "mousewheel", "DOMMouseScroll", "touchstart", "touchmove", "pointerdown", "pointermove"].forEach(function (eventName) {
+      mapMount.addEventListener(eventName, function (event) {
+        event.stopPropagation();
+      }, { capture: true, passive: true });
+    });
+  }
+
   function renderLeafletDeliveryMap(mapMount, selectedZoneId, onSelect, onPointSelect, selectedPoint) {
     loadLeaflet()
       .then(function (L) {
         if (!mapMount || mapMount.getAttribute("data-bf-leaflet-ready") === "true") {
-          if (mapMount && mapMount._bfLeafletMap) setTimeout(function () { mapMount._bfLeafletMap.invalidateSize(); }, 120);
+          if (mapMount && mapMount._bfLeafletMap) {
+            enableLeafletDeliveryInteractions(L, mapMount, mapMount._bfLeafletMap);
+            setTimeout(function () { mapMount._bfLeafletMap.invalidateSize(); }, 120);
+          }
           if (mapMount && selectedPoint) setLeafletDeliveryPoint(mapMount, selectedPoint, onPointSelect);
           return;
         }
@@ -700,11 +725,19 @@
           boxZoom: true,
           doubleClickZoom: true,
           dragging: true,
+          keyboard: true,
+          maxZoom: 16,
+          minZoom: 9,
           scrollWheelZoom: true,
+          tap: true,
           touchZoom: true,
+          wheelDebounceTime: 30,
+          wheelPxPerZoomLevel: 48,
+          zoomSnap: 0.25,
           zoomControl: true
         }).setView([56.965, 23.735], 11);
         mapMount._bfLeafletMap = map;
+        enableLeafletDeliveryInteractions(L, mapMount, map);
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
           maxZoom: 16
         }).addTo(map);
