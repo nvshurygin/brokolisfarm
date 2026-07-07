@@ -315,7 +315,7 @@ body {
 
 .bf-button_light {
   background: #ffffff;
-  color: var(--bf-text);
+  color: var(--bf-text) !important;
 }
 
 .bf-catalog-button:hover,
@@ -606,7 +606,7 @@ body.bf-mobile-menu-open {
 }
 
 .bf-hero .bf-button_light {
-  color: var(--bf-text);
+  color: var(--bf-text) !important;
 }
 
 .bf-hero__media {
@@ -1002,7 +1002,7 @@ body.bf-tilda-product-page .bf-products_related .bf-product .bf-product__cart:fo
 .bf-newsletter__form button {
   background: #ffffff;
   border-radius: 999px;
-  color: var(--bf-green);
+  color: var(--bf-green) !important;
   max-width: 310px;
   width: 100%;
 }
