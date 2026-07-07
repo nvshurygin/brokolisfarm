@@ -66,6 +66,26 @@
     return String(url || "").replace(/\/?$/, "/");
   }
 
+  function absoluteUrl(url) {
+    try {
+      return new URL(url, document.baseURI).href;
+    } catch (error) {
+      return String(url || "");
+    }
+  }
+
+  function nodeAssetUrl(node) {
+    return node && (node.src || node.href || "");
+  }
+
+  function isSameAssetUrl(node, url) {
+    return absoluteUrl(nodeAssetUrl(node)) === absoluteUrl(url);
+  }
+
+  function removeNode(node) {
+    if (node && node.parentNode) node.parentNode.removeChild(node);
+  }
+
   function withVersion(url) {
     if (!config.version) return url;
     return url + (url.indexOf("?") === -1 ? "?" : "&") + "v=" + encodeURIComponent(config.version);
@@ -73,13 +93,19 @@
 
   function loadScript(src, id) {
     return new Promise(function (resolve, reject) {
-      if (id && document.getElementById(id)) {
-        resolve();
-        return;
+      var desiredSrc = withVersion(src);
+      var existing = id && document.getElementById(id);
+      if (existing) {
+        if (isSameAssetUrl(existing, desiredSrc)) {
+          resolve();
+          return;
+        }
+        removeNode(existing);
       }
       var node = document.createElement("script");
       if (id) node.id = id;
-      node.src = withVersion(src);
+      if (config.version) node.setAttribute("data-bf-loader-version", config.version);
+      node.src = desiredSrc;
       node.async = false;
       node.onload = function () {
         resolve();
@@ -92,12 +118,41 @@
   }
 
   function ensureStylesheet(href, id) {
-    if (id && document.getElementById(id)) return;
+    var desiredHref = withVersion(href);
+    var existing = id && document.getElementById(id);
+    if (existing) {
+      if (existing.tagName && existing.tagName.toLowerCase() === "link") {
+        existing.rel = "stylesheet";
+        if (config.version) existing.setAttribute("data-bf-loader-version", config.version);
+        if (!isSameAssetUrl(existing, desiredHref)) existing.href = desiredHref;
+        return;
+      }
+      removeNode(existing);
+    }
     var link = document.createElement("link");
     if (id) link.id = id;
+    if (config.version) link.setAttribute("data-bf-loader-version", config.version);
     link.rel = "stylesheet";
-    link.href = withVersion(href);
+    link.href = desiredHref;
     document.head.appendChild(link);
+  }
+
+  function ensureColorOverrides() {
+    var style = document.getElementById("brokolisfarm-color-overrides");
+    if (!style) {
+      style = document.createElement("style");
+      style.id = "brokolisfarm-color-overrides";
+    }
+    style.textContent =
+      ".bf-page .bf-header .bf-logo,.bf-page .bf-header .bf-logo:link,.bf-page .bf-header .bf-logo:visited,.bf-page .bf-header .bf-logo:hover,.bf-page .bf-header .bf-logo__text,.bf-page .bf-header .bf-menu a,.bf-page .bf-header .bf-menu a:link,.bf-page .bf-header .bf-menu a:visited,.bf-page .bf-header .bf-menu a:hover,.bf-page .bf-header .bf-phone,.bf-page .bf-header .bf-phone:link,.bf-page .bf-header .bf-phone:visited,.bf-page .bf-header .bf-phone:hover,.bf-page .bf-mobile-menu__nav a,.bf-page .bf-mobile-menu__nav a:link,.bf-page .bf-mobile-menu__nav a:visited,.bf-page .bf-mobile-menu__nav a:hover{color:#2e2e39!important}" +
+      ".bf-page .bf-header .bf-catalog-button,.bf-page .bf-header .bf-catalog-button:link,.bf-page .bf-header .bf-catalog-button:visited,.bf-page .bf-header .bf-catalog-button:hover,.bf-page .bf-header .bf-catalog-button *,.bf-page .bf-logo__mark{color:#fff!important}" +
+      ".bf-page .bf-button:not(.bf-button_light),.bf-page .bf-button:not(.bf-button_light):link,.bf-page .bf-button:not(.bf-button_light):visited,.bf-page .bf-button:not(.bf-button_light):hover{color:#fff!important}" +
+      ".bf-page .bf-button_light,.bf-page .bf-button_light:link,.bf-page .bf-button_light:visited,.bf-page .bf-button_light:hover{color:#2e2e39!important}" +
+      ".bf-page .bf-newsletter__form button{color:#6dac4a!important}" +
+      ".bf-page .bf-footer a:not(.bf-button),.bf-page .bf-footer a:not(.bf-button):link,.bf-page .bf-footer a:not(.bf-button):visited{color:rgba(255,255,255,.78)!important}" +
+      ".bf-page .bf-footer a:not(.bf-button):hover,.bf-page .bf-footer h3,.bf-page .bf-footer .bf-logo__text{color:#fff!important}" +
+      ".bf-page .bf-footer .bf-button,.bf-page .bf-footer .bf-button:link,.bf-page .bf-footer .bf-button:visited,.bf-page .bf-footer .bf-button:hover{color:#fff!important}";
+    document.head.appendChild(style);
   }
 
   function ensureLoaderStyles() {
@@ -289,6 +344,7 @@
     if (!mount && !productPage) return;
     ensureFonts();
     ensureStylesheet(baseUrl + "brokolisfarm.css", "brokolisfarm-global-css");
+    ensureColorOverrides();
     Promise.resolve()
       .then(function () {
         return loadScript(baseUrl + "brokolisfarm-templates.js", "brokolisfarm-templates-js");
