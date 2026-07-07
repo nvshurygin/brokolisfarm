@@ -151,7 +151,10 @@
       ".bf-page .bf-newsletter__form button{color:#6dac4a!important}" +
       ".bf-page .bf-footer a:not(.bf-button),.bf-page .bf-footer a:not(.bf-button):link,.bf-page .bf-footer a:not(.bf-button):visited{color:rgba(255,255,255,.78)!important}" +
       ".bf-page .bf-footer a:not(.bf-button):hover,.bf-page .bf-footer h3,.bf-page .bf-footer .bf-logo__text{color:#fff!important}" +
-      ".bf-page .bf-footer .bf-button,.bf-page .bf-footer .bf-button:link,.bf-page .bf-footer .bf-button:visited,.bf-page .bf-footer .bf-button:hover{color:#fff!important}";
+      ".bf-page .bf-footer .bf-button,.bf-page .bf-footer .bf-button:link,.bf-page .bf-footer .bf-button:visited,.bf-page .bf-footer .bf-button:hover{color:#fff!important}" +
+      ".bf-tilda-product-page .bf-tilda-product-breadcrumb__link,.bf-tilda-product-page .bf-tilda-product-breadcrumb__link:link,.bf-tilda-product-page .bf-tilda-product-breadcrumb__link:visited,.bf-tilda-product-page .bf-tilda-product-breadcrumb__link:hover,.bf-tilda-product-page .bf-tilda-product-breadcrumb a,.bf-tilda-product-page .bf-tilda-product-breadcrumb a:link,.bf-tilda-product-page .bf-tilda-product-breadcrumb a:visited,.bf-tilda-product-page .bf-tilda-product-breadcrumb a:hover{color:#6dac4a!important;text-decoration:none!important}" +
+      ".bf-tilda-product-page .bf-tilda-product-breadcrumb__separator{color:rgba(46,46,57,.38)!important}" +
+      ".bf-tilda-product-page .bf-tilda-product-breadcrumb__current{color:rgba(46,46,57,.62)!important}";
     document.head.appendChild(style);
   }
 

@@ -1883,11 +1883,31 @@ body.bf-tilda-product-page .bf-tilda-product-breadcrumb {
   font-size: 14px;
   gap: 10px;
   margin: 0 0 18px;
+  min-width: 0;
 }
 
-body.bf-tilda-product-page .bf-tilda-product-breadcrumb a {
-  color: var(--bf-green);
-  text-decoration: none;
+body.bf-tilda-product-page .bf-tilda-product-breadcrumb__link,
+body.bf-tilda-product-page .bf-tilda-product-breadcrumb__link:link,
+body.bf-tilda-product-page .bf-tilda-product-breadcrumb__link:visited,
+body.bf-tilda-product-page .bf-tilda-product-breadcrumb__link:hover,
+body.bf-tilda-product-page .bf-tilda-product-breadcrumb a,
+body.bf-tilda-product-page .bf-tilda-product-breadcrumb a:link,
+body.bf-tilda-product-page .bf-tilda-product-breadcrumb a:visited,
+body.bf-tilda-product-page .bf-tilda-product-breadcrumb a:hover {
+  color: var(--bf-green) !important;
+  text-decoration: none !important;
+}
+
+body.bf-tilda-product-page .bf-tilda-product-breadcrumb__separator {
+  color: rgba(46, 46, 57, 0.38) !important;
+}
+
+body.bf-tilda-product-page .bf-tilda-product-breadcrumb__current {
+  color: rgba(46, 46, 57, 0.62) !important;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 body.bf-tilda-product-page .bf-tilda-product {
