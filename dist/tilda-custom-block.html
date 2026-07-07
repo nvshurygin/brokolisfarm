@@ -261,6 +261,7 @@ body {
 }
 
 .bf-logo__text {
+  color: var(--bf-text);
   font-family: var(--bf-accent-font);
   font-size: 18px;
   font-weight: 600;
@@ -288,12 +289,29 @@ body {
 .bf-button,
 .bf-newsletter__form button {
   background: var(--bf-green);
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 .bf-header .bf-catalog-button,
 .bf-header .bf-catalog-button:hover {
-  color: #ffffff;
+  color: #ffffff !important;
+}
+
+.bf-header .bf-logo,
+.bf-header .bf-logo:hover,
+.bf-header .bf-logo__text,
+.bf-header .bf-menu a,
+.bf-header .bf-menu a:hover,
+.bf-header .bf-phone,
+.bf-header .bf-phone:hover,
+.bf-mobile-menu__nav a,
+.bf-mobile-menu__nav a:hover {
+  color: var(--bf-text) !important;
+}
+
+.bf-header .bf-logo__mark,
+.bf-mobile-menu .bf-logo__mark {
+  color: #ffffff !important;
 }
 
 .bf-button_light {
@@ -2176,7 +2194,7 @@ body.bf-tilda-product-page .bf-footer {
 }
 
 .bf-footer__logo {
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 .bf-footer__socials,
@@ -2187,22 +2205,26 @@ body.bf-tilda-product-page .bf-footer {
 }
 
 .bf-footer h3 {
-  color: #ffffff;
+  color: #ffffff !important;
   font-size: 16px;
   margin: 0 0 6px;
 }
 
 .bf-footer a {
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(255, 255, 255, 0.78) !important;
   font-size: 14px;
 }
 
 .bf-footer a:hover {
-  color: #ffffff;
+  color: #ffffff !important;
+}
+
+.bf-footer .bf-logo__text {
+  color: #ffffff !important;
 }
 
 .bf-footer__contacts .bf-button {
-  color: #ffffff;
+  color: #ffffff !important;
   justify-self: start;
   margin-top: 8px;
 }
