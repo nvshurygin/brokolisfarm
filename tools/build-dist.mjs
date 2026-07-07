@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = path.join(root, "dist");
-const loaderVersion = "2026-07-07-5";
+const loaderVersion = "2026-07-07-6";
 
 const css = await readFile(path.join(root, "src", "brokolisfarm-tilda.css"), "utf8");
 const js = await readFile(path.join(root, "src", "brokolisfarm-tilda.js"), "utf8");

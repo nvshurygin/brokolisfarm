@@ -144,10 +144,16 @@
       style.id = "brokolisfarm-color-overrides";
     }
     style.textContent =
+      ".bf-page a,.bf-page a:link,.bf-page a:visited,.bf-page a:hover,.bf-page a:focus-visible{color:inherit!important;text-decoration:none!important}" +
       ".bf-page .bf-header .bf-logo,.bf-page .bf-header .bf-logo:link,.bf-page .bf-header .bf-logo:visited,.bf-page .bf-header .bf-logo:hover,.bf-page .bf-header .bf-logo__text,.bf-page .bf-header .bf-menu a,.bf-page .bf-header .bf-menu a:link,.bf-page .bf-header .bf-menu a:visited,.bf-page .bf-header .bf-menu a:hover,.bf-page .bf-header .bf-phone,.bf-page .bf-header .bf-phone:link,.bf-page .bf-header .bf-phone:visited,.bf-page .bf-header .bf-phone:hover,.bf-page .bf-mobile-menu__nav a,.bf-page .bf-mobile-menu__nav a:link,.bf-page .bf-mobile-menu__nav a:visited,.bf-page .bf-mobile-menu__nav a:hover{color:#2e2e39!important}" +
       ".bf-page .bf-header .bf-catalog-button,.bf-page .bf-header .bf-catalog-button:link,.bf-page .bf-header .bf-catalog-button:visited,.bf-page .bf-header .bf-catalog-button:hover,.bf-page .bf-header .bf-catalog-button *,.bf-page .bf-logo__mark{color:#fff!important}" +
       ".bf-page .bf-button:not(.bf-button_light),.bf-page .bf-button:not(.bf-button_light):link,.bf-page .bf-button:not(.bf-button_light):visited,.bf-page .bf-button:not(.bf-button_light):hover{color:#fff!important}" +
       ".bf-page .bf-button_light,.bf-page .bf-button_light:link,.bf-page .bf-button_light:visited,.bf-page .bf-button_light:hover{color:#2e2e39!important}" +
+      ".bf-page .bf-category-card,.bf-page .bf-category-card:link,.bf-page .bf-category-card:visited,.bf-page .bf-category-card:hover,.bf-page .bf-category-card:focus-visible,.bf-page .bf-category-card span{color:#2e2e39!important;text-decoration:none!important}" +
+      ".bf-page .bf-category-card span:after{color:#6dac4a!important}" +
+      ".bf-page .bf-product__details,.bf-page .bf-product__details:link,.bf-page .bf-product__details:visited{color:#6dac4a!important;text-decoration:none!important}" +
+      ".bf-page .bf-product__details:hover,.bf-page .bf-product__details:focus-visible{color:#fff!important}" +
+      ".bf-page .bf-product__cart,.bf-page .bf-product__cart:link,.bf-page .bf-product__cart:visited,.bf-page .bf-product__cart:hover,.bf-page .bf-product__cart:focus-visible{color:#fff!important;text-decoration:none!important}" +
       ".bf-page .bf-newsletter__form button{color:#6dac4a!important}" +
       ".bf-page .bf-footer a:not(.bf-button),.bf-page .bf-footer a:not(.bf-button):link,.bf-page .bf-footer a:not(.bf-button):visited{color:rgba(255,255,255,.78)!important}" +
       ".bf-page .bf-footer a:not(.bf-button):hover,.bf-page .bf-footer h3,.bf-page .bf-footer .bf-logo__text{color:#fff!important}" +

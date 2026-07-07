@@ -59,8 +59,8 @@ body {
 }
 
 .bf-page a {
-  color: inherit;
-  text-decoration: none;
+  color: inherit !important;
+  text-decoration: none !important;
 }
 
 .bf-page img {
@@ -301,6 +301,23 @@ body {
   color: #ffffff !important;
 }
 
+.bf-page .bf-catalog-button,
+.bf-page .bf-catalog-button:link,
+.bf-page .bf-catalog-button:visited,
+.bf-page .bf-catalog-button:hover,
+.bf-page .bf-button:not(.bf-button_light),
+.bf-page .bf-button:not(.bf-button_light):link,
+.bf-page .bf-button:not(.bf-button_light):visited,
+.bf-page .bf-button:not(.bf-button_light):hover,
+.bf-page .bf-load-more,
+.bf-page .bf-product__cart,
+.bf-page .bf-product__cart:link,
+.bf-page .bf-product__cart:visited,
+.bf-page .bf-product__cart:hover {
+  color: #ffffff !important;
+  text-decoration: none !important;
+}
+
 .bf-header .bf-catalog-button,
 .bf-header .bf-catalog-button:hover {
   color: #ffffff !important;
@@ -325,6 +342,13 @@ body {
 
 .bf-button_light {
   background: #ffffff;
+  color: var(--bf-text) !important;
+}
+
+.bf-page .bf-button_light,
+.bf-page .bf-button_light:link,
+.bf-page .bf-button_light:visited,
+.bf-page .bf-button_light:hover {
   color: var(--bf-text) !important;
 }
 
@@ -649,11 +673,21 @@ body.bf-mobile-menu-open {
 .bf-category-card {
   background: var(--bf-muted);
   border-radius: var(--bf-radius);
+  color: var(--bf-text) !important;
   display: grid;
   grid-template-rows: 178px minmax(72px, auto);
   min-height: 250px;
   overflow: hidden;
+  text-decoration: none !important;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bf-category-card:link,
+.bf-category-card:visited,
+.bf-category-card:hover,
+.bf-category-card:focus-visible {
+  color: var(--bf-text) !important;
+  text-decoration: none !important;
 }
 
 .bf-category-card:hover,
@@ -672,6 +706,7 @@ body.bf-mobile-menu-open {
 
 .bf-category-card span {
   align-items: center;
+  color: var(--bf-text) !important;
   display: flex;
   font-size: 18px;
   font-weight: 500;
@@ -684,7 +719,7 @@ body.bf-mobile-menu-open {
 }
 
 .bf-category-card span::after {
-  color: var(--bf-green);
+  color: var(--bf-green) !important;
   content: "+";
   flex: 0 0 auto;
   font-size: 20px;
@@ -883,8 +918,20 @@ body.bf-mobile-menu-open {
   color: var(--bf-green) !important;
 }
 
+.bf-page .bf-product__details,
+.bf-page .bf-product__details:link,
+.bf-page .bf-product__details:visited {
+  color: var(--bf-green) !important;
+  text-decoration: none !important;
+}
+
 .bf-product__details:hover {
   background: rgba(109, 172, 74, 0.16);
+  color: #4f9533 !important;
+}
+
+.bf-page .bf-product__details:hover,
+.bf-page .bf-product__details:focus-visible {
   color: #4f9533 !important;
 }
 
@@ -1523,6 +1570,10 @@ body.bf-tilda-product-page #t-header {
   display: none !important;
 }
 
+.bf-delivery-zone-host {
+  margin: 0 0 20px;
+}
+
 .bf-delivery-zone {
   border: 1px solid rgba(109, 172, 74, 0.26);
   border-radius: 10px;
@@ -1892,11 +1943,31 @@ body.bf-tilda-product-page .bf-tilda-product-breadcrumb {
   font-size: 14px;
   gap: 10px;
   margin: 0 0 18px;
+  min-width: 0;
 }
 
-body.bf-tilda-product-page .bf-tilda-product-breadcrumb a {
-  color: var(--bf-green);
-  text-decoration: none;
+body.bf-tilda-product-page .bf-tilda-product-breadcrumb__link,
+body.bf-tilda-product-page .bf-tilda-product-breadcrumb__link:link,
+body.bf-tilda-product-page .bf-tilda-product-breadcrumb__link:visited,
+body.bf-tilda-product-page .bf-tilda-product-breadcrumb__link:hover,
+body.bf-tilda-product-page .bf-tilda-product-breadcrumb a,
+body.bf-tilda-product-page .bf-tilda-product-breadcrumb a:link,
+body.bf-tilda-product-page .bf-tilda-product-breadcrumb a:visited,
+body.bf-tilda-product-page .bf-tilda-product-breadcrumb a:hover {
+  color: var(--bf-green) !important;
+  text-decoration: none !important;
+}
+
+body.bf-tilda-product-page .bf-tilda-product-breadcrumb__separator {
+  color: rgba(46, 46, 57, 0.38) !important;
+}
+
+body.bf-tilda-product-page .bf-tilda-product-breadcrumb__current {
+  color: rgba(46, 46, 57, 0.62) !important;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 body.bf-tilda-product-page .bf-tilda-product {
@@ -2811,7 +2882,9 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
 (function () {
   "use strict";
 
-  var DEFAULT_API = "https://store.tildaapi.com/api/getproductslist/";
+  var DEFAULT_API = "https://store.tildaapi.one/api/getproductslist/";
+  var DEFAULT_RECID = "2450241213";
+  var DEFAULT_STOREPARTUID = "420955341102";
   var DEFAULT_CURRENCY = "€";
   var DEFAULT_PARTS_LIMIT = 12;
   var DEFAULT_LANGUAGE = "lv";
@@ -3726,6 +3799,31 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     status.textContent = localizeText("Meklējam adresi...");
   }
 
+  function ensureDeliveryZoneHost(nativeCart) {
+    if (!nativeCart || !nativeCart.cart) return null;
+    var wrapper = nativeCart.cart.querySelector("#customdelivery");
+    if (wrapper) return wrapper;
+
+    var form = nativeCart.cart.querySelector("form.js-form-proccess");
+    var orderForm = nativeCart.cart.querySelector(".t706__orderform") || (form && form.parentNode);
+    var cartBottom = nativeCart.cart.querySelector(".t706__cartwin-bottom, .t706__sidebar-bottom, .t706__cartpage-bottom");
+    wrapper = document.createElement("div");
+    wrapper.id = "customdelivery";
+    wrapper.className = "bf-delivery-zone-host";
+    wrapper.setAttribute("data-bf-created-delivery-host", "true");
+
+    if (orderForm && form && form.parentNode === orderForm) {
+      orderForm.insertBefore(wrapper, form);
+    } else if (cartBottom && cartBottom.parentNode) {
+      cartBottom.parentNode.insertBefore(wrapper, cartBottom.nextSibling);
+    } else if (form && form.parentNode) {
+      form.parentNode.insertBefore(wrapper, form);
+    } else {
+      nativeCart.cart.appendChild(wrapper);
+    }
+    return wrapper;
+  }
+
   function ensureDeliveryMapZoomControls(picker) {
     var mapMount = picker && picker.querySelector("[data-bf-delivery-map]");
     if (!mapMount) return null;
@@ -3817,7 +3915,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
 
   function ensureDeliveryZonePicker(nativeCart) {
     if (!nativeCart || !nativeCart.cart) return;
-    var wrapper = nativeCart.cart.querySelector("#customdelivery");
+    var wrapper = ensureDeliveryZoneHost(nativeCart);
     if (!wrapper) return;
     var form = nativeCart.cart.querySelector("form.js-form-proccess");
     var picker = wrapper.querySelector("[data-bf-delivery-zone]");
@@ -5221,6 +5319,55 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     return null;
   }
 
+  function getTildaProductBreadcrumbTitle(product, currentProduct) {
+    var candidates = [];
+    if (currentProduct) {
+      candidates.push(currentProduct.title, currentProduct.name);
+    }
+    if (product) {
+      candidates.push(product.getAttribute("data-product-title"), product.getAttribute("data-product-name"));
+      var titleNode = product.querySelector(".js-product-name, .t-store__prod-popup__name, .t-store__product-snippet-title, h1, h2");
+      if (titleNode) candidates.push(titleNode.textContent);
+    }
+    for (var index = 0; index < candidates.length; index += 1) {
+      var title = normalizeI18nText(candidates[index]);
+      if (title) return title;
+    }
+    return "";
+  }
+
+  function renderTildaProductBreadcrumb(breadcrumb, productTitle) {
+    if (!breadcrumb) return;
+    breadcrumb.innerHTML = "";
+    breadcrumb.setAttribute("aria-label", "Breadcrumbs");
+    breadcrumb.setAttribute("role", "navigation");
+
+    var catalog = document.createElement("a");
+    catalog.className = "bf-tilda-product-breadcrumb__link";
+    catalog.href = "/catalog";
+    catalog.setAttribute("data-bf-i18n-text", "Katalogs");
+    catalog.textContent = localizeText("Katalogs");
+
+    var separator = document.createElement("span");
+    separator.className = "bf-tilda-product-breadcrumb__separator";
+    separator.setAttribute("aria-hidden", "true");
+    separator.textContent = "/";
+
+    var current = document.createElement("span");
+    current.className = "bf-tilda-product-breadcrumb__current";
+    if (productTitle) {
+      current.textContent = productTitle;
+      current.title = productTitle;
+    } else {
+      current.setAttribute("data-bf-i18n-text", "Prece");
+      current.textContent = localizeText("Prece");
+    }
+
+    breadcrumb.appendChild(catalog);
+    breadcrumb.appendChild(separator);
+    breadcrumb.appendChild(current);
+  }
+
   function productIdentityValues(product) {
     var ids = [];
     if (!product) return ids;
@@ -5238,8 +5385,8 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
 
   function buildRelatedProductsUrl(partUid, size) {
     var params = new URLSearchParams();
-    params.set("storepartuid", partUid || "420955341102");
-    params.set("recid", "2176935951");
+    params.set("storepartuid", partUid || DEFAULT_STOREPARTUID);
+    params.set("recid", DEFAULT_RECID);
     params.set("c", String(Date.now()));
     params.set("getparts", "true");
     params.set("getoptions", "true");
@@ -5369,11 +5516,15 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     var shell = product.closest(".t-store__prod-snippet__container") || product.parentNode;
     if (shell && shell.classList) shell.classList.add("bf-tilda-product-shell");
     var currentProduct = getCurrentTildaProductPayload(product);
-    if (shell && !shell.querySelector(".bf-tilda-product-breadcrumb")) {
-      var breadcrumb = document.createElement("div");
+    if (shell) {
+      var breadcrumb = shell.querySelector(".bf-tilda-product-breadcrumb");
+      if (!breadcrumb) {
+        breadcrumb = document.createElement("nav");
+        breadcrumb.className = "bf-tilda-product-breadcrumb";
+        shell.insertBefore(breadcrumb, product);
+      }
       breadcrumb.className = "bf-tilda-product-breadcrumb";
-      breadcrumb.innerHTML = '<a href="/catalog">Katalogs</a><span>/</span><span>Prece</span>';
-      shell.insertBefore(breadcrumb, product);
+      renderTildaProductBreadcrumb(breadcrumb, getTildaProductBreadcrumbTitle(product, currentProduct));
     }
     var info = product.querySelector(".t-store__prod-popup__info") || product.querySelector(".t-store__prod-popup__col-right");
     ensureTildaProductFallbackButton(product, info);
@@ -5526,7 +5677,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
   function buildApiUrl(root, state, slice) {
     var params = new URLSearchParams();
     params.set("storepartuid", state.activePartUid || state.rootPartUid || root.getAttribute("data-storepartuid") || "");
-    params.set("recid", root.getAttribute("data-recid") || "");
+    params.set("recid", root.getAttribute("data-recid") || DEFAULT_RECID);
     params.set("c", String(Date.now()));
     params.set("getparts", "true");
     params.set("getoptions", "true");
@@ -6115,7 +6266,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
   class="bf-page bf-page_offers"
   data-bf-app
   data-storepartuid="918290603733"
-  data-recid="2176935951"
+  data-recid="2450241213"
   data-products-size="36"
   data-products-limit="12"
   data-bf-empty-message="Šobrīd šī izlase tiek atjaunota. Lūdzu, ieskatieties vēlāk vai atveriet pilno katalogu."

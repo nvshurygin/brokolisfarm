@@ -922,6 +922,31 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     status.textContent = localizeText("Meklējam adresi...");
   }
 
+  function ensureDeliveryZoneHost(nativeCart) {
+    if (!nativeCart || !nativeCart.cart) return null;
+    var wrapper = nativeCart.cart.querySelector("#customdelivery");
+    if (wrapper) return wrapper;
+
+    var form = nativeCart.cart.querySelector("form.js-form-proccess");
+    var orderForm = nativeCart.cart.querySelector(".t706__orderform") || (form && form.parentNode);
+    var cartBottom = nativeCart.cart.querySelector(".t706__cartwin-bottom, .t706__sidebar-bottom, .t706__cartpage-bottom");
+    wrapper = document.createElement("div");
+    wrapper.id = "customdelivery";
+    wrapper.className = "bf-delivery-zone-host";
+    wrapper.setAttribute("data-bf-created-delivery-host", "true");
+
+    if (orderForm && form && form.parentNode === orderForm) {
+      orderForm.insertBefore(wrapper, form);
+    } else if (cartBottom && cartBottom.parentNode) {
+      cartBottom.parentNode.insertBefore(wrapper, cartBottom.nextSibling);
+    } else if (form && form.parentNode) {
+      form.parentNode.insertBefore(wrapper, form);
+    } else {
+      nativeCart.cart.appendChild(wrapper);
+    }
+    return wrapper;
+  }
+
   function ensureDeliveryMapZoomControls(picker) {
     var mapMount = picker && picker.querySelector("[data-bf-delivery-map]");
     if (!mapMount) return null;
@@ -1013,7 +1038,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
 
   function ensureDeliveryZonePicker(nativeCart) {
     if (!nativeCart || !nativeCart.cart) return;
-    var wrapper = nativeCart.cart.querySelector("#customdelivery");
+    var wrapper = ensureDeliveryZoneHost(nativeCart);
     if (!wrapper) return;
     var form = nativeCart.cart.querySelector("form.js-form-proccess");
     var picker = wrapper.querySelector("[data-bf-delivery-zone]");
