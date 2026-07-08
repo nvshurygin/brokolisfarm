@@ -440,7 +440,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       var value = localStorage.getItem(BF_DELIVERY_STORAGE_KEY);
       if (BF_DELIVERY_ZONES.some(function (zone) { return zone.id === value; })) return value;
     } catch (error) {}
-    return BF_DELIVERY_ZONES[0].id;
+    return "";
   }
 
   function getStoredDeliveryPoint() {
@@ -557,6 +557,30 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
         "service-id": "bf-" + zone.id
       };
     }
+    if (typeof window.tcart__updateTotalProductsinCartObj === "function") window.tcart__updateTotalProductsinCartObj();
+    if (typeof window.tcart__reDrawTotal === "function") window.tcart__reDrawTotal();
+    if (typeof window.tcart__saveLocalObj === "function") {
+      try {
+        window.tcart__saveLocalObj();
+      } catch (error) {}
+    }
+  }
+
+  function clearDeliveryZoneFromTilda(nativeCart, address) {
+    if (!nativeCart || !nativeCart.cart) return;
+    var form = nativeCart.cart.querySelector("form.js-form-proccess");
+    var wrapper = nativeCart.cart.querySelector("#customdelivery");
+    var deliveryGuard = wrapper && wrapper.querySelector('input[name="delivery-badresponse-comment"]');
+    if (deliveryGuard) deliveryGuard.value = "";
+    toArray((wrapper || nativeCart.cart).querySelectorAll('input[name="bf-delivery-zone"]')).forEach(function (input) {
+      input.checked = false;
+    });
+    ensureHiddenField(form, "Delivery Zone", "");
+    ensureHiddenField(form, "Delivery Zone Details", "");
+    ensureHiddenField(form, "Delivery Price", "");
+    ensureHiddenField(form, "Delivery Address", address || "");
+    if (!window.tcart || typeof window.tcart !== "object") ensureTcartObject();
+    if (window.tcart && typeof window.tcart === "object") delete window.tcart.delivery;
     if (typeof window.tcart__updateTotalProductsinCartObj === "function") window.tcart__updateTotalProductsinCartObj();
     if (typeof window.tcart__reDrawTotal === "function") window.tcart__reDrawTotal();
     if (typeof window.tcart__saveLocalObj === "function") {
@@ -725,6 +749,17 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     }
   }
 
+  function fitLeafletDeliveryZones(map, bounds) {
+    if (!map || !bounds || !bounds.length || !map.fitBounds) return;
+    try {
+      map.fitBounds(bounds, {
+        animate: false,
+        maxZoom: 10,
+        padding: [36, 36]
+      });
+    } catch (error) {}
+  }
+
   function enableLeafletDeliveryInteractions(L, mapMount, map) {
     if (!L || !mapMount || !map) return;
     try {
@@ -766,7 +801,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
           dragging: true,
           keyboard: true,
           maxZoom: 16,
-          minZoom: 9,
+          minZoom: 8,
           scrollWheelZoom: true,
           tap: true,
           touchZoom: true,
@@ -774,7 +809,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
           wheelPxPerZoomLevel: 48,
           zoomSnap: 0.25,
           zoomControl: false
-        }).setView([56.965, 23.735], 11);
+        }).setView([56.965, 23.735], 10);
         mapMount._bfLeafletMap = map;
         enableLeafletDeliveryInteractions(L, mapMount, map);
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -795,7 +830,12 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
             if (event && event.originalEvent && L.DomEvent && L.DomEvent.stopPropagation) {
               L.DomEvent.stopPropagation(event.originalEvent);
             }
-            onSelect(zone.id);
+            if (event && event.latlng) {
+              onPointSelect({
+                lat: event.latlng.lat,
+                lng: event.latlng.lng
+              }, "map");
+            }
           });
           zone._bfLeafletPolygon = polygon;
         });
@@ -805,9 +845,12 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
             lng: event.latlng.lng
           }, "map");
         });
-        map.fitBounds(bounds, { padding: [12, 12] });
+        fitLeafletDeliveryZones(map, bounds);
         if (selectedPoint) setLeafletDeliveryPoint(mapMount, selectedPoint, onPointSelect, false);
-        setTimeout(function () { map.invalidateSize(); }, 180);
+        setTimeout(function () {
+          map.invalidateSize();
+          fitLeafletDeliveryZones(map, bounds);
+        }, 180);
       })
       .catch(function () {
         renderDeliveryFallbackMap(mapMount, selectedZoneId, onSelect, selectedPoint);
@@ -1049,7 +1092,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       picker.innerHTML =
         '<div class="bf-delivery-zone__head">' +
           '<strong>Piegādes zona</strong>' +
-          '<span>Izvēlieties zonu kartē vai sarakstā. Piegādes cena uzreiz tiek pieskaitīta grozam.</span>' +
+          '<span>Atzīmējiet adresi kartē vai izvēlieties adresi meklēšanā. Zona un piegādes cena tiks noteikta automātiski.</span>' +
         "</div>" +
         '<div class="bf-delivery-zone__map-wrap" data-bf-delivery-map-wrap="true">' +
           '<div class="bf-delivery-zone__map" data-bf-delivery-map></div>' +
@@ -1061,8 +1104,8 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
         '<div class="bf-delivery-zone__choices">' +
           BF_DELIVERY_ZONES.map(function (zone) {
             return (
-              '<label class="bf-delivery-zone__choice t-radio_delivery" data-bf-delivery-choice data-zone-id="' + zone.id + '" data-service-id="bf-' + zone.id + '">' +
-                '<input type="radio" name="bf-delivery-zone" value="' + escapeHtml(zone.title + " = " + zone.price) + '" data-delivery-price="' + escapeHtml(zone.price) + '">' +
+              '<label class="bf-delivery-zone__choice t-radio_delivery" data-bf-delivery-choice data-zone-id="' + zone.id + '" data-service-id="bf-' + zone.id + '" aria-disabled="true">' +
+                '<input type="radio" name="bf-delivery-zone" value="' + escapeHtml(zone.title + " = " + zone.price) + '" data-delivery-price="' + escapeHtml(zone.price) + '" tabindex="-1" aria-hidden="true">' +
                 '<span class="bf-delivery-zone__dot" style="--bf-zone-color:' + escapeHtml(zone.color) + '"></span>' +
                 '<span><b>' + escapeHtml(zone.title) + '</b><small>' + escapeHtml(zone.caption) + '</small></span>' +
                 '<em>' + escapeHtml(deliveryPriceLabel(zone.price)) + '</em>' +
@@ -1081,8 +1124,9 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       wrapper.insertBefore(picker, wrapper.firstChild);
     }
 
-    var selectedZoneId = getStoredDeliveryZoneId();
     var selectedPoint = getStoredDeliveryPoint();
+    var selectedPointZone = selectedPoint && deliveryZoneForPoint(selectedPoint);
+    var selectedZoneId = selectedPointZone ? selectedPointZone.id : "";
     var addressInput = picker.querySelector("[data-bf-delivery-address]");
     var mapMount = ensureDeliveryMapZoomControls(picker);
     var reverseRequestId = 0;
@@ -1096,8 +1140,12 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       try {
         localStorage.setItem(BF_DELIVERY_ADDRESS_STORAGE_KEY, address);
       } catch (error) {}
-      var selectedZone = BF_DELIVERY_ZONES.find(function (item) { return item.id === selectedZoneId; }) || BF_DELIVERY_ZONES[0];
-      syncDeliveryZoneToTilda(nativeCart, selectedZone, address);
+      var selectedZone = BF_DELIVERY_ZONES.find(function (item) { return item.id === selectedZoneId; });
+      if (selectedZone) {
+        syncDeliveryZoneToTilda(nativeCart, selectedZone, address);
+      } else {
+        clearDeliveryZoneFromTilda(nativeCart, address);
+      }
     };
 
     var selectedPointStatus = function () {
@@ -1107,7 +1155,18 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     };
 
     var applyZone = function (zoneId) {
-      var zone = BF_DELIVERY_ZONES.find(function (item) { return item.id === zoneId; }) || BF_DELIVERY_ZONES[0];
+      var zone = BF_DELIVERY_ZONES.find(function (item) { return item.id === zoneId; });
+      if (!zone) {
+        selectedZoneId = "";
+        try {
+          localStorage.removeItem(BF_DELIVERY_STORAGE_KEY);
+        } catch (error) {}
+        updateDeliveryZoneUi(picker, "");
+        clearDeliveryZoneFromTilda(nativeCart, addressInput && addressInput.value);
+        syncDeliveryPointToTilda(nativeCart, selectedPoint, selectedPointStatus());
+        updateDeliveryPointUi(picker, selectedPoint, selectedPoint && deliveryZoneForPoint(selectedPoint));
+        return;
+      }
       selectedZoneId = zone.id;
       try {
         localStorage.setItem(BF_DELIVERY_STORAGE_KEY, zone.id);
@@ -1151,6 +1210,13 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       if (selectedPoint) setLeafletDeliveryPoint(mapMount, selectedPoint, applyPoint, source === "suggestion");
       if (pointZone && source !== "restore") {
         applyZone(pointZone.id);
+      } else if (!pointZone && source !== "restore") {
+        selectedZoneId = "";
+        try {
+          localStorage.removeItem(BF_DELIVERY_STORAGE_KEY);
+        } catch (error) {}
+        updateDeliveryZoneUi(picker, "");
+        clearDeliveryZoneFromTilda(nativeCart, addressInput && addressInput.value);
       }
     };
 
@@ -1196,13 +1262,23 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       picker.addEventListener("change", function (event) {
         var input = event.target.closest('input[name="bf-delivery-zone"]');
         if (!input) return;
-        var choice = input.closest("[data-zone-id]");
-        if (choice) applyZone(choice.getAttribute("data-zone-id"));
-      });
+        event.preventDefault();
+        event.stopPropagation();
+        updateDeliveryZoneUi(picker, selectedZoneId);
+      }, true);
       picker.addEventListener("click", function (event) {
         var choice = event.target.closest("[data-bf-delivery-choice]");
-        if (choice) applyZone(choice.getAttribute("data-zone-id"));
-      });
+        if (!choice) return;
+        event.preventDefault();
+        event.stopPropagation();
+        updateDeliveryZoneUi(picker, selectedZoneId);
+      }, true);
+      picker.addEventListener("keydown", function (event) {
+        var choice = event.target.closest && event.target.closest("[data-bf-delivery-choice]");
+        if (!choice || (event.key !== " " && event.key !== "Enter")) return;
+        event.preventDefault();
+        event.stopPropagation();
+      }, true);
       if (addressInput) {
         addressInput.addEventListener("input", function () {
           try {
@@ -1225,10 +1301,16 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     renderLeafletDeliveryMap(mapMount, selectedZoneId, applyZone, applyPoint, selectedPoint);
     if (selectedPoint) {
       applyPoint(selectedPoint, "restore");
-      applyZone(selectedZoneId);
+      if (selectedZoneId) {
+        applyZone(selectedZoneId);
+      } else {
+        updateDeliveryZoneUi(picker, "");
+        clearDeliveryZoneFromTilda(nativeCart, addressInput && addressInput.value);
+      }
     } else {
       updateDeliveryPointUi(picker, null, null);
-      applyZone(selectedZoneId);
+      updateDeliveryZoneUi(picker, "");
+      clearDeliveryZoneFromTilda(nativeCart, addressInput && addressInput.value);
     }
     ensureHiddenField(form, "Delivery Provider", "BrokolisFarm zone map");
     applyCurrentLanguage(picker);
@@ -2027,7 +2109,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       "Piegādājam pasūtījumus Jūrmalā un tuvākajā apkārtnē, lai ikdienas iepirkšanās aizņemtu mazāk laika.": "Piegādājam pasūtījumus Jūrmalā un tuvākajā apkārtnē, lai ikdienas iepirkšanās aizņemtu mazāk laika.",
       "Juridiskā informācija": "Juridiskā informācija",
       "Piegādes zona": "Piegādes zona",
-      "Izvēlieties zonu kartē vai sarakstā. Piegādes cena uzreiz tiek pieskaitīta grozam.": "Izvēlieties zonu kartē vai sarakstā. Piegādes cena uzreiz tiek pieskaitīta grozam.",
+      "Atzīmējiet adresi kartē vai izvēlieties adresi meklēšanā. Zona un piegādes cena tiks noteikta automātiski.": "Atzīmējiet adresi kartē vai izvēlieties adresi meklēšanā. Zona un piegādes cena tiks noteikta automātiski.",
       "Piegādes adrese": "Piegādes adrese",
       "Iela, māja, dzīvoklis": "Iela, māja, dzīvoklis",
       "Jūrmala centrs": "Jūrmala centrs",
@@ -2097,7 +2179,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       "Piegādājam pasūtījumus Jūrmalā un tuvākajā apkārtnē, lai ikdienas iepirkšanās aizņemtu mazāk laika.": "Доставляем заказы в Юрмале и ближайших районах, чтобы ежедневные покупки занимали меньше времени.",
       "Juridiskā informācija": "Юридическая информация",
       "Piegādes zona": "Зона доставки",
-      "Izvēlieties zonu kartē vai sarakstā. Piegādes cena uzreiz tiek pieskaitīta grozam.": "Выберите зону на карте или в списке. Стоимость доставки сразу добавится к корзине.",
+      "Atzīmējiet adresi kartē vai izvēlieties adresi meklēšanā. Zona un piegādes cena tiks noteikta automātiski.": "Отметьте адрес на карте или выберите адрес в поиске. Зона и стоимость доставки определятся автоматически.",
       "Piegādes adrese": "Адрес доставки",
       "Iela, māja, dzīvoklis": "Улица, дом, квартира",
       "Jūrmala centrs": "Центр Юрмалы",
@@ -2167,7 +2249,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       "Piegādājam pasūtījumus Jūrmalā un tuvākajā apkārtnē, lai ikdienas iepirkšanās aizņemtu mazāk laika.": "We deliver orders in Jurmala and nearby areas so everyday shopping takes less time.",
       "Juridiskā informācija": "Legal information",
       "Piegādes zona": "Delivery zone",
-      "Izvēlieties zonu kartē vai sarakstā. Piegādes cena uzreiz tiek pieskaitīta grozam.": "Choose a zone on the map or in the list. Delivery cost is added to the cart right away.",
+      "Atzīmējiet adresi kartē vai izvēlieties adresi meklēšanā. Zona un piegādes cena tiks noteikta automātiski.": "Mark the address on the map or choose it in search. The zone and delivery price will be set automatically.",
       "Piegādes adrese": "Delivery address",
       "Iela, māja, dzīvoklis": "Street, house, apartment",
       "Jūrmala centrs": "Jurmala centre",

@@ -1727,16 +1727,16 @@ body.bf-tilda-product-page #t-header {
   align-items: center;
   border: 1px solid var(--bf-border);
   border-radius: 8px;
-  cursor: pointer;
+  cursor: default;
   display: grid;
   gap: 10px;
   grid-template-columns: 20px minmax(0, 1fr) auto;
   margin: 0;
   padding: 10px 12px;
   transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  user-select: none;
 }
 
-.bf-delivery-zone__choice:hover,
 .bf-delivery-zone__choice.is-active {
   background: rgba(109, 172, 74, 0.06);
   border-color: var(--bf-green);
