@@ -490,10 +490,26 @@
     return inside;
   }
 
-  function deliveryZoneForPoint(point) {
-    return BF_DELIVERY_ZONES.find(function (zone) {
+  function deliveryZonesForPoint(point) {
+    return BF_DELIVERY_ZONES.filter(function (zone) {
       return deliveryPointInPolygon(point, zone.polygon);
-    }) || null;
+    });
+  }
+
+  function deliveryZoneForPoint(point, preferredZoneId) {
+    var zones = deliveryZonesForPoint(point);
+    if (!zones.length) return null;
+    if (preferredZoneId) {
+      var preferredZone = zones.find(function (zone) { return zone.id === preferredZoneId; });
+      if (preferredZone) return preferredZone;
+    }
+    return zones.reduce(function (bestZone, zone) {
+      var bestPrice = Number(bestZone && bestZone.price) || 0;
+      var zonePrice = Number(zone && zone.price) || 0;
+      if (zonePrice > bestPrice) return zone;
+      if (zonePrice === bestPrice && BF_DELIVERY_ZONES.indexOf(zone) > BF_DELIVERY_ZONES.indexOf(bestZone)) return zone;
+      return bestZone;
+    }, zones[0]);
   }
 
   function formatDeliveryPoint(point) {
@@ -1146,7 +1162,7 @@
 
     var selectedPointStatus = function () {
       if (!selectedPoint) return "";
-      var zone = deliveryZoneForPoint(selectedPoint);
+      var zone = deliveryZoneForPoint(selectedPoint, selectedZoneId);
       return zone ? "Inside: " + zone.title : "Outside delivery zones";
     };
 
@@ -1170,7 +1186,7 @@
       updateDeliveryZoneUi(picker, zone.id);
       syncDeliveryZoneToTilda(nativeCart, zone, addressInput && addressInput.value);
       syncDeliveryPointToTilda(nativeCart, selectedPoint, selectedPointStatus());
-      updateDeliveryPointUi(picker, selectedPoint, selectedPoint && deliveryZoneForPoint(selectedPoint));
+      updateDeliveryPointUi(picker, selectedPoint, selectedPoint && deliveryZoneForPoint(selectedPoint, selectedZoneId));
     };
 
     var applyPoint = function (point, source) {
@@ -1181,6 +1197,7 @@
       } : null;
       storeDeliveryPoint(selectedPoint);
       var pointZone = selectedPoint && deliveryZoneForPoint(selectedPoint);
+      selectedZoneId = pointZone ? pointZone.id : "";
       updateDeliveryPointUi(picker, selectedPoint, pointZone);
       syncDeliveryPointToTilda(nativeCart, selectedPoint, selectedPointStatus());
       if (source === "suggestion") {
@@ -1235,7 +1252,7 @@
         if (suggestionTimer) clearTimeout(suggestionTimer);
         if (query.length < 3) {
           hideDeliverySuggestions(picker);
-          updateDeliveryPointUi(picker, selectedPoint, selectedPoint && deliveryZoneForPoint(selectedPoint));
+          updateDeliveryPointUi(picker, selectedPoint, selectedPoint && deliveryZoneForPoint(selectedPoint, selectedZoneId));
           return;
         }
         setDeliveryStatusLoading(picker);
@@ -1246,12 +1263,12 @@
             .then(function (suggestions) {
               if (currentRequestId !== suggestionRequestId) return;
               renderDeliverySuggestions(picker, suggestions, selectAddressSuggestion);
-              if (!suggestions.length) updateDeliveryPointUi(picker, selectedPoint, selectedPoint && deliveryZoneForPoint(selectedPoint));
+              if (!suggestions.length) updateDeliveryPointUi(picker, selectedPoint, selectedPoint && deliveryZoneForPoint(selectedPoint, selectedZoneId));
             })
             .catch(function () {
               if (currentRequestId !== suggestionRequestId) return;
               renderDeliverySuggestions(picker, [], selectAddressSuggestion);
-              updateDeliveryPointUi(picker, selectedPoint, selectedPoint && deliveryZoneForPoint(selectedPoint));
+              updateDeliveryPointUi(picker, selectedPoint, selectedPoint && deliveryZoneForPoint(selectedPoint, selectedZoneId));
             });
         }, 360);
       };
@@ -1280,8 +1297,12 @@
           try {
             localStorage.setItem(BF_DELIVERY_ADDRESS_STORAGE_KEY, addressInput.value);
           } catch (error) {}
-          var zone = BF_DELIVERY_ZONES.find(function (item) { return item.id === selectedZoneId; }) || BF_DELIVERY_ZONES[0];
-          syncDeliveryZoneToTilda(nativeCart, zone, addressInput.value);
+          var zone = BF_DELIVERY_ZONES.find(function (item) { return item.id === selectedZoneId; });
+          if (zone) {
+            syncDeliveryZoneToTilda(nativeCart, zone, addressInput.value);
+          } else {
+            clearDeliveryZoneFromTilda(nativeCart, addressInput.value);
+          }
           syncDeliveryPointToTilda(nativeCart, selectedPoint, selectedPointStatus());
           queueAddressSearch();
         });
