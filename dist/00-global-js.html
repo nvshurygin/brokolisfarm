@@ -941,19 +941,25 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     picker.classList.toggle("is-outside", !!point && !zone);
     if (!status) return;
     if (!point) {
-      status.textContent = localizeText("Sāciet rakstīt adresi vai klikšķiniet kartē, lai pārbaudītu piegādes zonu.");
+      var emptyStatus = "Sāciet rakstīt adresi vai klikšķiniet kartē, lai pārbaudītu piegādes zonu.";
+      status.setAttribute("data-bf-i18n-text", emptyStatus);
+      status.textContent = localizeText(emptyStatus);
       status.classList.remove("is-ok", "is-error", "is-loading");
       return;
     }
     status.classList.remove("is-loading");
     if (zone) {
+      var okStatus = "Adrese ir piegādes zonā: " + zone.title;
       status.classList.add("is-ok");
       status.classList.remove("is-error");
-      status.textContent = localizeText("Adrese ir piegādes zonā") + ": " + localizeText(zone.title);
+      status.setAttribute("data-bf-i18n-text", okStatus);
+      status.textContent = localizeText(okStatus);
     } else {
+      var errorStatus = "Adrese neietilpst piegādes zonās. Sazināsimies, lai precizētu piegādi.";
       status.classList.add("is-error");
       status.classList.remove("is-ok");
-      status.textContent = localizeText("Adrese neietilpst piegādes zonās. Sazināsimies, lai precizētu piegādi.");
+      status.setAttribute("data-bf-i18n-text", errorStatus);
+      status.textContent = localizeText(errorStatus);
     }
   }
 
@@ -988,9 +994,11 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
   function setDeliveryStatusLoading(picker) {
     var status = picker && picker.querySelector("[data-bf-delivery-status]");
     if (!status) return;
+    var loadingStatus = "Meklējam adresi...";
     status.classList.add("is-loading");
     status.classList.remove("is-ok", "is-error");
-    status.textContent = localizeText("Meklējam adresi...");
+    status.setAttribute("data-bf-i18n-text", loadingStatus);
+    status.textContent = localizeText(loadingStatus);
   }
 
   function ensureDeliveryZoneHost(nativeCart) {
@@ -2163,6 +2171,9 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       "Meklējam adresi...": "Meklējam adresi...",
       "Adreses netika atrastas.": "Adreses netika atrastas.",
       "Adrese ir piegādes zonā": "Adrese ir piegādes zonā",
+      "Adrese ir piegādes zonā: Jūrmala centrs": "Adrese ir piegādes zonā: Jūrmala centrs",
+      "Adrese ir piegādes zonā: Jūrmala rietumi": "Adrese ir piegādes zonā: Jūrmala rietumi",
+      "Adrese ir piegādes zonā: Piņķi un Babīte": "Adrese ir piegādes zonā: Piņķi un Babīte",
       "Adrese neietilpst piegādes zonās. Sazināsimies, lai precizētu piegādi.": "Adrese neietilpst piegādes zonās. Sazināsimies, lai precizētu piegādi."
     },
     ru: {
@@ -2233,6 +2244,9 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       "Meklējam adresi...": "Ищем адрес...",
       "Adreses netika atrastas.": "Адреса не найдены.",
       "Adrese ir piegādes zonā": "Адрес в зоне доставки",
+      "Adrese ir piegādes zonā: Jūrmala centrs": "Адрес в зоне доставки: Центр Юрмалы",
+      "Adrese ir piegādes zonā: Jūrmala rietumi": "Адрес в зоне доставки: Запад Юрмалы",
+      "Adrese ir piegādes zonā: Piņķi un Babīte": "Адрес в зоне доставки: Пиньки и Бабите",
       "Adrese neietilpst piegādes zonās. Sazināsimies, lai precizētu piegādi.": "Адрес не входит в зоны доставки. Мы свяжемся, чтобы уточнить доставку."
     },
     en: {
@@ -2303,6 +2317,9 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       "Meklējam adresi...": "Searching address...",
       "Adreses netika atrastas.": "No addresses found.",
       "Adrese ir piegādes zonā": "Address is in delivery zone",
+      "Adrese ir piegādes zonā: Jūrmala centrs": "Address is in delivery zone: Jurmala centre",
+      "Adrese ir piegādes zonā: Jūrmala rietumi": "Address is in delivery zone: West Jurmala",
+      "Adrese ir piegādes zonā: Piņķi un Babīte": "Address is in delivery zone: Pinki and Babite",
       "Adrese neietilpst piegādes zonās. Sazināsimies, lai precizētu piegādi.": "The address is outside delivery zones. We will contact you to confirm delivery."
     }
   };
