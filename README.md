@@ -39,10 +39,10 @@ Open `http://127.0.0.1:4173/`.
 ```html
 <script>
 window.BrokolisFarmLoaderConfig = {
-  version: "2026-07-08-2"
+  version: "2026-07-09-1"
 };
 </script>
-<script src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-08-2/dist/brokolisfarm-loader.js?v=2026-07-08-2"></script>
+<script src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-09-1/dist/brokolisfarm-loader.js?v=2026-07-09-1"></script>
 ```
 
 3. Paste that snippet once into Tilda HEAD. The loader automatically pulls:

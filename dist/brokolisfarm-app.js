@@ -496,18 +496,30 @@
     });
   }
 
-  function deliveryZoneForPoint(point, preferredZoneId) {
+  function deliveryZoneDistanceScore(point, zone) {
+    if (!point || !zone || !Array.isArray(zone.polygon) || !zone.polygon.length) return Number.POSITIVE_INFINITY;
+    var sumLat = 0;
+    var sumLng = 0;
+    zone.polygon.forEach(function (item) {
+      sumLat += Number(item[0]) || 0;
+      sumLng += Number(item[1]) || 0;
+    });
+    var centerLat = sumLat / zone.polygon.length;
+    var centerLng = sumLng / zone.polygon.length;
+    var lngScale = Math.cos((Number(point.lat) || 0) * Math.PI / 180);
+    var dx = (Number(point.lng) - centerLng) * lngScale;
+    var dy = Number(point.lat) - centerLat;
+    return dx * dx + dy * dy;
+  }
+
+  function deliveryZoneForPoint(point) {
     var zones = deliveryZonesForPoint(point);
     if (!zones.length) return null;
-    if (preferredZoneId) {
-      var preferredZone = zones.find(function (zone) { return zone.id === preferredZoneId; });
-      if (preferredZone) return preferredZone;
-    }
     return zones.reduce(function (bestZone, zone) {
-      var bestPrice = Number(bestZone && bestZone.price) || 0;
-      var zonePrice = Number(zone && zone.price) || 0;
-      if (zonePrice > bestPrice) return zone;
-      if (zonePrice === bestPrice && BF_DELIVERY_ZONES.indexOf(zone) > BF_DELIVERY_ZONES.indexOf(bestZone)) return zone;
+      var bestScore = deliveryZoneDistanceScore(point, bestZone);
+      var zoneScore = deliveryZoneDistanceScore(point, zone);
+      if (zoneScore < bestScore) return zone;
+      if (zoneScore === bestScore && BF_DELIVERY_ZONES.indexOf(zone) > BF_DELIVERY_ZONES.indexOf(bestZone)) return zone;
       return bestZone;
     }, zones[0]);
   }
@@ -1160,14 +1172,14 @@
       }
     };
 
-    var selectedPointStatus = function () {
+    var selectedPointStatus = function (zone) {
       if (!selectedPoint) return "";
-      var zone = deliveryZoneForPoint(selectedPoint, selectedZoneId);
-      return zone ? "Inside: " + zone.title : "Outside delivery zones";
+      var resolvedZone = zone || deliveryZoneForPoint(selectedPoint);
+      return resolvedZone ? "Inside: " + resolvedZone.title : "Outside delivery zones";
     };
 
     var applyZone = function (zoneId) {
-      var zone = BF_DELIVERY_ZONES.find(function (item) { return item.id === zoneId; });
+      var zone = selectedPoint ? deliveryZoneForPoint(selectedPoint) : BF_DELIVERY_ZONES.find(function (item) { return item.id === zoneId; });
       if (!zone) {
         selectedZoneId = "";
         try {
@@ -1175,8 +1187,8 @@
         } catch (error) {}
         updateDeliveryZoneUi(picker, "");
         clearDeliveryZoneFromTilda(nativeCart, addressInput && addressInput.value);
-        syncDeliveryPointToTilda(nativeCart, selectedPoint, selectedPointStatus());
-        updateDeliveryPointUi(picker, selectedPoint, selectedPoint && deliveryZoneForPoint(selectedPoint));
+        syncDeliveryPointToTilda(nativeCart, selectedPoint, selectedPointStatus(null));
+        updateDeliveryPointUi(picker, selectedPoint, null);
         return;
       }
       selectedZoneId = zone.id;
@@ -1185,8 +1197,8 @@
       } catch (error) {}
       updateDeliveryZoneUi(picker, zone.id);
       syncDeliveryZoneToTilda(nativeCart, zone, addressInput && addressInput.value);
-      syncDeliveryPointToTilda(nativeCart, selectedPoint, selectedPointStatus());
-      updateDeliveryPointUi(picker, selectedPoint, selectedPoint && deliveryZoneForPoint(selectedPoint, selectedZoneId));
+      syncDeliveryPointToTilda(nativeCart, selectedPoint, selectedPointStatus(zone));
+      updateDeliveryPointUi(picker, selectedPoint, zone);
     };
 
     var applyPoint = function (point, source) {
@@ -1199,7 +1211,7 @@
       var pointZone = selectedPoint && deliveryZoneForPoint(selectedPoint);
       selectedZoneId = pointZone ? pointZone.id : "";
       updateDeliveryPointUi(picker, selectedPoint, pointZone);
-      syncDeliveryPointToTilda(nativeCart, selectedPoint, selectedPointStatus());
+      syncDeliveryPointToTilda(nativeCart, selectedPoint, selectedPointStatus(pointZone));
       if (source === "suggestion") {
         setDeliveryAddressValue(addressInput && addressInput.value);
       }
@@ -1252,7 +1264,7 @@
         if (suggestionTimer) clearTimeout(suggestionTimer);
         if (query.length < 3) {
           hideDeliverySuggestions(picker);
-          updateDeliveryPointUi(picker, selectedPoint, selectedPoint && deliveryZoneForPoint(selectedPoint, selectedZoneId));
+          updateDeliveryPointUi(picker, selectedPoint, selectedPoint && deliveryZoneForPoint(selectedPoint));
           return;
         }
         setDeliveryStatusLoading(picker);
@@ -1263,12 +1275,12 @@
             .then(function (suggestions) {
               if (currentRequestId !== suggestionRequestId) return;
               renderDeliverySuggestions(picker, suggestions, selectAddressSuggestion);
-              if (!suggestions.length) updateDeliveryPointUi(picker, selectedPoint, selectedPoint && deliveryZoneForPoint(selectedPoint, selectedZoneId));
+              if (!suggestions.length) updateDeliveryPointUi(picker, selectedPoint, selectedPoint && deliveryZoneForPoint(selectedPoint));
             })
             .catch(function () {
               if (currentRequestId !== suggestionRequestId) return;
               renderDeliverySuggestions(picker, [], selectAddressSuggestion);
-              updateDeliveryPointUi(picker, selectedPoint, selectedPoint && deliveryZoneForPoint(selectedPoint, selectedZoneId));
+              updateDeliveryPointUi(picker, selectedPoint, selectedPoint && deliveryZoneForPoint(selectedPoint));
             });
         }, 360);
       };
@@ -1297,13 +1309,15 @@
           try {
             localStorage.setItem(BF_DELIVERY_ADDRESS_STORAGE_KEY, addressInput.value);
           } catch (error) {}
-          var zone = BF_DELIVERY_ZONES.find(function (item) { return item.id === selectedZoneId; });
+          var zone = selectedPoint ? deliveryZoneForPoint(selectedPoint) : BF_DELIVERY_ZONES.find(function (item) { return item.id === selectedZoneId; });
+          selectedZoneId = zone ? zone.id : "";
+          updateDeliveryZoneUi(picker, selectedZoneId);
           if (zone) {
             syncDeliveryZoneToTilda(nativeCart, zone, addressInput.value);
           } else {
             clearDeliveryZoneFromTilda(nativeCart, addressInput.value);
           }
-          syncDeliveryPointToTilda(nativeCart, selectedPoint, selectedPointStatus());
+          syncDeliveryPointToTilda(nativeCart, selectedPoint, selectedPointStatus(zone));
           queueAddressSearch();
         });
         addressInput.addEventListener("focus", queueAddressSearch);
