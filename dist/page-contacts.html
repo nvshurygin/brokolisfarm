@@ -28,20 +28,21 @@
         <a href="https://maps.google.com/?q=56.97407925,23.80768356" target="_blank" rel="noopener">Skatīt kartē</a>
         <p>Darba laiks: P.-C. 10:00-22:00, Pk.-S. 10:00-23:00, Sv. 10:00-22:00.</p>
       </div>
-      <form class="bf-contact-form">
+      <form class="bf-contact-form" data-bf-lead-form="contact" novalidate>
         <label class="bf-field">
           <span>Vārds</span>
-          <input type="text" name="name" />
+          <input type="text" name="name" autocomplete="name" required />
         </label>
         <label class="bf-field">
           <span>Tālrunis vai e-pasts</span>
-          <input type="text" name="contact" />
+          <input type="text" name="contact" autocomplete="email" required />
         </label>
         <label class="bf-field">
           <span>Ziņa</span>
-          <textarea name="message" rows="5"></textarea>
+          <textarea name="message" rows="5" required></textarea>
         </label>
         <button class="bf-button" type="submit">Nosūtīt</button>
+        <p class="bf-form-status" data-bf-form-status aria-live="polite"></p>
       </form>
     </div>
   </section>

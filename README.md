@@ -39,10 +39,10 @@ Open `http://127.0.0.1:4173/`.
 ```html
 <script>
 window.BrokolisFarmLoaderConfig = {
-  version: "2026-07-09-2"
+  version: "2026-07-12-1"
 };
 </script>
-<script src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-09-2/dist/brokolisfarm-loader.js?v=2026-07-09-2"></script>
+<script src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/brokolisfarm-loader.js?v=2026-07-12-1"></script>
 ```
 
 3. Paste that snippet once into Tilda HEAD. The loader automatically pulls:
@@ -70,6 +70,21 @@ window.BrokolisFarmLoaderConfig = {
 7. For updates, push to GitHub, create the matching git tag, and change `version` plus the tag in the CDN URL.
 
 Prefer `cdn.jsdelivr.net/gh/...` over `raw.githubusercontent.com` for production because it serves better cache headers and content types for browser-loaded assets.
+
+### Required Tilda settings
+
+- Publish real Tilda pages at `/privacy` and `/terms`; a loader rendered inside Tilda's 404 page still returns HTTP 404 to search engines.
+- In cart block `#rec2439950731`, connect at least one Tilda Forms recipient/service. The current published form reports `NO ONE SERVICES CONNECTED`.
+- Keep Latvia as the cart phone country. The frontend normalizes the visible phone input to `+371`, but the block should also be corrected in Tilda.
+- Remove unused CDEK/Poland delivery services from the cart block. BrokolisFarm delivery prices are supplied by the custom zone map.
+
+Custom contact and newsletter forms never submit personal data through a page URL. Without a configured endpoint they open a prepared email to `mocat@inbox.lv`. To send them directly to a backend, define an HTTPS JSON endpoint before the loader:
+
+```html
+<script>
+window.BrokolisFarmLeadEndpoint = "https://example.com/api/brokolisfarm-leads";
+</script>
+```
 
 ### Manual paste fallback
 

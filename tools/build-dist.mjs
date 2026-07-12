@@ -4,7 +4,9 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = path.join(root, "dist");
-const loaderVersion = "2026-07-09-2";
+const loaderVersion = "2026-07-12-1";
+const mainAssetBase = "https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/";
+const releaseAssetBase = `https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@${loaderVersion}/dist/`;
 
 const css = await readFile(path.join(root, "src", "brokolisfarm-tilda.css"), "utf8");
 const js = await readFile(path.join(root, "src", "brokolisfarm-tilda.js"), "utf8");
@@ -45,6 +47,7 @@ const loaderContainer = `<div data-bf-page="home"></div>\n`;
 
 function renderPageSource(source) {
   return source
+    .replaceAll(mainAssetBase, releaseAssetBase)
     .replaceAll("{{BF_HEADER}}", '<div data-bf-header></div>')
     .replaceAll("{{BF_FOOTER}}", '<div data-bf-footer></div>');
 }

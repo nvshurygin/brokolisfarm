@@ -1543,6 +1543,28 @@ body.bf-tilda-product-page .bf-products_related .bf-product .bf-product__cart:fo
   gap: 16px;
 }
 
+.bf-form-status {
+  color: var(--bf-green);
+  font-size: 13px;
+  line-height: 1.4;
+  margin: 0;
+  min-height: 18px;
+}
+
+.bf-form-status.is-error {
+  color: #9f2727;
+}
+
+[data-bf-lead-form] [type="submit"]:disabled {
+  cursor: wait;
+  opacity: 0.58;
+}
+
+.bf-native-phone {
+  border: 0 !important;
+  width: 100%;
+}
+
 .bf-text-page__content {
   display: grid;
   gap: 22px;
@@ -2876,7 +2898,7 @@ body.bf-tilda-product-page .bf-footer {
 </style>
 
 <script id="brokolisfarm-global-templates">
-window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\">\n  <div class=\"bf-topbar\">\n    <div class=\"bf-shell bf-topbar__inner\">\n      <span>Latvija</span>\n      <div class=\"bf-language\" data-bf-language-switcher aria-label=\"Valodas izvēle\">\n        <span class=\"bf-language__label\">Valoda</span>\n        <button class=\"bf-language__button is-active\" type=\"button\" data-bf-lang=\"lv\">LV</button>\n        <button class=\"bf-language__button\" type=\"button\" data-bf-lang=\"ru\">RU</button>\n        <button class=\"bf-language__button\" type=\"button\" data-bf-lang=\"en\">EN</button>\n      </div>\n      <a href=\"tel:+37124811393\" class=\"bf-phone\">+371 2481 1393</a>\n    </div>\n  </div>\n  <div class=\"bf-shell bf-nav\">\n    <a class=\"bf-logo notranslate\" href=\"/\" aria-label=\"BrokolisFarm\" translate=\"no\">\n      <span class=\"bf-logo__mark\">B</span>\n      <span class=\"bf-logo__text\">BrokolisFarm</span>\n    </a>\n    <a class=\"bf-catalog-button\" href=\"/catalog\" data-bf-menu-toggle aria-controls=\"bf-mobile-menu\" aria-expanded=\"false\">\n      <span class=\"bf-catalog-button__icon\" aria-hidden=\"true\"></span>\n      Katalogs\n    </a>\n    <nav class=\"bf-menu\" aria-label=\"Navigācija\">\n      <a href=\"/offers\">% Akcijas</a>\n      <a href=\"/new\">Jaunumi</a>\n      <a href=\"/about\">Par mums</a>\n      <a href=\"/delivery\">Apmaksa un piegāde</a>\n      <a href=\"/contacts\">Kontakti</a>\n    </nav>\n    <a class=\"bf-icon-link\" href=\"/catalog#search\" aria-label=\"Meklēt\">\n      <span class=\"bf-icon-search\" aria-hidden=\"true\"></span>\n    </a>\n    <a class=\"bf-cart-link\" href=\"#opencart\" aria-label=\"Grozs\" data-bf-cart-open data-menu-widgeticon-cart=\"yes\">\n      <span class=\"bf-icon-cart\" aria-hidden=\"true\"></span>\n      <span class=\"bf-cart-count js-carticon-counter\" data-bf-cart-count aria-live=\"polite\"></span>\n    </a>\n  </div>\n  <div class=\"bf-mobile-menu\" id=\"bf-mobile-menu\" data-bf-mobile-menu aria-hidden=\"true\">\n    <button class=\"bf-mobile-menu__backdrop\" type=\"button\" data-bf-menu-close aria-label=\"Aizvērt izvēlni\"></button>\n    <aside class=\"bf-mobile-menu__panel\" role=\"dialog\" aria-modal=\"true\" aria-label=\"Izvēlne\">\n      <div class=\"bf-mobile-menu__head\">\n        <a class=\"bf-logo bf-mobile-menu__logo notranslate\" href=\"/\" aria-label=\"BrokolisFarm\" translate=\"no\">\n          <span class=\"bf-logo__mark\">B</span>\n          <span class=\"bf-logo__text\">BrokolisFarm</span>\n        </a>\n        <button class=\"bf-mobile-menu__close\" type=\"button\" data-bf-menu-close aria-label=\"Aizvērt izvēlni\">×</button>\n      </div>\n      <nav class=\"bf-mobile-menu__nav\" aria-label=\"Mobilā navigācija\">\n        <a href=\"/catalog\">Katalogs</a>\n        <a href=\"/offers\">% Akcijas</a>\n        <a href=\"/new\">Jaunumi</a>\n        <a href=\"/about\">Par mums</a>\n        <a href=\"/delivery\">Apmaksa un piegāde</a>\n        <a href=\"/contacts\">Kontakti</a>\n      </nav>\n      <a class=\"bf-button bf-mobile-menu__button\" href=\"/catalog\">Atvērt katalogu</a>\n    </aside>\n  </div>\n</header>\n","footer":"<footer class=\"bf-footer\" id=\"contacts\">\n  <div class=\"bf-shell bf-footer__inner\">\n    <div class=\"bf-footer__brand\">\n      <a class=\"bf-logo bf-footer__logo notranslate\" href=\"/\" translate=\"no\">\n        <span class=\"bf-logo__mark\">B</span>\n        <span class=\"bf-logo__text\">BrokolisFarm</span>\n      </a>\n      <p>Neliels ģimenes uzņēmums, kuram produktu kvalitāte ir īpaši svarīga. Rūpīgi atlasām garšīgus un veselīgus produktus ikdienai.</p>\n      <div class=\"bf-footer__socials\">\n        <a href=\"https://www.instagram.com/\" target=\"_blank\" rel=\"noopener\">Instagram</a>\n        <a href=\"https://www.facebook.com/\" target=\"_blank\" rel=\"noopener\">Facebook</a>\n      </div>\n    </div>\n\n    <nav class=\"bf-footer__nav\" aria-label=\"Katalogs\">\n      <h3>Katalogs</h3>\n      <a href=\"/catalog\">Svaiga gaļa</a>\n      <a href=\"/catalog\">Olas un piena produkti</a>\n      <a href=\"/catalog\">Delikateses</a>\n      <a href=\"/catalog\">Augļi un dārzeņi</a>\n    </nav>\n\n    <nav class=\"bf-footer__nav\" aria-label=\"Pircējiem\">\n      <h3>Pircējiem</h3>\n      <a href=\"/offers\">Akcijas</a>\n      <a href=\"/new\">Jaunumi</a>\n      <a href=\"/about\">Par mums</a>\n      <a href=\"/delivery\">Apmaksa un piegāde</a>\n      <a href=\"/contacts\">Kontakti</a>\n      <a href=\"/privacy\">Privātuma politika</a>\n      <a href=\"/terms\">Pirkuma noteikumi</a>\n    </nav>\n\n    <div class=\"bf-footer__contacts\">\n      <h3>Kontakti</h3>\n      <a href=\"tel:+37124811393\">+371 2481 1393</a>\n      <a href=\"mailto:mocat@inbox.lv\">mocat@inbox.lv</a>\n      <a href=\"https://maps.google.com/?q=56.97407925,23.80768356\" target=\"_blank\" rel=\"noopener\">Saņemšana: Jomas iela 74, Jūrmala, LV-2015</a>\n      <p>Darba laiks: P.-C. 10:00-22:00, Pk.-S. 10:00-23:00, Sv. 10:00-22:00.</p>\n      <a class=\"bf-button\" href=\"/catalog\">Atvērt katalogu</a>\n    </div>\n  </div>\n  <div class=\"bf-shell bf-footer__bottom\">\n    <span>© 2026 BrokolisFarm</span>\n    <span>SIA MOCAT, REG.nr 40203106742, PVN: LV40203106742. Jur.adrese: Medņu 65, Jūrmala, LV-2008. A/S Citadele PARXLV22, LV61PARX0020504140001.</span>\n  </div>\n</footer>\n"};
+window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\">\n  <div class=\"bf-topbar\">\n    <div class=\"bf-shell bf-topbar__inner\">\n      <span>Latvija</span>\n      <div class=\"bf-language\" data-bf-language-switcher aria-label=\"Valodas izvēle\">\n        <span class=\"bf-language__label\">Valoda</span>\n        <button class=\"bf-language__button is-active\" type=\"button\" data-bf-lang=\"lv\">LV</button>\n        <button class=\"bf-language__button\" type=\"button\" data-bf-lang=\"ru\">RU</button>\n        <button class=\"bf-language__button\" type=\"button\" data-bf-lang=\"en\">EN</button>\n      </div>\n      <a href=\"tel:+37124811393\" class=\"bf-phone\">+371 2481 1393</a>\n    </div>\n  </div>\n  <div class=\"bf-shell bf-nav\">\n    <a class=\"bf-logo notranslate\" href=\"/\" aria-label=\"BrokolisFarm\" translate=\"no\">\n      <span class=\"bf-logo__mark\">B</span>\n      <span class=\"bf-logo__text\">BrokolisFarm</span>\n    </a>\n    <a class=\"bf-catalog-button\" href=\"/catalog\" data-bf-menu-toggle aria-controls=\"bf-mobile-menu\" aria-expanded=\"false\">\n      <span class=\"bf-catalog-button__icon\" aria-hidden=\"true\"></span>\n      Katalogs\n    </a>\n    <nav class=\"bf-menu\" aria-label=\"Navigācija\">\n      <a href=\"/offers\">% Akcijas</a>\n      <a href=\"/new\">Jaunumi</a>\n      <a href=\"/about\">Par mums</a>\n      <a href=\"/delivery\">Apmaksa un piegāde</a>\n      <a href=\"/contacts\">Kontakti</a>\n    </nav>\n    <a class=\"bf-icon-link\" href=\"/catalog#search\" aria-label=\"Meklēt\">\n      <span class=\"bf-icon-search\" aria-hidden=\"true\"></span>\n    </a>\n    <a class=\"bf-cart-link\" href=\"#opencart\" aria-label=\"Grozs\" data-bf-cart-open data-menu-widgeticon-cart=\"yes\">\n      <span class=\"bf-icon-cart\" aria-hidden=\"true\"></span>\n      <span class=\"bf-cart-count js-carticon-counter\" data-bf-cart-count aria-live=\"polite\"></span>\n    </a>\n  </div>\n  <div class=\"bf-mobile-menu\" id=\"bf-mobile-menu\" data-bf-mobile-menu aria-hidden=\"true\">\n    <button class=\"bf-mobile-menu__backdrop\" type=\"button\" data-bf-menu-close aria-label=\"Aizvērt izvēlni\"></button>\n    <aside class=\"bf-mobile-menu__panel\" role=\"dialog\" aria-modal=\"true\" aria-label=\"Izvēlne\">\n      <div class=\"bf-mobile-menu__head\">\n        <a class=\"bf-logo bf-mobile-menu__logo notranslate\" href=\"/\" aria-label=\"BrokolisFarm\" translate=\"no\">\n          <span class=\"bf-logo__mark\">B</span>\n          <span class=\"bf-logo__text\">BrokolisFarm</span>\n        </a>\n        <button class=\"bf-mobile-menu__close\" type=\"button\" data-bf-menu-close aria-label=\"Aizvērt izvēlni\">×</button>\n      </div>\n      <nav class=\"bf-mobile-menu__nav\" aria-label=\"Mobilā navigācija\">\n        <a href=\"/catalog\">Katalogs</a>\n        <a href=\"/offers\">% Akcijas</a>\n        <a href=\"/new\">Jaunumi</a>\n        <a href=\"/about\">Par mums</a>\n        <a href=\"/delivery\">Apmaksa un piegāde</a>\n        <a href=\"/contacts\">Kontakti</a>\n      </nav>\n      <a class=\"bf-button bf-mobile-menu__button\" href=\"/catalog\">Atvērt katalogu</a>\n    </aside>\n  </div>\n</header>\n","footer":"<footer class=\"bf-footer\" id=\"contacts\">\n  <div class=\"bf-shell bf-footer__inner\">\n    <div class=\"bf-footer__brand\">\n      <a class=\"bf-logo bf-footer__logo notranslate\" href=\"/\" translate=\"no\">\n        <span class=\"bf-logo__mark\">B</span>\n        <span class=\"bf-logo__text\">BrokolisFarm</span>\n      </a>\n      <p>Neliels ģimenes uzņēmums, kuram produktu kvalitāte ir īpaši svarīga. Rūpīgi atlasām garšīgus un veselīgus produktus ikdienai.</p>\n      <div class=\"bf-footer__socials\">\n        <a href=\"mailto:mocat@inbox.lv\">E-pasts</a>\n        <a href=\"https://maps.google.com/?q=56.97407925,23.80768356\" target=\"_blank\" rel=\"noopener\">Atrašanās vieta</a>\n      </div>\n    </div>\n\n    <nav class=\"bf-footer__nav\" aria-label=\"Katalogs\">\n      <h3>Katalogs</h3>\n      <a href=\"/catalog\">Svaiga gaļa</a>\n      <a href=\"/catalog\">Olas un piena produkti</a>\n      <a href=\"/catalog\">Delikateses</a>\n      <a href=\"/catalog\">Augļi un dārzeņi</a>\n    </nav>\n\n    <nav class=\"bf-footer__nav\" aria-label=\"Pircējiem\">\n      <h3>Pircējiem</h3>\n      <a href=\"/offers\">Akcijas</a>\n      <a href=\"/new\">Jaunumi</a>\n      <a href=\"/about\">Par mums</a>\n      <a href=\"/delivery\">Apmaksa un piegāde</a>\n      <a href=\"/contacts\">Kontakti</a>\n      <a href=\"/privacy\">Privātuma politika</a>\n      <a href=\"/terms\">Pirkuma noteikumi</a>\n    </nav>\n\n    <div class=\"bf-footer__contacts\">\n      <h3>Kontakti</h3>\n      <a href=\"tel:+37124811393\">+371 2481 1393</a>\n      <a href=\"mailto:mocat@inbox.lv\">mocat@inbox.lv</a>\n      <a href=\"https://maps.google.com/?q=56.97407925,23.80768356\" target=\"_blank\" rel=\"noopener\">Saņemšana: Jomas iela 74, Jūrmala, LV-2015</a>\n      <p>Darba laiks: P.-C. 10:00-22:00, Pk.-S. 10:00-23:00, Sv. 10:00-22:00.</p>\n      <a class=\"bf-button\" href=\"/catalog\">Atvērt katalogu</a>\n    </div>\n  </div>\n  <div class=\"bf-shell bf-footer__bottom\">\n    <span>© 2026 BrokolisFarm</span>\n    <span>SIA MOCAT, REG.nr 40203106742, PVN: LV40203106742. Jur.adrese: Medņu 65, Jūrmala, LV-2008. A/S Citadele PARXLV22, LV61PARX0020504140001.</span>\n  </div>\n</footer>\n"};
 </script>
 <script id="brokolisfarm-global-js">
 (function () {
@@ -2905,47 +2927,66 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
   var BF_DELIVERY_ZONES = [
     {
       id: "jurmala-center",
-      title: "Jūrmala centrs",
-      caption: "Majori, Dzintari, Dubulti, Bulduri",
+      title: "Jūrmala",
+      caption: "Kauguri, Vaivari, Asari, Melluži, Pumpuri, Majori, Dzintari, Bulduri",
       price: 3,
       color: "#6dac4a",
-      polygon: [
-        [56.998, 23.626],
-        [56.992, 23.760],
-        [56.982, 23.842],
-        [56.958, 23.858],
-        [56.948, 23.748],
-        [56.960, 23.635]
-      ]
+      polygonGeoJson: [[
+        [23.588676, 56.942331], [23.578033, 56.92884], [23.594856, 56.925092],
+        [23.609276, 56.932026], [23.623695, 56.943455], [23.643608, 56.941394],
+        [23.652878, 56.9339], [23.665924, 56.932213], [23.685493, 56.934087],
+        [23.69545, 56.941394], [23.710899, 56.944017], [23.725662, 56.941582],
+        [23.743172, 56.946827], [23.762054, 56.949262], [23.778877, 56.950761],
+        [23.785057, 56.955817], [23.779221, 56.959001], [23.775787, 56.96649],
+        [23.780594, 56.970983], [23.79055, 56.970983], [23.80085, 56.96986],
+        [23.808746, 56.964056], [23.808746, 56.95769], [23.822823, 56.958626],
+        [23.860588, 56.972855], [23.878784, 56.981839], [23.887367, 56.984085],
+        [23.882904, 56.988014], [23.90213, 56.993066], [23.90007, 56.996808],
+        [23.878441, 56.99344], [23.834152, 56.983898], [23.785744, 56.975101],
+        [23.730469, 56.967801], [23.67382, 56.964056], [23.619576, 56.964618],
+        [23.600349, 56.971545], [23.593483, 56.96855], [23.594513, 56.965367],
+        [23.601379, 56.962933], [23.600349, 56.958064], [23.608589, 56.950199],
+        [23.592453, 56.948513], [23.588676, 56.942331]
+      ]]
     },
     {
       id: "jurmala-west",
-      title: "Jūrmala rietumi",
-      caption: "Asari, Melluži, Vaivari, Kauguri, Sloka",
+      title: "Tukuma piekraste",
+      caption: "Bigauņciems, Lapmežciems, Ragaciems",
       price: 5,
       color: "#3b82f6",
-      polygon: [
-        [57.004, 23.412],
-        [56.995, 23.612],
-        [56.959, 23.650],
-        [56.937, 23.575],
-        [56.940, 23.450],
-        [56.972, 23.405]
-      ]
+      polygonGeoJson: [[
+        [23.482418, 57.032509], [23.481216, 57.024845], [23.493919, 57.019144],
+        [23.501301, 57.012413], [23.505936, 57.007738], [23.499413, 57.000443],
+        [23.496494, 56.998012], [23.504562, 56.995299], [23.513489, 56.991932],
+        [23.51675, 56.987628], [23.528423, 56.98557], [23.53426, 56.983231],
+        [23.537178, 56.98164], [23.540268, 56.983605], [23.548336, 56.97902],
+        [23.554173, 56.98005], [23.530655, 56.992119], [23.515549, 57.007083],
+        [23.505421, 57.018957], [23.494434, 57.029429], [23.48774, 57.034008],
+        [23.482418, 57.032509]
+      ]]
     },
     {
       id: "pieriga-east",
-      title: "Piņķi un Babīte",
+      title: "Rīga un Pierīga",
       caption: "Piņķi, Babīte, Imanta, lidostas apkārtne",
       price: 7,
       color: "#f59e0b",
-      polygon: [
-        [56.997, 23.850],
-        [56.986, 24.020],
-        [56.915, 24.020],
-        [56.910, 23.845],
-        [56.950, 23.805]
-      ]
+      polygonGeoJson: [[
+        [23.651848, 56.928018], [23.653221, 56.912085], [23.68206, 56.915553],
+        [23.690815, 56.921833], [23.739223, 56.927831], [23.764458, 56.935046],
+        [23.777676, 56.936545], [23.813038, 56.947036], [23.836899, 56.952187],
+        [23.850288, 56.943383], [23.90934, 56.92305], [23.923759, 56.92305],
+        [23.924789, 56.929235], [23.91449, 56.930734], [23.906937, 56.925861],
+        [23.915863, 56.938417], [23.923416, 56.945536], [23.935776, 56.9431],
+        [23.943672, 56.949657], [23.958435, 56.957148], [23.979034, 56.960144],
+        [23.996887, 56.971565], [23.972511, 56.984666], [23.955002, 56.977367],
+        [23.934402, 56.973062], [23.9217, 56.962204], [23.913803, 56.956399],
+        [23.896294, 56.958833], [23.89183, 56.9431], [23.881531, 56.934482],
+        [23.856468, 56.943662], [23.843765, 56.950219], [23.838272, 56.956774],
+        [23.805656, 56.952092], [23.767891, 56.9431], [23.732872, 56.937667],
+        [23.702316, 56.932046], [23.680687, 56.928298], [23.651848, 56.928018]
+      ]]
     }
   ];
   var LOCAL_FALLBACK_DATA = {
@@ -3084,6 +3125,8 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     menu.setAttribute("aria-hidden", "false");
     document.body.classList.add("bf-mobile-menu-open");
     if (toggle) toggle.setAttribute("aria-expanded", "true");
+    var closeButton = menu.querySelector(".bf-mobile-menu__close");
+    if (closeButton) closeButton.focus();
   }
 
   function closeMobileMenu(menu, toggle) {
@@ -3091,6 +3134,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     menu.setAttribute("aria-hidden", "true");
     document.body.classList.remove("bf-mobile-menu-open");
     if (toggle) toggle.setAttribute("aria-expanded", "false");
+    if (toggle && document.activeElement && menu.contains(document.activeElement)) toggle.focus();
   }
 
   function bindMobileMenu() {
@@ -3125,6 +3169,22 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       document.addEventListener("keydown", function (event) {
         if (event.key === "Escape" && menu.classList.contains("is-open")) {
           closeMobileMenu(menu, toggle);
+          return;
+        }
+        if (event.key === "Tab" && menu.classList.contains("is-open")) {
+          var focusable = toArray(menu.querySelectorAll('a[href], button:not([disabled]):not(.bf-mobile-menu__backdrop), [tabindex="0"]')).filter(function (element) {
+            return element.getClientRects().length > 0;
+          });
+          if (!focusable.length) return;
+          var first = focusable[0];
+          var last = focusable[focusable.length - 1];
+          if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+          }
         }
       });
 
@@ -3371,38 +3431,25 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     return inside;
   }
 
-  function deliveryZonesForPoint(point) {
-    return BF_DELIVERY_ZONES.filter(function (zone) {
-      return deliveryPointInPolygon(point, zone.polygon);
-    });
+  function deliveryZonePolygon(zone) {
+    var ring = zone && Array.isArray(zone.polygonGeoJson) ? zone.polygonGeoJson[0] : null;
+    if (Array.isArray(ring) && ring.length) {
+      return ring.map(function (coordinate) {
+        return [Number(coordinate[1]), Number(coordinate[0])];
+      });
+    }
+    return zone && Array.isArray(zone.polygon) ? zone.polygon : [];
   }
 
-  function deliveryZoneDistanceScore(point, zone) {
-    if (!point || !zone || !Array.isArray(zone.polygon) || !zone.polygon.length) return Number.POSITIVE_INFINITY;
-    var sumLat = 0;
-    var sumLng = 0;
-    zone.polygon.forEach(function (item) {
-      sumLat += Number(item[0]) || 0;
-      sumLng += Number(item[1]) || 0;
+  function deliveryZonesForPoint(point) {
+    return BF_DELIVERY_ZONES.filter(function (zone) {
+      return deliveryPointInPolygon(point, deliveryZonePolygon(zone));
     });
-    var centerLat = sumLat / zone.polygon.length;
-    var centerLng = sumLng / zone.polygon.length;
-    var lngScale = Math.cos((Number(point.lat) || 0) * Math.PI / 180);
-    var dx = (Number(point.lng) - centerLng) * lngScale;
-    var dy = Number(point.lat) - centerLat;
-    return dx * dx + dy * dy;
   }
 
   function deliveryZoneForPoint(point) {
     var zones = deliveryZonesForPoint(point);
-    if (!zones.length) return null;
-    return zones.reduce(function (bestZone, zone) {
-      var bestScore = deliveryZoneDistanceScore(point, bestZone);
-      var zoneScore = deliveryZoneDistanceScore(point, zone);
-      if (zoneScore < bestScore) return zone;
-      if (zoneScore === bestScore && BF_DELIVERY_ZONES.indexOf(zone) > BF_DELIVERY_ZONES.indexOf(bestZone)) return zone;
-      return bestZone;
-    }, zones[0]);
+    return zones[0] || null;
   }
 
   function formatDeliveryPoint(point) {
@@ -3527,8 +3574,13 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     return requestJson(BF_DELIVERY_GEOCODER_API + "?" + params.toString())
       .then(function (data) {
         var features = Array.isArray(data.features) ? data.features : [];
+        var seen = {};
         return features.map(formatDeliveryAddressFeature).filter(function (item) {
-          return item && deliveryPointInSearchBounds(item.point);
+          if (!item || !deliveryPointInSearchBounds(item.point)) return false;
+          var key = normalizeI18nText(item.title).toLowerCase() + "|" + formatDeliveryPoint(item.point);
+          if (seen[key]) return false;
+          seen[key] = true;
+          return true;
         }).slice(0, 5);
       });
   }
@@ -3722,8 +3774,9 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
         }).addTo(map);
         var bounds = [];
         BF_DELIVERY_ZONES.forEach(function (zone) {
-          bounds = bounds.concat(zone.polygon);
-          var polygon = L.polygon(zone.polygon, {
+          var zonePolygon = deliveryZonePolygon(zone);
+          bounds = bounds.concat(zonePolygon);
+          var polygon = L.polygon(zonePolygon, {
             color: zone.color,
             fillColor: zone.color,
             fillOpacity: zone.id === selectedZoneId ? 0.26 : 0.12,
@@ -4246,9 +4299,71 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     }, true);
   }
 
+  function setLocalizedText(element, source) {
+    if (!element) return;
+    element.setAttribute("data-bf-i18n-text", source);
+    element.textContent = localizeText(source);
+  }
+
+  function normalizeNativeCartPhone(nativeCart) {
+    var cart = nativeCart && nativeCart.cart;
+    var group = cart && cart.querySelector('[data-field-name="Phone"], .t-input-group_ph');
+    if (!group || group.getAttribute("data-bf-phone-normalized") === "true") return;
+    var current = group.querySelector('input[type="tel"]');
+    if (!current) return;
+    var input = current.cloneNode(false);
+    input.className = "t-input js-tilda-rule bf-native-phone";
+    input.name = "Phone";
+    input.type = "tel";
+    input.autocomplete = "tel";
+    input.placeholder = "+371 2XXXXXXX";
+    input.setAttribute("data-tilda-req", "1");
+    input.setAttribute("aria-required", "true");
+    input.setAttribute("data-tilda-rule", "phone");
+    input.setAttribute("data-tilda-rule-minlength", "8");
+    input.removeAttribute("data-phonemask-iso");
+    input.removeAttribute("data-phonemask-code");
+    input.removeAttribute("data-phonemask-mask");
+    input.removeAttribute("data-phonemask-without-code");
+    input.removeAttribute("maxlength");
+    current.parentNode.replaceChild(input, current);
+    toArray(group.querySelectorAll('input[type="hidden"]')).forEach(function (hidden) {
+      hidden.disabled = true;
+    });
+    var country = group.querySelector(".t-input-phonemask__select");
+    if (country) country.style.display = "none";
+    group.setAttribute("data-bf-phone-normalized", "true");
+  }
+
+  function localizeNativeCart(nativeCart) {
+    var cart = nativeCart && nativeCart.cart;
+    if (!cart) return;
+    setLocalizedText(cart.querySelector(".t706__cartwin-heading"), "Jūsu pasūtījums:");
+    setLocalizedText(cart.querySelector(".t706__cartwin-prodamount-label"), "Summa:");
+    setLocalizedText(cart.querySelector(".t706__cartwin-totalamount-label"), "Kopā:");
+    toArray(cart.querySelectorAll(".t706__cartwin-totalamount-info_label")).forEach(function (label, index) {
+      if (index === 0) setLocalizedText(label, "Summa:");
+    });
+    var fieldLabels = {
+      Name: "Vārds",
+      Email: "E-pasts",
+      Phone: "Tālrunis"
+    };
+    Object.keys(fieldLabels).forEach(function (name) {
+      var group = cart.querySelector('[data-field-name="' + name + '"]');
+      var label = group && group.querySelector(".t-input-title");
+      setLocalizedText(label, fieldLabels[name]);
+    });
+    setLocalizedText(cart.querySelector(".t-submit .t-btnflex__text, .t-submit"), "Noformēt pasūtījumu");
+    var errorBox = cart.querySelector(".js-errorbox-all");
+    if (errorBox) errorBox.setAttribute("aria-label", localizeText("Formas kļūdas"));
+  }
+
   function prepareNativeTildaCart(nativeCart) {
     nativeCart = nativeCart || getNativeTildaCartRecord();
     if (!nativeCart) return false;
+    normalizeNativeCartPhone(nativeCart);
+    localizeNativeCart(nativeCart);
     if (typeof window.t_forms__initForms === "function") {
       try {
         window.t_forms__initForms();
@@ -4264,6 +4379,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     if (typeof window.tcart__reDrawProducts === "function") window.tcart__reDrawProducts();
     if (typeof window.tcart__reDrawTotal === "function") window.tcart__reDrawTotal();
     ensureDeliveryZonePicker(nativeCart);
+    applyCurrentLanguage(nativeCart.cart);
     ensureAllDeliveryMapZoomControls();
     scheduleDeliveryMapRefresh();
     bindNativeCartFormGuard(nativeCart);
@@ -4453,6 +4569,77 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     } catch (error) {
       return fallback;
     }
+  }
+
+  function leadFormValues(form) {
+    var values = {};
+    toArray(form.querySelectorAll("input[name], textarea[name], select[name]")).forEach(function (field) {
+      values[field.name] = normalizeI18nText(field.value);
+    });
+    values.form = form.getAttribute("data-bf-lead-form") || "contact";
+    values.language = currentLanguage();
+    values.page = window.location.href;
+    return values;
+  }
+
+  function setLeadFormStatus(form, source, isError) {
+    var status = form.querySelector("[data-bf-form-status]");
+    if (!status) return;
+    status.setAttribute("data-bf-i18n-text", source);
+    status.textContent = localizeText(source);
+    status.classList.toggle("is-error", !!isError);
+  }
+
+  function openLeadEmail(form, values) {
+    var newsletter = values.form === "newsletter";
+    var subject = newsletter ? "BrokolisFarm jaunumu abonements" : "Ziņa no BrokolisFarm vietnes";
+    var lines = newsletter
+      ? ["E-pasts: " + (values.email || "")]
+      : [
+          "Vārds: " + (values.name || ""),
+          "Kontakts: " + (values.contact || ""),
+          "Ziņa: " + (values.message || "")
+        ];
+    lines.push("Lapa: " + values.page);
+    setLeadFormStatus(form, "Atveram e-pasta programmu. Nosūtiet sagatavoto ziņu.", false);
+    window.location.href = "mailto:mocat@inbox.lv?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(lines.join("\n\n"));
+  }
+
+  function bindLeadForms() {
+    toArray(document.querySelectorAll("[data-bf-lead-form]")).forEach(function (form) {
+      if (form.getAttribute("data-bf-lead-bound") === "true") return;
+      form.setAttribute("data-bf-lead-bound", "true");
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        if (typeof form.checkValidity === "function" && !form.checkValidity()) {
+          if (typeof form.reportValidity === "function") form.reportValidity();
+          setLeadFormStatus(form, "Aizpildiet obligātos laukus.", true);
+          return;
+        }
+        var values = leadFormValues(form);
+        var endpoint = window.BrokolisFarmLeadEndpoint || "";
+        if (!endpoint || typeof fetch !== "function") {
+          openLeadEmail(form, values);
+          return;
+        }
+        var button = form.querySelector('[type="submit"]');
+        if (button) button.disabled = true;
+        setLeadFormStatus(form, "Nosūtām ziņu...", false);
+        fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values)
+        }).then(function (response) {
+          if (!response.ok) throw new Error("Lead request failed");
+          form.reset();
+          setLeadFormStatus(form, "Paldies! Ziņa ir nosūtīta.", false);
+        }).catch(function () {
+          openLeadEmail(form, values);
+        }).then(function () {
+          if (button) button.disabled = false;
+        });
+      });
+    });
   }
 
   var I18N_TEXT = {
@@ -5032,11 +5219,22 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       "Atzīmējiet adresi kartē vai izvēlieties adresi meklēšanā. Zona un piegādes cena tiks noteikta automātiski.": "Atzīmējiet adresi kartē vai izvēlieties adresi meklēšanā. Zona un piegādes cena tiks noteikta automātiski.",
       "Piegādes adrese": "Piegādes adrese",
       "Iela, māja, dzīvoklis": "Iela, māja, dzīvoklis",
-      "Jūrmala centrs": "Jūrmala centrs",
-      "Majori, Dzintari, Dubulti, Bulduri": "Majori, Dzintari, Dubulti, Bulduri",
-      "Jūrmala rietumi": "Jūrmala rietumi",
-      "Asari, Melluži, Vaivari, Kauguri, Sloka": "Asari, Melluži, Vaivari, Kauguri, Sloka",
-      "Piņķi un Babīte": "Piņķi un Babīte",
+      "Atrašanās vieta": "Atrašanās vieta",
+      "Sazinieties ar BrokolisFarm": "Sazinieties ar BrokolisFarm",
+      "Rakstiet vai zvaniet, lai precizētu produktu pieejamību, piegādi un pasūtījuma detaļas.": "Rakstiet vai zvaniet, lai precizētu produktu pieejamību, piegādi un pasūtījuma detaļas.",
+      "Jūsu pasūtījums:": "Jūsu pasūtījums:",
+      "Summa:": "Summa:",
+      "Kopā:": "Kopā:",
+      "Vārds": "Vārds",
+      "E-pasts": "E-pasts",
+      "Tālrunis": "Tālrunis",
+      "Noformēt pasūtījumu": "Noformēt pasūtījumu",
+      "Formas kļūdas": "Formas kļūdas",
+      "Jūrmala": "Jūrmala",
+      "Kauguri, Vaivari, Asari, Melluži, Pumpuri, Majori, Dzintari, Bulduri": "Kauguri, Vaivari, Asari, Melluži, Pumpuri, Majori, Dzintari, Bulduri",
+      "Tukuma piekraste": "Tukuma piekraste",
+      "Bigauņciems, Lapmežciems, Ragaciems": "Bigauņciems, Lapmežciems, Ragaciems",
+      "Rīga un Pierīga": "Rīga un Pierīga",
       "Piņķi, Babīte, Imanta, lidostas apkārtne": "Piņķi, Babīte, Imanta, lidostas apkārtne",
       "Bez maksas": "Bez maksas",
       "Vēl no šīs kategorijas": "Vēl no šīs kategorijas",
@@ -5047,10 +5245,15 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       "Sāciet rakstīt adresi vai klikšķiniet kartē, lai pārbaudītu piegādes zonu.": "Sāciet rakstīt adresi vai klikšķiniet kartē, lai pārbaudītu piegādes zonu.",
       "Meklējam adresi...": "Meklējam adresi...",
       "Adreses netika atrastas.": "Adreses netika atrastas.",
+      "Meklējam visā katalogā...": "Meklējam visā katalogā...",
       "Adrese ir piegādes zonā": "Adrese ir piegādes zonā",
-      "Adrese ir piegādes zonā: Jūrmala centrs": "Adrese ir piegādes zonā: Jūrmala centrs",
-      "Adrese ir piegādes zonā: Jūrmala rietumi": "Adrese ir piegādes zonā: Jūrmala rietumi",
-      "Adrese ir piegādes zonā: Piņķi un Babīte": "Adrese ir piegādes zonā: Piņķi un Babīte",
+      "Adrese ir piegādes zonā: Jūrmala": "Adrese ir piegādes zonā: Jūrmala",
+      "Adrese ir piegādes zonā: Tukuma piekraste": "Adrese ir piegādes zonā: Tukuma piekraste",
+      "Adrese ir piegādes zonā: Rīga un Pierīga": "Adrese ir piegādes zonā: Rīga un Pierīga",
+      "Aizpildiet obligātos laukus.": "Aizpildiet obligātos laukus.",
+      "Atveram e-pasta programmu. Nosūtiet sagatavoto ziņu.": "Atveram e-pasta programmu. Nosūtiet sagatavoto ziņu.",
+      "Nosūtām ziņu...": "Nosūtām ziņu...",
+      "Paldies! Ziņa ir nosūtīta.": "Paldies! Ziņa ir nosūtīta.",
       "Adrese neietilpst piegādes zonās. Sazināsimies, lai precizētu piegādi.": "Adrese neietilpst piegādes zonās. Sazināsimies, lai precizētu piegādi."
     },
     ru: {
@@ -5105,11 +5308,21 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       "Atzīmējiet adresi kartē vai izvēlieties adresi meklēšanā. Zona un piegādes cena tiks noteikta automātiski.": "Отметьте адрес на карте или выберите адрес в поиске. Зона и стоимость доставки определятся автоматически.",
       "Piegādes adrese": "Адрес доставки",
       "Iela, māja, dzīvoklis": "Улица, дом, квартира",
-      "Jūrmala centrs": "Центр Юрмалы",
-      "Majori, Dzintari, Dubulti, Bulduri": "Майори, Дзинтари, Дубулты, Булдури",
-      "Jūrmala rietumi": "Запад Юрмалы",
-      "Asari, Melluži, Vaivari, Kauguri, Sloka": "Асари, Меллужи, Вайвари, Каугури, Слока",
-      "Piņķi un Babīte": "Пиньки и Бабите",
+      "Atrašanās vieta": "Местоположение",
+      "Sazinieties ar BrokolisFarm": "Свяжитесь с BrokolisFarm",
+      "Rakstiet vai zvaniet, lai precizētu produktu pieejamību, piegādi un pasūtījuma detaļas.": "Напишите или позвоните, чтобы уточнить наличие продуктов, доставку и детали заказа.",
+      "Jūsu pasūtījums:": "Ваш заказ:",
+      "Summa:": "Сумма:",
+      "Kopā:": "Итого:",
+      "Vārds": "Имя",
+      "E-pasts": "Электронная почта",
+      "Noformēt pasūtījumu": "Оформить заказ",
+      "Formas kļūdas": "Ошибки формы",
+      "Jūrmala": "Юрмала",
+      "Kauguri, Vaivari, Asari, Melluži, Pumpuri, Majori, Dzintari, Bulduri": "Каугури, Вайвари, Асари, Меллужи, Пумпури, Майори, Дзинтари, Булдури",
+      "Tukuma piekraste": "Побережье Тукумского края",
+      "Bigauņciems, Lapmežciems, Ragaciems": "Бигауньциемс, Лапмежциемс, Рагациемс",
+      "Rīga un Pierīga": "Рига и Пиерига",
       "Piņķi, Babīte, Imanta, lidostas apkārtne": "Пиньки, Бабите, Иманта, район аэропорта",
       "Bez maksas": "Бесплатно",
       "Vēl no šīs kategorijas": "Еще из этой категории",
@@ -5120,10 +5333,15 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       "Sāciet rakstīt adresi vai klikšķiniet kartē, lai pārbaudītu piegādes zonu.": "Начните вводить адрес или нажмите на карту, чтобы проверить зону доставки.",
       "Meklējam adresi...": "Ищем адрес...",
       "Adreses netika atrastas.": "Адреса не найдены.",
+      "Meklējam visā katalogā...": "Ищем по всему каталогу...",
       "Adrese ir piegādes zonā": "Адрес в зоне доставки",
-      "Adrese ir piegādes zonā: Jūrmala centrs": "Адрес в зоне доставки: Центр Юрмалы",
-      "Adrese ir piegādes zonā: Jūrmala rietumi": "Адрес в зоне доставки: Запад Юрмалы",
-      "Adrese ir piegādes zonā: Piņķi un Babīte": "Адрес в зоне доставки: Пиньки и Бабите",
+      "Adrese ir piegādes zonā: Jūrmala": "Адрес в зоне доставки: Юрмала",
+      "Adrese ir piegādes zonā: Tukuma piekraste": "Адрес в зоне доставки: побережье Тукумского края",
+      "Adrese ir piegādes zonā: Rīga un Pierīga": "Адрес в зоне доставки: Рига и Пиерига",
+      "Aizpildiet obligātos laukus.": "Заполните обязательные поля.",
+      "Atveram e-pasta programmu. Nosūtiet sagatavoto ziņu.": "Открываем почтовую программу. Отправьте подготовленное письмо.",
+      "Nosūtām ziņu...": "Отправляем сообщение...",
+      "Paldies! Ziņa ir nosūtīta.": "Спасибо! Сообщение отправлено.",
       "Adrese neietilpst piegādes zonās. Sazināsimies, lai precizētu piegādi.": "Адрес не входит в зоны доставки. Мы свяжемся, чтобы уточнить доставку."
     },
     en: {
@@ -5178,11 +5396,21 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       "Atzīmējiet adresi kartē vai izvēlieties adresi meklēšanā. Zona un piegādes cena tiks noteikta automātiski.": "Mark the address on the map or choose it in search. The zone and delivery price will be set automatically.",
       "Piegādes adrese": "Delivery address",
       "Iela, māja, dzīvoklis": "Street, house, apartment",
-      "Jūrmala centrs": "Jurmala centre",
-      "Majori, Dzintari, Dubulti, Bulduri": "Majori, Dzintari, Dubulti, Bulduri",
-      "Jūrmala rietumi": "West Jurmala",
-      "Asari, Melluži, Vaivari, Kauguri, Sloka": "Asari, Melluzi, Vaivari, Kauguri, Sloka",
-      "Piņķi un Babīte": "Pinki and Babite",
+      "Atrašanās vieta": "Location",
+      "Sazinieties ar BrokolisFarm": "Contact BrokolisFarm",
+      "Rakstiet vai zvaniet, lai precizētu produktu pieejamību, piegādi un pasūtījuma detaļas.": "Write or call to confirm product availability, delivery and order details.",
+      "Jūsu pasūtījums:": "Your order:",
+      "Summa:": "Subtotal:",
+      "Kopā:": "Total:",
+      "Vārds": "Name",
+      "E-pasts": "Email",
+      "Noformēt pasūtījumu": "Checkout",
+      "Formas kļūdas": "Form errors",
+      "Jūrmala": "Jurmala",
+      "Kauguri, Vaivari, Asari, Melluži, Pumpuri, Majori, Dzintari, Bulduri": "Kauguri, Vaivari, Asari, Melluzi, Pumpuri, Majori, Dzintari, Bulduri",
+      "Tukuma piekraste": "Tukums coast",
+      "Bigauņciems, Lapmežciems, Ragaciems": "Bigaunciems, Lapmezciems, Ragaciems",
+      "Rīga un Pierīga": "Riga and Pieriga",
       "Piņķi, Babīte, Imanta, lidostas apkārtne": "Pinki, Babite, Imanta, airport area",
       "Bez maksas": "Free",
       "Vēl no šīs kategorijas": "More from this category",
@@ -5193,10 +5421,15 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       "Sāciet rakstīt adresi vai klikšķiniet kartē, lai pārbaudītu piegādes zonu.": "Start typing an address or click the map to check the delivery zone.",
       "Meklējam adresi...": "Searching address...",
       "Adreses netika atrastas.": "No addresses found.",
+      "Meklējam visā katalogā...": "Searching the full catalog...",
       "Adrese ir piegādes zonā": "Address is in delivery zone",
-      "Adrese ir piegādes zonā: Jūrmala centrs": "Address is in delivery zone: Jurmala centre",
-      "Adrese ir piegādes zonā: Jūrmala rietumi": "Address is in delivery zone: West Jurmala",
-      "Adrese ir piegādes zonā: Piņķi un Babīte": "Address is in delivery zone: Pinki and Babite",
+      "Adrese ir piegādes zonā: Jūrmala": "Address is in delivery zone: Jurmala",
+      "Adrese ir piegādes zonā: Tukuma piekraste": "Address is in delivery zone: Tukums coast",
+      "Adrese ir piegādes zonā: Rīga un Pierīga": "Address is in delivery zone: Riga and Pieriga",
+      "Aizpildiet obligātos laukus.": "Complete the required fields.",
+      "Atveram e-pasta programmu. Nosūtiet sagatavoto ziņu.": "Opening your email app. Send the prepared message.",
+      "Nosūtām ziņu...": "Sending message...",
+      "Paldies! Ziņa ir nosūtīta.": "Thank you! Your message has been sent.",
       "Adrese neietilpst piegādes zonās. Sazināsimies, lai precizētu piegādi.": "The address is outside delivery zones. We will contact you to confirm delivery."
     }
   };
@@ -5808,15 +6041,19 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     }) || firstAvailableEdition(product);
   }
 
-  function buildApiUrl(root, state, slice) {
+  function buildApiUrl(root, state, slice, options) {
+    options = options || {};
     var params = new URLSearchParams();
-    params.set("storepartuid", state.activePartUid || state.rootPartUid || root.getAttribute("data-storepartuid") || "");
+    var partUid = Object.prototype.hasOwnProperty.call(options, "partUid")
+      ? options.partUid
+      : state.activePartUid || state.rootPartUid || root.getAttribute("data-storepartuid") || "";
+    params.set("storepartuid", partUid);
     params.set("recid", root.getAttribute("data-recid") || DEFAULT_RECID);
     params.set("c", String(Date.now()));
     params.set("getparts", "true");
     params.set("getoptions", "true");
     params.set("slice", String(slice || 1));
-    params.set("size", root.getAttribute("data-products-size") || "36");
+    params.set("size", String(options.size || root.getAttribute("data-products-size") || "36"));
     params.set("flag_root", "withroot");
     return (root.getAttribute("data-api") || DEFAULT_API) + "?" + params.toString();
   }
@@ -5959,6 +6196,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       if (!button) return;
       var nextPartUid = button.getAttribute("data-part");
       if (state.activePartUid === nextPartUid && state.products.length) return;
+      resetCatalogSearch(root, state);
       state.activePartUid = nextPartUid;
       state.slice = 1;
       state.nextSlice = "";
@@ -6073,7 +6311,8 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     var mount = root.querySelector("[data-bf-products]");
     if (!mount) return;
     var query = normalizeText(state.query);
-    var visible = sortProducts(productsByMode(products, state).filter(function (product) {
+    var sourceProducts = query && state.searchIndexReady ? state.searchProducts : products;
+    var visible = sortProducts(productsByMode(sourceProducts, state).filter(function (product) {
       return productMatchesPart(product, state.activePartUid) && productMatchesQuery(product, query);
     }), state.sort);
     if (!visible.length) {
@@ -6137,7 +6376,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
         ' data-bf-product="' + escapeHtml(JSON.stringify(product)) + '"' +
       ">" +
         '<a class="bf-product__image-link js-product-link" href="' + escapeHtml(url) + '">' +
-          '<img class="bf-product__image js-product-img" src="' + escapeHtml(image) + '" data-original="' + escapeHtml(image) + '" alt="' + escapeHtml(product.title) + '" />' +
+          '<img class="bf-product__image js-product-img" src="' + escapeHtml(image) + '" data-original="' + escapeHtml(image) + '" alt="' + escapeHtml(product.title) + '" loading="lazy" decoding="async" />' +
         "</a>" +
         '<span class="bf-product__badge" aria-hidden="true">+</span>' +
         '<div class="bf-product__body">' +
@@ -6244,6 +6483,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       link.addEventListener("click", function () {
         var part = findPartByCategory(state.parts, link.getAttribute("data-bf-category"));
         if (part) {
+          resetCatalogSearch(root, state);
           state.activePartUid = String(part.uid);
           state.slice = 1;
           state.nextSlice = "";
@@ -6270,9 +6510,26 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     var search = root.querySelector("[data-bf-search]");
     var sort = root.querySelector("[data-bf-sort]");
     if (search) {
+      var searchTimer = null;
       search.addEventListener("input", function () {
         state.query = search.value;
-        renderProducts(root, state.products, state);
+        if (searchTimer) clearTimeout(searchTimer);
+        if (normalizeText(state.query).length < 3) {
+          renderProducts(root, state.products, state);
+          return;
+        }
+        var mount = root.querySelector("[data-bf-products]");
+        if (mount) {
+          mount.innerHTML = '<div class="bf-products__status" data-bf-i18n-text="Meklējam visā katalogā...">' + escapeHtml(localizeText("Meklējam visā katalogā...")) + "</div>";
+        }
+        searchTimer = setTimeout(function () {
+          loadCatalogSearchIndex(root, state).then(function () {
+            renderProducts(root, state.products, state);
+          }).catch(function () {
+            state.searchIndexReady = false;
+            renderProducts(root, state.products, state);
+          });
+        }, 320);
       });
     }
     if (sort) {
@@ -6281,6 +6538,58 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
         renderProducts(root, state.products, state);
       });
     }
+  }
+
+  function resetCatalogSearch(root, state) {
+    state.query = "";
+    state.searchProducts = [];
+    state.searchIndexKey = "";
+    state.searchIndexReady = false;
+    state.searchIndexRequestId += 1;
+    state.searchIndexPromise = null;
+    var search = root.querySelector("[data-bf-search]");
+    if (search) search.value = "";
+  }
+
+  function loadCatalogSearchIndex(root, state) {
+    var partUid = state.activePartUid || state.rootPartUid || root.getAttribute("data-storepartuid") || "";
+    var key = String(partUid);
+    if (state.searchIndexReady && state.searchIndexKey === key) return Promise.resolve(state.searchProducts);
+    if (state.searchIndexPromise && state.searchIndexKey === key) return state.searchIndexPromise;
+    state.searchIndexKey = key;
+    state.searchIndexReady = false;
+    var requestId = state.searchIndexRequestId += 1;
+    var products = [];
+    var seen = {};
+
+    function loadSlice(slice, pageCount) {
+      return requestJson(buildApiUrl(root, state, slice, { partUid: partUid, size: 500 })).then(function (data) {
+        if (requestId !== state.searchIndexRequestId) throw new Error("Search request superseded");
+        toArray(data.products).forEach(function (product) {
+          var productKey = String(product && (product.uid || product.externalid || product.sku) || "");
+          if (!productKey || seen[productKey]) return;
+          seen[productKey] = true;
+          products.push(product);
+        });
+        if (data.nextslice && pageCount < 9) return loadSlice(data.nextslice, pageCount + 1);
+        return products;
+      });
+    }
+
+    state.searchIndexPromise = loadSlice(1, 0).then(function (items) {
+      if (requestId !== state.searchIndexRequestId) return state.searchProducts;
+      state.searchProducts = items;
+      state.searchIndexReady = true;
+      state.searchIndexPromise = null;
+      return items;
+    }).catch(function (error) {
+      if (requestId === state.searchIndexRequestId) {
+        state.searchIndexPromise = null;
+        state.searchIndexReady = false;
+      }
+      throw error;
+    });
+    return state.searchIndexPromise;
   }
 
   function applyCatalogData(root, state, data, append) {
@@ -6310,14 +6619,21 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
 
   function load(root, state, append) {
     var mount = root.querySelector("[data-bf-products]");
+    var requestId = state.requestId += 1;
+    var more = root.querySelector("[data-bf-load-more]");
+    if (more) more.disabled = true;
     if (!append && mount) {
       mount.innerHTML = '<div class="bf-products__status" data-bf-i18n-text="Ielādējam preces...">' + escapeHtml(localizeText("Ielādējam preces...")) + "</div>";
     }
     requestJson(buildApiUrl(root, state, state.slice))
       .then(function (data) {
+        if (requestId !== state.requestId) return;
         applyCatalogData(root, state, data, append);
+        if (more) more.disabled = false;
       })
       .catch(function (error) {
+        if (requestId !== state.requestId) return;
+        if (more) more.disabled = false;
         var fallback = getLocalFallbackData();
         if (fallback) {
           applyCatalogData(root, state, fallback, false);
@@ -6343,8 +6659,14 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       parts: [],
       products: [],
       query: "",
+      requestId: 0,
       requestedCategory: "",
       rootPartUid: root.getAttribute("data-storepartuid") || "",
+      searchIndexKey: "",
+      searchIndexPromise: null,
+      searchIndexReady: false,
+      searchIndexRequestId: 0,
+      searchProducts: [],
       sort: "",
       slice: 1
     };
@@ -6376,6 +6698,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     bindStickyHeader();
     bindMobileMenu();
     bindCartBridge();
+    bindLeadForms();
     bindDeliveryMapObserver();
     initAll();
     ensureAllDeliveryMapZoomControls();
@@ -6422,7 +6745,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
         <p>Soli pa solim atrodam garšīgus un veselīgus produktus, lai jūs tos varētu baudīt kopā ar mums.</p>
       </div>
       <div class="bf-split-story__media">
-        <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/assets/newsletter-vegetables.png" alt="BrokolisFarm dārzeņi" />
+        <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/assets/newsletter-vegetables.webp" alt="BrokolisFarm dārzeņi" loading="lazy" decoding="async" />
       </div>
     </div>
   </section>

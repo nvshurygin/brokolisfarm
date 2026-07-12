@@ -34,6 +34,18 @@
     "/terms": "terms",
     "/terms/": "terms"
   };
+  var PAGE_META = {
+    home: ["BrokolisFarm - svaigi produkti ar piegādi", "Svaigi produkti, gaļa, delikateses, augļi un dārzeņi ar piegādi Jūrmalā un tuvākajā apkārtnē."],
+    catalog: ["BrokolisFarm katalogs", "Izvēlieties svaigus produktus BrokolisFarm katalogā un pievienojiet tos grozam."],
+    offers: ["BrokolisFarm akcijas", "Aktuālie BrokolisFarm piedāvājumi svaigai gaļai, putnu gaļai un ģimenes pasūtījumiem."],
+    new: ["BrokolisFarm jaunumi", "Jaunākie BrokolisFarm produkti, delikateses un sezonas izlases."],
+    about: ["Par BrokolisFarm", "BrokolisFarm ir neliels ģimenes uzņēmums, kas rūpīgi atlasa kvalitatīvus produktus ikdienai."],
+    delivery: ["Apmaksa un piegāde | BrokolisFarm", "BrokolisFarm apmaksas veidi, piegādes grafiks un piegādes zonas."],
+    contacts: ["Kontakti | BrokolisFarm", "BrokolisFarm kontakti, rekvizīti, darba laiks un saņemšanas adrese Jūrmalā."],
+    privacy: ["Privātuma politika | BrokolisFarm", "Informācija par personas datu apstrādi BrokolisFarm vietnē."],
+    terms: ["Pirkuma noteikumi | BrokolisFarm", "BrokolisFarm pasūtījumu, apmaksas un piegādes noteikumi."],
+    "not-found": ["Lapa nav atrasta | BrokolisFarm", "Pieprasītā BrokolisFarm lapa nav atrasta."]
+  };
 
   function ready(callback) {
     if (document.readyState === "loading") {
@@ -298,6 +310,27 @@
     });
   }
 
+  function ensureMeta(name, property, content) {
+    var selector = property ? 'meta[property="' + property + '"]' : 'meta[name="' + name + '"]';
+    var meta = document.head.querySelector(selector);
+    if (!meta) {
+      meta = document.createElement("meta");
+      if (property) meta.setAttribute("property", property);
+      else meta.setAttribute("name", name);
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute("content", content);
+  }
+
+  function applyPageMeta(page) {
+    var meta = PAGE_META[page] || PAGE_META["not-found"];
+    document.title = meta[0];
+    ensureMeta("description", "", meta[1]);
+    ensureMeta("", "og:title", meta[0]);
+    ensureMeta("", "og:description", meta[1]);
+    ensureMeta("", "og:url", window.location.href.split("#")[0]);
+  }
+
   function bootApp() {
     if (window.BrokolisFarmTilda && typeof window.BrokolisFarmTilda.boot === "function") {
       window.BrokolisFarmTilda.boot();
@@ -305,18 +338,24 @@
   }
 
   function renderPage(baseUrl, page, mount) {
+    applyPageMeta(page);
     var progress = setLoading(mount);
-    return fetchText(pageUrl(baseUrl, page))
+    return fetchText(pageUrl(baseUrl, page)).then(function (html) {
+        return { html: html, page: page };
+      })
       .catch(function (error) {
         if (page === "not-found") throw error;
-        return fetchText(pageUrl(baseUrl, "not-found"));
+        return fetchText(pageUrl(baseUrl, "not-found")).then(function (html) {
+          return { html: html, page: "not-found" };
+        });
       })
-      .then(function (html) {
+      .then(function (result) {
         return progress.complete().then(function () {
-          mount.innerHTML = html;
-          mount.setAttribute("data-bf-loaded-page", page);
+          mount.innerHTML = result.html;
+          mount.setAttribute("data-bf-loaded-page", result.page);
+          applyPageMeta(result.page);
           bootApp();
-          window.dispatchEvent(new CustomEvent("brokolisfarm:page-loaded", { detail: { page: page } }));
+          window.dispatchEvent(new CustomEvent("brokolisfarm:page-loaded", { detail: { page: result.page } }));
         });
       })
       .catch(function (error) {
