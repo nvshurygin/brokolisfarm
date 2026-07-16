@@ -46,6 +46,32 @@
     terms: ["Pirkuma noteikumi | BrokolisFarm", "BrokolisFarm pasūtījumu, apmaksas un piegādes noteikumi."],
     "not-found": ["Lapa nav atrasta | BrokolisFarm", "Pieprasītā BrokolisFarm lapa nav atrasta."]
   };
+  var PAGE_META_TRANSLATIONS = {
+    ru: {
+      home: ["BrokolisFarm - свежие продукты с доставкой", "Свежие продукты, мясо, деликатесы, фрукты и овощи с доставкой по Юрмале и ближайшим районам."],
+      catalog: ["Каталог BrokolisFarm", "Выбирайте свежие продукты в каталоге BrokolisFarm и добавляйте их в корзину."],
+      offers: ["Акции BrokolisFarm", "Актуальные предложения BrokolisFarm на свежее мясо, птицу и продукты для семейных заказов."],
+      new: ["Новинки BrokolisFarm", "Новые продукты, деликатесы и сезонные подборки BrokolisFarm."],
+      about: ["О BrokolisFarm", "BrokolisFarm - небольшой семейный бизнес, который тщательно выбирает качественные продукты на каждый день."],
+      delivery: ["Оплата и доставка | BrokolisFarm", "Способы оплаты, график и зоны доставки BrokolisFarm."],
+      contacts: ["Контакты | BrokolisFarm", "Контакты, реквизиты, режим работы и адрес самовывоза BrokolisFarm в Юрмале."],
+      privacy: ["Политика конфиденциальности | BrokolisFarm", "Информация об обработке персональных данных на сайте BrokolisFarm."],
+      terms: ["Условия покупки | BrokolisFarm", "Условия заказа, оплаты и доставки BrokolisFarm."],
+      "not-found": ["Страница не найдена | BrokolisFarm", "Запрошенная страница BrokolisFarm не найдена."]
+    },
+    en: {
+      home: ["BrokolisFarm - fresh products with delivery", "Fresh products, meat, delicacies, fruit and vegetables delivered in Jurmala and nearby areas."],
+      catalog: ["BrokolisFarm catalog", "Choose fresh products in the BrokolisFarm catalog and add them to your cart."],
+      offers: ["BrokolisFarm offers", "Current BrokolisFarm offers on fresh meat, poultry and products for family orders."],
+      new: ["New at BrokolisFarm", "New BrokolisFarm products, delicacies and seasonal selections."],
+      about: ["About BrokolisFarm", "BrokolisFarm is a small family business that carefully selects quality products for everyday life."],
+      delivery: ["Payment and delivery | BrokolisFarm", "BrokolisFarm payment methods, delivery schedule and delivery zones."],
+      contacts: ["Contacts | BrokolisFarm", "BrokolisFarm contacts, company details, opening hours and pickup address in Jurmala."],
+      privacy: ["Privacy policy | BrokolisFarm", "Information about personal data processing on the BrokolisFarm website."],
+      terms: ["Purchase terms | BrokolisFarm", "BrokolisFarm order, payment and delivery terms."],
+      "not-found": ["Page not found | BrokolisFarm", "The requested BrokolisFarm page was not found."]
+    }
+  };
 
   function ready(callback) {
     if (document.readyState === "loading") {
@@ -322,14 +348,31 @@
     meta.setAttribute("content", content);
   }
 
+  function currentLanguage() {
+    var language = "";
+    try {
+      language = localStorage.getItem("bfLanguage") || "";
+    } catch (error) {}
+    return language === "ru" || language === "en" ? language : "lv";
+  }
+
   function applyPageMeta(page) {
-    var meta = PAGE_META[page] || PAGE_META["not-found"];
+    var language = currentLanguage();
+    var translatedMeta = PAGE_META_TRANSLATIONS[language];
+    var meta = translatedMeta && translatedMeta[page] || PAGE_META[page] || PAGE_META["not-found"];
     document.title = meta[0];
     ensureMeta("description", "", meta[1]);
     ensureMeta("", "og:title", meta[0]);
     ensureMeta("", "og:description", meta[1]);
     ensureMeta("", "og:url", window.location.href.split("#")[0]);
+    ensureMeta("", "og:locale", language === "ru" ? "ru_RU" : language === "en" ? "en_US" : "lv_LV");
   }
+
+  window.BrokolisFarmApplyPageMeta = function () {
+    var mount = document.querySelector("[data-bf-loaded-page]");
+    if (!mount) return;
+    applyPageMeta(mount.getAttribute("data-bf-loaded-page") || "not-found");
+  };
 
   function bootApp() {
     if (window.BrokolisFarmTilda && typeof window.BrokolisFarmTilda.boot === "function") {

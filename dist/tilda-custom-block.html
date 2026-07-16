@@ -3612,7 +3612,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     };
     var pointPosition = fallbackPointPosition(selectedPoint);
     mapMount.innerHTML =
-      '<svg class="bf-delivery-map-svg" viewBox="0 0 100 78" role="img" aria-label="Jūrmalas piegādes zonas">' +
+      '<svg class="bf-delivery-map-svg" viewBox="0 0 100 78" role="img" aria-label="' + escapeHtml(localizeText("Jūrmalas piegādes zonas")) + '">' +
         '<rect width="100" height="78" rx="10" fill="#d9edf3"></rect>' +
         '<path d="M0 55 C18 44, 31 64, 46 53 C62 41, 75 64, 100 48 L100 78 L0 78 Z" fill="#dff1d9"></path>' +
         BF_DELIVERY_ZONES.map(function (zone) {
@@ -3961,10 +3961,11 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     if (!mapWrap.querySelector("[data-bf-map-zoom]")) {
       var controls = document.createElement("div");
       controls.className = "bf-delivery-zone__zoom";
-      controls.setAttribute("aria-label", "Kartes tālummaiņa");
+      controls.setAttribute("aria-label", localizeText("Kartes tālummaiņa"));
+      controls.setAttribute("data-bf-i18n-aria-label", "Kartes tālummaiņa");
       controls.innerHTML =
-        '<button type="button" data-bf-map-zoom="in" aria-label="Tuvināt karti">+</button>' +
-        '<button type="button" data-bf-map-zoom="out" aria-label="Tālināt karti">−</button>';
+        '<button type="button" data-bf-map-zoom="in" aria-label="' + escapeHtml(localizeText("Tuvināt karti")) + '" data-bf-i18n-aria-label="Tuvināt karti">+</button>' +
+        '<button type="button" data-bf-map-zoom="out" aria-label="' + escapeHtml(localizeText("Tālināt karti")) + '" data-bf-i18n-aria-label="Tālināt karti">−</button>';
       mapWrap.appendChild(controls);
     }
     if (mapWrap.getAttribute("data-bf-map-zoom-bound") !== "true") {
@@ -4053,9 +4054,9 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
         "</div>" +
         '<div class="bf-delivery-zone__map-wrap" data-bf-delivery-map-wrap="true">' +
           '<div class="bf-delivery-zone__map" data-bf-delivery-map></div>' +
-          '<div class="bf-delivery-zone__zoom" aria-label="Kartes tālummaiņa">' +
-            '<button type="button" data-bf-map-zoom="in" aria-label="Tuvināt karti">+</button>' +
-            '<button type="button" data-bf-map-zoom="out" aria-label="Tālināt karti">−</button>' +
+          '<div class="bf-delivery-zone__zoom" aria-label="Kartes tālummaiņa" data-bf-i18n-aria-label="Kartes tālummaiņa">' +
+            '<button type="button" data-bf-map-zoom="in" aria-label="Tuvināt karti" data-bf-i18n-aria-label="Tuvināt karti">+</button>' +
+            '<button type="button" data-bf-map-zoom="out" aria-label="Tālināt karti" data-bf-i18n-aria-label="Tālināt karti">−</button>' +
           "</div>" +
         "</div>" +
         '<div class="bf-delivery-zone__choices">' +
@@ -4108,7 +4109,9 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
     var selectedPointStatus = function (zone) {
       if (!selectedPoint) return "";
       var resolvedZone = zone || deliveryZoneForPoint(selectedPoint);
-      return resolvedZone ? "Inside: " + resolvedZone.title : "Outside delivery zones";
+      return resolvedZone
+        ? localizeText("Adrese ir piegādes zonā") + ": " + localizeText(resolvedZone.title)
+        : localizeText("Adrese neietilpst piegādes zonās.");
     };
 
     var applyZone = function (zoneId) {
@@ -5245,7 +5248,9 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       "Atveram e-pasta programmu. Nosūtiet sagatavoto ziņu.": "Atveram e-pasta programmu. Nosūtiet sagatavoto ziņu.",
       "Nosūtām ziņu...": "Nosūtām ziņu...",
       "Paldies! Ziņa ir nosūtīta.": "Paldies! Ziņa ir nosūtīta.",
-      "Adrese neietilpst piegādes zonās. Sazināsimies, lai precizētu piegādi.": "Adrese neietilpst piegādes zonās. Sazināsimies, lai precizētu piegādi."
+      "Adrese neietilpst piegādes zonās. Sazināsimies, lai precizētu piegādi.": "Adrese neietilpst piegādes zonās. Sazināsimies, lai precizētu piegādi.",
+      "Adrese neietilpst piegādes zonās.": "Adrese neietilpst piegādes zonās.",
+      "Breadcrumbs": "Navigācijas ceļš"
     },
     ru: {
       "_Buy_now_": "Добавить в корзину",
@@ -5333,7 +5338,34 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       "Atveram e-pasta programmu. Nosūtiet sagatavoto ziņu.": "Открываем почтовую программу. Отправьте подготовленное письмо.",
       "Nosūtām ziņu...": "Отправляем сообщение...",
       "Paldies! Ziņa ir nosūtīta.": "Спасибо! Сообщение отправлено.",
-      "Adrese neietilpst piegādes zonās. Sazināsimies, lai precizētu piegādi.": "Адрес не входит в зоны доставки. Мы свяжемся, чтобы уточнить доставку."
+      "Adrese neietilpst piegādes zonās. Sazināsimies, lai precizētu piegādi.": "Адрес не входит в зоны доставки. Мы свяжемся, чтобы уточнить доставку.",
+      "Adrese neietilpst piegādes zonās.": "Адрес вне зоны доставки.",
+      "Valodas izvēle": "Выбор языка",
+      "BrokolisFarm - svaigums, garša un rūpīga atlase": "BrokolisFarm — свежесть, вкус и тщательный отбор",
+      "BrokolisFarm dārzeņi": "Овощи BrokolisFarm",
+      "BrokolisFarm jaunumi": "Новинки BrokolisFarm",
+      "BrokolisFarm priekšrocības": "Преимущества BrokolisFarm",
+      "Ērta piegāde": "Удобная доставка",
+      "Gaļai un svaigajiem produktiem pievēršam īpašu uzmanību: glabāšana, iepakošana un piegāde ir daļa no kvalitātes.": "Мясу и свежим продуктам уделяем особое внимание: хранение, упаковка и доставка являются частью качества.",
+      "Iedvesma brokastīm, vakariņām un brīvdienu galdam no mūsu produktiem.": "Идеи для завтраков, ужинов и стола выходного дня из наших продуктов.",
+      "Izvēlamies produktus, kuru izcelsme un kvalitāte ir saprotama jau pirms pasūtījuma.": "Выбираем продукты, происхождение и качество которых понятны еще до заказа.",
+      "Kategorijas, cenas un apraksti ir sakārtoti tā, lai pasūtījumu varētu savākt bez liekas meklēšanas.": "Категории, цены и описания упорядочены так, чтобы заказ можно было собрать без лишнего поиска.",
+      "Kvalitātes kontrole": "Контроль качества",
+      "Lasīt vairāk": "Подробнее",
+      "Receptes": "Рецепты",
+      "Rakstām par ražotājiem, sezonas produktiem un gudru uzglabāšanu.": "Рассказываем о производителях, сезонных продуктах и правильном хранении.",
+      "Soli pa solim atrodam garšīgus un veselīgus produktus": "Шаг за шагом находим вкусные и полезные продукты",
+      "Stāsti": "Истории",
+      "Svaigi dārzeņi": "Свежие овощи",
+      "Svaigi dārzeņi un zaļumi": "Свежие овощи и зелень",
+      "Svaigi produkti": "Свежие продукты",
+      "Svaigu produktu piegāde": "Доставка свежих продуктов",
+      "Vietējie ražotāji": "Местные производители",
+      "Jūrmalas piegādes zonas": "Зоны доставки в Юрмале",
+      "Kartes tālummaiņa": "Масштаб карты",
+      "Tuvināt karti": "Увеличить карту",
+      "Tālināt karti": "Уменьшить карту",
+      "Breadcrumbs": "Хлебные крошки"
     },
     en: {
       "_Buy_now_": "Add to cart",
@@ -5421,7 +5453,34 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       "Atveram e-pasta programmu. Nosūtiet sagatavoto ziņu.": "Opening your email app. Send the prepared message.",
       "Nosūtām ziņu...": "Sending message...",
       "Paldies! Ziņa ir nosūtīta.": "Thank you! Your message has been sent.",
-      "Adrese neietilpst piegādes zonās. Sazināsimies, lai precizētu piegādi.": "The address is outside delivery zones. We will contact you to confirm delivery."
+      "Adrese neietilpst piegādes zonās. Sazināsimies, lai precizētu piegādi.": "The address is outside delivery zones. We will contact you to confirm delivery.",
+      "Adrese neietilpst piegādes zonās.": "Address is outside the delivery zones.",
+      "Valodas izvēle": "Language selection",
+      "BrokolisFarm - svaigums, garša un rūpīga atlase": "BrokolisFarm - freshness, taste and careful selection",
+      "BrokolisFarm dārzeņi": "BrokolisFarm vegetables",
+      "BrokolisFarm jaunumi": "BrokolisFarm new arrivals",
+      "BrokolisFarm priekšrocības": "BrokolisFarm benefits",
+      "Ērta piegāde": "Convenient delivery",
+      "Gaļai un svaigajiem produktiem pievēršam īpašu uzmanību: glabāšana, iepakošana un piegāde ir daļa no kvalitātes.": "We pay special attention to meat and fresh products: storage, packaging and delivery are all part of quality.",
+      "Iedvesma brokastīm, vakariņām un brīvdienu galdam no mūsu produktiem.": "Ideas for breakfasts, dinners and weekend meals using our products.",
+      "Izvēlamies produktus, kuru izcelsme un kvalitāte ir saprotama jau pirms pasūtījuma.": "We choose products whose origin and quality are clear before you order.",
+      "Kategorijas, cenas un apraksti ir sakārtoti tā, lai pasūtījumu varētu savākt bez liekas meklēšanas.": "Categories, prices and descriptions are organized so you can build an order without unnecessary searching.",
+      "Kvalitātes kontrole": "Quality control",
+      "Lasīt vairāk": "Read more",
+      "Receptes": "Recipes",
+      "Rakstām par ražotājiem, sezonas produktiem un gudru uzglabāšanu.": "We share stories about producers, seasonal products and smart storage.",
+      "Soli pa solim atrodam garšīgus un veselīgus produktus": "Step by step, we find tasty and healthy products",
+      "Stāsti": "Stories",
+      "Svaigi dārzeņi": "Fresh vegetables",
+      "Svaigi dārzeņi un zaļumi": "Fresh vegetables and greens",
+      "Svaigi produkti": "Fresh products",
+      "Svaigu produktu piegāde": "Fresh product delivery",
+      "Vietējie ražotāji": "Local producers",
+      "Jūrmalas piegādes zonas": "Jurmala delivery zones",
+      "Kartes tālummaiņa": "Map zoom",
+      "Tuvināt karti": "Zoom in",
+      "Tālināt karti": "Zoom out",
+      "Breadcrumbs": "Breadcrumbs"
     }
   };
 
@@ -5541,6 +5600,9 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
         } catch (error) {}
         lang = nextLang;
         applyCurrentLanguage(document);
+        if (typeof window.BrokolisFarmApplyPageMeta === "function") {
+          window.BrokolisFarmApplyPageMeta();
+        }
       });
     });
   }
@@ -5697,7 +5759,8 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
   function renderTildaProductBreadcrumb(breadcrumb, productTitle) {
     if (!breadcrumb) return;
     breadcrumb.innerHTML = "";
-    breadcrumb.setAttribute("aria-label", "Breadcrumbs");
+    breadcrumb.setAttribute("aria-label", localizeText("Breadcrumbs"));
+    breadcrumb.setAttribute("data-bf-i18n-aria-label", "Breadcrumbs");
     breadcrumb.setAttribute("role", "navigation");
 
     var catalog = document.createElement("a");
@@ -6735,7 +6798,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
         <a class="bf-button bf-button_light" href="#catalog">Apskatīt katalogu</a>
       </div>
       <div class="bf-hero__media">
-        <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/assets/hero-vegetables-table.webp" alt="Svaigi dārzeņi un zaļumi" decoding="async" fetchpriority="high" />
+        <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-16-1/dist/assets/hero-vegetables-table.webp" alt="Svaigi dārzeņi un zaļumi" decoding="async" fetchpriority="high" />
       </div>
     </div>
   </section>
@@ -6745,55 +6808,55 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
       <h2>Ko var pasūtīt šodien</h2>
       <div class="bf-category-grid">
         <a class="bf-category-card" href="/catalog?category=Augli">
-          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/assets/home-category-produce.jpg" alt="Augļi, dārzeņi, ogas, zaļumi" />
+          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-16-1/dist/assets/home-category-produce.jpg" alt="Augļi, dārzeņi, ogas, zaļumi" />
           <span>Augļi, dārzeņi, ogas, zaļumi</span>
         </a>
         <a class="bf-category-card" href="/catalog?category=Siers">
-          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/assets/home-category-dairy-eggs-vegan.jpg" alt="Piena produkti, olas un vegāniem" />
+          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-16-1/dist/assets/home-category-dairy-eggs-vegan.jpg" alt="Piena produkti, olas un vegāniem" />
           <span>Piena produkti, olas un vegāniem</span>
         </a>
         <a class="bf-category-card" href="/catalog?category=Svaiga%20Gala">
-          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/assets/home-category-meat-fish-frozen.jpg" alt="Gaļa, zivis un saldēti produkti" />
+          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-16-1/dist/assets/home-category-meat-fish-frozen.jpg" alt="Gaļa, zivis un saldēti produkti" />
           <span>Gaļa, zivis un saldēti produkti</span>
         </a>
         <a class="bf-category-card" href="/catalog?category=Kulinarija%20Un%20Gatavi%20Edieni">
-          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/assets/home-category-ready-meals.jpg" alt="Kulinārija un gatavi ēdieni" />
+          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-16-1/dist/assets/home-category-ready-meals.jpg" alt="Kulinārija un gatavi ēdieni" />
           <span>Kulinārija un gatavi ēdieni</span>
         </a>
         <a class="bf-category-card" href="/catalog?category=Maize">
-          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/assets/home-category-bread-snacks.jpg" alt="Maize, konditoreja un uzkodas" />
+          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-16-1/dist/assets/home-category-bread-snacks.jpg" alt="Maize, konditoreja un uzkodas" />
           <span>Maize, konditoreja un uzkodas</span>
         </a>
         <a class="bf-category-card" href="/catalog?category=Risi%20Un%20Graudaugi">
-          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/assets/home-category-pantry.jpg" alt="Graudaugi, milti, garšvielas, mērces, granolas" />
+          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-16-1/dist/assets/home-category-pantry.jpg" alt="Graudaugi, milti, garšvielas, mērces, granolas" />
           <span>Graudaugi, milti, garšvielas, mērces, granolas</span>
         </a>
         <a class="bf-category-card" href="/catalog?category=Zidainiem%20Un%20Berniem">
-          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/assets/home-category-kids.jpg" alt="Zīdaiņiem un bērniem" />
+          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-16-1/dist/assets/home-category-kids.jpg" alt="Zīdaiņiem un bērniem" />
           <span>Zīdaiņiem un bērniem</span>
         </a>
         <a class="bf-category-card" href="/catalog?category=Saldejums">
-          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/assets/home-category-ice-cream.jpg" alt="Saldējums" />
+          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-16-1/dist/assets/home-category-ice-cream.jpg" alt="Saldējums" />
           <span>Saldējums</span>
         </a>
         <a class="bf-category-card" href="/catalog?category=Konservejumi">
-          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/assets/home-category-preserves.jpg" alt="Konservējumi un ilgstoši uzglabājami produkti" />
+          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-16-1/dist/assets/home-category-preserves.jpg" alt="Konservējumi un ilgstoši uzglabājami produkti" />
           <span>Konservējumi un ilgstoši uzglabājami produkti</span>
         </a>
         <a class="bf-category-card" href="/catalog?category=Udens%20Sula%20Shoti">
-          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/assets/home-category-drinks-juice.jpg" alt="Dzērieni un svaigi spiesta sula" />
+          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-16-1/dist/assets/home-category-drinks-juice.jpg" alt="Dzērieni un svaigi spiesta sula" />
           <span>Dzērieni un svaigi spiesta sula</span>
         </a>
         <a class="bf-category-card" href="/catalog?category=Dzirkstosais%20Vins%20Un%20Sampanietis">
-          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/assets/home-category-alcohol.jpg" alt="Alkoholiskie dzērieni" />
+          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-16-1/dist/assets/home-category-alcohol.jpg" alt="Alkoholiskie dzērieni" />
           <span>Alkoholiskie dzērieni</span>
         </a>
         <a class="bf-category-card" href="/catalog?category=Davanas%20Trauki%20Roku%20Darbs%20Ziedi%20Svetki">
-          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/assets/home-category-gifts.jpg" alt="Dāvanas, trauki, roku darbs, ziedi, svētki" />
+          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-16-1/dist/assets/home-category-gifts.jpg" alt="Dāvanas, trauki, roku darbs, ziedi, svētki" />
           <span>Dāvanas, trauki, roku darbs, ziedi, svētki</span>
         </a>
         <a class="bf-category-card" href="/catalog?category=Majas%20Smarzas%20Tirisanas%20Lidzekli%20Aromatic%2089">
-          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/assets/home-category-home-care.jpg" alt="Mājas smaržas un tīrīšanas līdzekļi" />
+          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-16-1/dist/assets/home-category-home-care.jpg" alt="Mājas smaržas un tīrīšanas līdzekļi" />
           <span>Mājas smaržas un tīrīšanas līdzekļi</span>
         </a>
       </div>
@@ -6821,14 +6884,14 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
         </p>
       </div>
       <div class="bf-newsletter__panel">
-        <img class="bf-newsletter__image bf-newsletter__image_left" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/assets/newsletter-vegetables.webp" alt="Svaigi dārzeņi" loading="lazy" decoding="async" />
+        <img class="bf-newsletter__image bf-newsletter__image_left" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-16-1/dist/assets/newsletter-vegetables.webp" alt="Svaigi dārzeņi" loading="lazy" decoding="async" />
         <form class="bf-newsletter__form" data-bf-lead-form="newsletter" novalidate>
           <h3>Piesakieties jaunumiem un saņemiet sezonas piedāvājumus</h3>
           <input type="email" name="email" placeholder="Jūsu e-pasts" aria-label="Jūsu e-pasts" autocomplete="email" required />
           <button type="submit">Pieteikties</button>
           <p class="bf-form-status" data-bf-form-status aria-live="polite"></p>
         </form>
-        <img class="bf-newsletter__image bf-newsletter__image_right" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/assets/newsletter-products.webp" alt="Svaigi produkti" loading="lazy" decoding="async" />
+        <img class="bf-newsletter__image bf-newsletter__image_right" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-16-1/dist/assets/newsletter-products.webp" alt="Svaigi produkti" loading="lazy" decoding="async" />
       </div>
     </div>
   </section>
@@ -6839,7 +6902,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
         Esam neliels ģimenes uzņēmums, kuram produktu kvalitāte ir īpaši svarīga. Rūpējoties par sevi un saviem bērniem, vēlamies parūpēties arī par jums.
       </p>
       <div class="bf-delivery__card">
-        <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/assets/delivery-eggs.webp" alt="Svaigu produktu piegāde" loading="lazy" decoding="async" />
+        <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-16-1/dist/assets/delivery-eggs.webp" alt="Svaigu produktu piegāde" loading="lazy" decoding="async" />
         <div class="bf-delivery__overlay">
           <h2>Darba un piegādes grafiks</h2>
           <ol>
@@ -6880,8 +6943,8 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
         <a class="bf-button" href="/contacts">Sazināties</a>
       </div>
       <div class="bf-phone-preview">
-        <img class="bf-phone-preview__screen" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/assets/instagram-screen.webp" alt="BrokolisFarm" loading="lazy" decoding="async" />
-        <img class="bf-phone-preview__frame" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/assets/instagram-frame.png" alt="" loading="lazy" decoding="async" />
+        <img class="bf-phone-preview__screen" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-16-1/dist/assets/instagram-screen.webp" alt="BrokolisFarm" loading="lazy" decoding="async" />
+        <img class="bf-phone-preview__frame" src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-16-1/dist/assets/instagram-frame.png" alt="" loading="lazy" decoding="async" />
       </div>
     </div>
   </section>
@@ -6889,7 +6952,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
   <section class="bf-section bf-editorial">
     <div class="bf-shell bf-editorial__grid">
       <article class="bf-editorial-card">
-        <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/assets/editorial-recipes.webp" alt="Receptes" loading="lazy" decoding="async" />
+        <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-16-1/dist/assets/editorial-recipes.webp" alt="Receptes" loading="lazy" decoding="async" />
         <div>
           <h2>Receptes</h2>
           <p>Iedvesma brokastīm, vakariņām un brīvdienu galdam no mūsu produktiem.</p>
@@ -6897,7 +6960,7 @@ window.BrokolisFarmTemplates = {"header":"<header class=\"bf-header\" id=\"top\"
         </div>
       </article>
       <article class="bf-editorial-card">
-        <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-12-1/dist/assets/editorial-blog.webp" alt="Stāsti" loading="lazy" decoding="async" />
+        <img src="https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@2026-07-16-1/dist/assets/editorial-blog.webp" alt="Stāsti" loading="lazy" decoding="async" />
         <div>
           <h2>Stāsti</h2>
           <p>Rakstām par ražotājiem, sezonas produktiem un gudru uzglabāšanu.</p>

@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = path.join(root, "dist");
-const loaderVersion = "2026-07-12-1";
+const loaderVersion = "2026-07-16-1";
 const mainAssetBase = "https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@main/dist/";
 const releaseAssetBase = `https://cdn.jsdelivr.net/gh/nvshurygin/brokolisfarm@${loaderVersion}/dist/`;
 
